@@ -6,7 +6,6 @@ const port = 8083;// 80, 443, 8083 nginx
 const express = require('express');
 const app = express();
 const logs = require('./modules/logger');
-const database = require('./modules/database');
 
 app.listen(port, () => {
     try {
@@ -15,7 +14,6 @@ app.listen(port, () => {
         logs.info('Running on port ', port);
         logs.info('Process ID: ', process.pid);
         logs.info('Process path: ', process.cwd());
-        database.initalize();//initalize database
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
