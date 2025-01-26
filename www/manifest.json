@@ -1,0 +1,13 @@
+{
+  "name": "ButterKing",
+  "short_name": "ButterKing",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [{
+    "src": "resources/icon.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}
