@@ -21,8 +21,20 @@ app.listen(port, () => {
 
 //bind root path to /www folder
 app.use(express.static('www')).listen(() => {
-
+    logs.info('serving static files from ', __dirname+'/www');
+}).on('error', (err) => {
+    logs.error('Express JS error: ', err);
+}).on('listening', () => {
+    logs.info('Express JS listening');
+}).on('connection', (socket) => {
+    logs.info('Express JS connection', socket);
+}).on('request', (requests) => {
+    logs.info('Express JS connection', requests);
+}).on('connect', (connectx) => {
+    logs.info('Express JS connection', connectx);
 });
+    
+;
 
 app.get('/get/test', (req, res) => {//test get
     try {
