@@ -6,18 +6,17 @@ const port = 8083;
 const express = require('express');
 const app = express();
 const logs = require('./modules/logger');
-const SQLcredentials = require('./SQL_credentials');
-const mysql = require('mysql');
-let connection = mysql.createConnection(SQLcredentials);
+const database = require('./modules/database');
 
 app.listen(port, () => {
     try {
         logs.initalize();//initalize logger
+
         logs.info('Server starting');//log server start
         logs.info('Running on port ', port);
         logs.info('Process ID: ', process.pid);
         logs.info('Process path: ', process.cwd());
-        connection.connect();
+        //connection.connect();
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
@@ -37,8 +36,6 @@ app.use(express.static('www')).listen(() => {
 }).on('connect', (connectx) => {
     logs.info('Express JS connection', connectx);
 });
-
-;
 
 app.get('/get/test', (req, res) => {//test get
     try {
@@ -74,7 +71,6 @@ app.get('/get/catalog', (req, res) => {//get bakerys catalog
             logs.info('got payload: ', data);
             //res.end(JSON.stringify({ testget: "test get data received" }));
         });
-
         //pull catalog from sql location
 
         res.send(JSON.stringify(
@@ -88,7 +84,7 @@ app.get('/get/catalog', (req, res) => {//get bakerys catalog
                     title: "Test cake 2",
                     description: "Description of cake 2 for testing",
                     image_uri: '27cakerex-plzm-jumbo.jpg',
-                    uuid: '001',
+                    uuid: '002',
                 }
             ]
         ));
