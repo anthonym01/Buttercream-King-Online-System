@@ -2,10 +2,13 @@
 //This is the server file, it will handle all requests and responses
 
 //Server configuration
-const port = 8083;// 80, 443, 8083 nginx
+const port = 8083;
 const express = require('express');
 const app = express();
 const logs = require('./modules/logger');
+const SQLcredentials = require('./SQL_credentials');
+const mysql = require('mysql');
+let connection = mysql.createConnection(SQLcredentials);
 
 app.listen(port, () => {
     try {
@@ -14,6 +17,7 @@ app.listen(port, () => {
         logs.info('Running on port ', port);
         logs.info('Process ID: ', process.pid);
         logs.info('Process path: ', process.cwd());
+        connection.connect();
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
@@ -65,7 +69,7 @@ app.post('/post/test', (req, res) => {//test post
 
 app.get('/get/catalog', (req, res) => {//get bakerys catalog
     try {
-        logs.info('Connection ', req, 'requested catalog');
+        logs.info('Connection ', req.hostname, 'requested catalog');
         req.on('data', function (data) {
             logs.info('got payload: ', data);
             //res.end(JSON.stringify({ testget: "test get data received" }));
