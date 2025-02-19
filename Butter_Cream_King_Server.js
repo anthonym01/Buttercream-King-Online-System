@@ -21,7 +21,7 @@ app.listen(port, () => {
 
 //bind root path to /www folder
 app.use(express.static('www')).listen(() => {
-    logs.info('serving static files from ', __dirname+'/www');
+    logs.info('serving static files from ', __dirname + '/www');
 }).on('error', (err) => {
     logs.error('Express JS error: ', err);
 }).on('listening', () => {
@@ -33,7 +33,7 @@ app.use(express.static('www')).listen(() => {
 }).on('connect', (connectx) => {
     logs.info('Express JS connection', connectx);
 });
-    
+
 ;
 
 app.get('/get/test', (req, res) => {//test get
@@ -65,15 +65,29 @@ app.post('/post/test', (req, res) => {//test post
 
 app.get('/get/catalog', (req, res) => {//get bakerys catalog
     try {
-        logs.info('Connection ',req,'requested catalog');
+        logs.info('Connection ', req, 'requested catalog');
         req.on('data', function (data) {
             logs.info('got payload: ', data);
             //res.end(JSON.stringify({ testget: "test get data received" }));
         });
-        
+
         //pull catalog from sql location
 
-        res.send(JSON.stringify([{ placeholder: 'catalog under construction' }]));
+        res.send(JSON.stringify(
+            [
+                {
+                    title: "Test cake 1",
+                    description: "Description of cake 1 for testing",
+                    image_uri: 'Best-Birthday-Cake-with-milk-chocolate-buttercream-SQUARE.webp',
+                    uuid: '001',
+                }, {
+                    title: "Test cake 2",
+                    description: "Description of cake 2 for testing",
+                    image_uri: '27cakerex-plzm-jumbo.jpg',
+                    uuid: '001',
+                }
+            ]
+        ));
     } catch (error) {
         logs.error('Catastrophy catalog conveyor: ', err);
     }
