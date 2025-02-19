@@ -62,3 +62,19 @@ app.post('/post/test', (req, res) => {//test post
         logs.error('Catastrophy on test post: ', err);
     }
 });
+
+app.get('/get/catalog', (req, res) => {//get bakerys catalog
+    try {
+        logs.info('Connection ',req,'requested catalog');
+        req.on('data', function (data) {
+            logs.info('got payload: ', data);
+            //res.end(JSON.stringify({ testget: "test get data received" }));
+        });
+        
+        //pull catalog from sql location
+
+        res.send(JSON.stringify([{ placeholder: 'catalog under construction' }]));
+    } catch (error) {
+        logs.error('Catastrophy catalog conveyor: ', err);
+    }
+});

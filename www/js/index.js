@@ -5,18 +5,13 @@ window.addEventListener('load', async function () {//Starting point
     } catch (err) {
         console.warn('Something bad happened: ', err);
     } finally {
-        //Test get button
-        document.getElementById('testpost_btn').addEventListener('click', function () {
-            //Test post button
-            console.log("testpost");
-            post({ payload: document.getElementById('postablegarbage').value }, '/post/test');
-        });
-
+        //page startup
+        navigation_overider.initalize();
+        catalog_maintainer.initalize();
     }
 });
 
-async function request(what) {
-    /* This block of code is a function named `request` that performs a GET request using the Fetch */
+async function request(what) {// fetch data from the server
     try {
         const response = await fetch(what);
         if (!response.ok) { throw new Error('Network failiure'); }
@@ -29,8 +24,7 @@ async function request(what) {
     }
 }
 
-async function post(what, where) {
-    /* This block of code is a function named `post` that performs a POST request using the Fetch API.*/
+async function post(what, where) {//'fetch' data to the server
     try {
         const response = await fetch(where, {
             method: "POST",
@@ -68,4 +62,17 @@ let config = {
         console.table(config.data);
         config.data = {};
     },
+}
+
+let navigation_overider = {
+    initalize:async function () {
+        console.log('Navigation overider startup');
+
+    }
+}
+
+let catalog_maintainer = {
+    initalize:async function(){
+        console.log("catalog startup");
+    }
 }

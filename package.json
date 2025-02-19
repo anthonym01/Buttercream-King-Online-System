@@ -1,12 +1,10 @@
 {
   "name": "basic-express-server",
   "version": "1.0.0",
-  "description": "A basic express template",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "bundle": "browserify www/js/index.js -o www/js/bundle.js",
-    "start": "node Server.js",
-    "test-database": "node tests/database_test.js"
+    "start": "node Butter_Cream_King_Server.js"
   },
   "keywords": [
     "express",

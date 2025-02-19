@@ -26,7 +26,8 @@
     font-family: Lexend_Deca;
 }
 
-:root,.light {
+:root,
+.light {
     /*root used primarily for theming*/
     --accent-color: hsl(204, 100%, 50%);
     --text-color: rgb(0, 0, 0);
@@ -39,7 +40,8 @@
     --text-color: rgb(255, 255, 255);
     --background-color: rgb(0, 0, 0);
     --grey: rgb(54, 54, 54);
-    --inversion_factor: invert(1);/*Invert black and white images*/
+    --inversion_factor: invert(1);
+    /*Invert black and white images*/
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,10 +63,20 @@ body {
     background-color: var(--background-color);
 }
 
+.main_view_active,
+.main_view {
+    position: fixed;
+    display: none;
+    top: 6rem;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.main_view_active{display: block;}
 
 /*    <--  Landscape layout (with min-width) -->     */
 
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-
-
-}
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
