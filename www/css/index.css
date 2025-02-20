@@ -32,8 +32,9 @@
     --accent-color: hsl(204, 100%, 50%);
     --text-color: rgb(0, 0, 0);
     --background-color: rgb(255, 255, 255);
-    --off-background-color:rgb(230,230,203);
+    --off-background-color: rgb(230, 230, 230);
     --grey: rgb(212, 212, 212);
+    --logo: url('../img/cupcake-svgrepo-com.svg');
     --inversion_factor: invert(0);
 }
 
@@ -68,24 +69,101 @@ body {
 .main_view {
     position: fixed;
     display: none;
-    top: 2rem;
+    top: 2.5rem;
     right: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 2.5rem);
     background-color: var(--background-color);
     color: var(--text-color);
 }
 
-.main_view_active{display: block;}
+.main_view_active {
+    display: block;
+}
 
-.navbar{
+/* Navigation Bar */
+
+.navbar {
     position: fixed;
     top: 0;
     left: 0;
-    height: 2rem;
+    height: 2.5rem;
     width: 100vw;
+    background-color: var(--background-color);
+}
+
+
+/* Logo and branding in the top bar */
+.branding_block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 13.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    background-color: var(--background-color);
+    transform: scale(1);
+    border-radius: 0rem 0rem 0.2rem 0rem;
+    transition: scale 300ms, transform 300ms;
+}
+
+.branding_block:hover {
     background-color: var(--off-background-color);
 }
+
+.branding_block:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 300ms, transform 100ms;
+}
+
+.logocontainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: var(--logo);
+}
+
+.logotext {
+    position: relative;
+    top: 0;
+    left: 2.5rem;
+    height: 2.5rem;
+    width: 11rem;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    line-height: 2.5rem;
+    user-select: none;
+}
+.account_callout{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 0.1rem solid var(--off-background-color);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: border-radius 300ms;
+}
+.account_callout:hover{
+    border-radius: 40%;
+}
+.account_callout img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
