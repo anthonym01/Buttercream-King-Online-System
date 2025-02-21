@@ -164,6 +164,33 @@ body {
     width: 100%;
 }
 
+
+/* 
+    Cake Gallery/catalog
+*/
+.Cake_cattalog_container{
+    position: absolute;
+    top:0;
+    height: 100%;
+    width: 100%;
+    
+}
+.Cake_cattalog{
+    position: relative;
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.Cake_pedistal{
+    height: 12rem;
+    width: 12rem;
+    margin: 2rem;
+    border-radius: 0.2rem;
+    box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem;
+    background-color: var(--background-color);
+}
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}

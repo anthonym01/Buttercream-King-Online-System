@@ -65,22 +65,26 @@ let config = {
 }
 
 let navigation_overider = {
-    initalize:async function () {
+    initalize: async function () {
         console.log('Navigation overider startup');
 
     }
 }
 
 let catalog_maintainer = {
-    initalize:async function(){
+    initalize: async function () {
         console.log("catalog startup");
         this.build();
     },
-    build:async function(){
+    build: async function () {
         console.log("Build catalog");
-        request('/get/catalog').then((payload)=>{
-            console.log('Got Payload: ',payload);
-            
+        request('/get/catalog').then((payload) => {
+            console.log('Got Payload: ', payload);//payload = { title,    description, image_uri uuid }
+            for(let cakeindex in payload){
+                let Cake_pedistal = document.createElement('div');
+                Cake_pedistal.classList="Cake_pedistal";
+            }
+
         })
     },
 }
