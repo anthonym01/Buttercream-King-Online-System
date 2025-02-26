@@ -6,7 +6,7 @@ window.addEventListener('load', async function () {//Starting point
         console.warn('Something bad happened: ', err);
     } finally {
         //page startup
-        navigation_overider.initalize();
+        navigation_overide.initalize();
         catalog_maintainer.initalize();
     }
 });
@@ -64,7 +64,7 @@ let config = {
     },
 }
 
-let navigation_overider = {
+let navigation_overide = {
     initalize: async function () {
         console.log('Navigation overider startup');
 
@@ -78,11 +78,13 @@ let catalog_maintainer = {
     },
     build: async function () {
         console.log("Build catalog");
-        request('/get/catalog').then((payload) => {
-            console.log('Got Payload: ', payload);//payload = { title,    description, image_uri uuid }
-            for(let cakeindex in payload){
+        request('/get/catalog').then((catalog) => {
+            console.log('Got Catalog: ', catalog);//payload = { title,    description, image_uri, uuid }
+            for(let cakeindex in catalog){
                 let Cake_pedistal = document.createElement('div');
                 Cake_pedistal.classList="Cake_pedistal";
+                Cake_pedistal.tagName=`Cake ${cakeindex}`;
+                
             }
 
         })

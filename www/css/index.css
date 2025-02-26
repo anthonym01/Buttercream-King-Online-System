@@ -184,12 +184,18 @@ body {
     flex-wrap: wrap;
 }
 .Cake_pedistal{
+    position: relative;
     height: 12rem;
-    width: 12rem;
+    width: 9rem;
     margin: 2rem;
     border-radius: 0.2rem;
     box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem;
     background-color: var(--background-color);
+}
+.Cake_pedistal .cake_img{
+    position: absolute;
+    height: 9rem;
+    width: 9rem;
 }
 /*    <--  Landscape layout (with min-width) -->     */
 
