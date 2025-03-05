@@ -65,20 +65,6 @@ app.use(express.static('www')).listen(() => {
     logs.info('serving static files from ', __dirname + '/www');
 }).on('error', (err) => { logs.error('Express JS error: ', err) }).on('listening', () => { logs.info('Express JS listening') }).on('connection', (socket) => { logs.info('Express JS connection', socket) }).on('request', (requests) => { logs.info('Express JS connection', requests) }).on('connect', (connectx) => { logs.info('Express JS connection', connectx) });
 
-app.get('/get/test', (req, res) => {//test get
-    try {
-        logs.info('test get');
-        req.on('data', function (data) {
-            logs.info('got: ', data);
-            res.end(JSON.stringify({ testget: "test get data received" }));
-        });
-        //res.writeHead(200, { 'Content-type': 'application/json' });
-        res.send(JSON.stringify({ test: 'test get is okay' }));
-    } catch (error) {
-        logs.error('Catastrophy on test get: ', err);
-    }
-});
-
 app.post('/post/test', (req, res) => {//test post
     //receive more data than a get
     try {
@@ -105,5 +91,31 @@ app.get('/get/catalog', (req, res) => {//get bakerys catalog
 
     } catch (error) {
         logs.error('Catastrophy catalog conveyor: ', err);
+    }
+});
+
+app.post('/get/cakebyuuid', (req, res) => {// find a cake by its uuid and send that data back to the webpage
+    try {
+        logs.info('search cake');
+        req.on('data', function (data) {
+            const cakeid = JSON.parse(data);
+            logs.info('got id to find : ', cakeid);
+            //find cake
+            let found = false;
+            for (let placeholder in placeholder_database) {
+                if (cakeid == placeholder_database[placeholder].uuid) {
+                    logs.info('Found cake', cakeid);
+                    res.end(JSON.stringify(placeholder_database[placeholder]));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                logs.info('Could not find cake', cakeid)
+                res.end(false)
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on test post: ', err);
     }
 });

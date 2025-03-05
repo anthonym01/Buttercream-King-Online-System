@@ -74,6 +74,7 @@ let navigation_overide = {
 let catalog_maintainer = {
     initalize: async function () {
         console.log("catalog startup");
+        document.getElementById('cake_display_close_btn').addEventListener('click',function(){catalog_maintainer.close_cake()});
         this.build();
     },
     /*
@@ -93,9 +94,9 @@ let catalog_maintainer = {
                 Cake_pedistal.tagName = `Cake ${cakeindex}`;
                 Cake_pedistal.title = `${catalog[cakeindex].title}`;
 
-                let cake_img = document.createElement('img')
+                let cake_img = document.createElement('div')
                 cake_img.classList = "cake_img";
-                cake_img.src = `/img_database_store/cakes/${catalog[cakeindex].image_uri}`;
+                cake_img.style.backgroundImage = `url('/img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
                 Cake_pedistal.appendChild(cake_img);
 
                 let cake_title = document.createElement('div');
@@ -118,9 +119,21 @@ let catalog_maintainer = {
 
         })
     },
-    trigger_cake: function (uuid) {
+    trigger_cake: async function (uuid) {// show cake display and load information for cake
         console.log("page cake: ", uuid);
 
-        
+        document.getElementById('cake_display').classList = "cake_display";
+        document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container_shoved";
+
+        post(uuid, '/get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
+            console.log('Got cake ', cakefromuuid)
+            document.getElementById('cake_display_title').innerHTML=`${cakefromuuid.title}`
+            document.getElementById('cake_display_banner').style.backgroundImage = `url('/img_database_store/cakes/${cakefromuuid.image_uri}')`;
+            document.getElementById('cake_display_description').innerHTML=`${cakefromuuid.description}`
+        })
+    },
+    close_cake:function(){
+        document.getElementById('cake_display').classList = "cake_display_hidden";
+        document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container";
     },
 }

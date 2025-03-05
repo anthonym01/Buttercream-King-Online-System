@@ -26,7 +26,8 @@
 <body class="light">
     <!--Customer cake catalog-->
     <div class="main_view_active" id="cake_catalog_page">
-        <div class="Cake_cattalog_container">
+        <div id="Cake_cattalog_container" class="Cake_cattalog_container">
+            <!--Main cakes cattalogue display-->
             <div class="Cake_cattalog" id="customer_cake_catalog">
                 <div class="Cake_pedistal">
                     <img class="cake_img" src="./img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg"
@@ -36,17 +37,33 @@
                 </div>
             </div>
         </div>
+        <div id="cake_display" class="cake_display_hidden">
+            <div class="title" id="cake_display_title">yap</div>
+            <div class="banner_cake" id="cake_display_banner" ></div>
+            <div class="description" id="cake_display_description"></div>
+            <div id="cake_display_close_btn" class="close_button"></div>
+        </div>
     </div>
+
     <!--Top bar of the site-->
     <div class="navbar">
-        <div class="branding_block">
+        <div id="branding_block" class="branding_block">
             <div class="logocontainer"></div>
             <div class="logotext">Butter Cream King</div>
         </div>
-        <div class="account_callout" id="account_callout" title="user account">
-            <img src="./img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg" id="profile_picture"
-                alt="profile picture">
+        <div class="actionbar">
+            <div class="account_callout_button" id="account_callout" title="user account">
+                <img src="./img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg" id="profile_picture"
+                    alt="profile picture">
+            </div>
+            <div class="cart_button"></div>
+            <div class="search_button"></div>
         </div>
+    </div>
+
+    <!--In page quick login for users-->
+    <div id="Login_dropdown" class="Login_dropdown">
+
     </div>
     <script src="js/index.js"></script>
 </body>

@@ -89,7 +89,7 @@ body {
     left: 0;
     height: 2.5rem;
     width: 100vw;
-    background-color: var(--background-color);
+    background-color: var(--off-background-color);
 }
 
 
@@ -101,14 +101,14 @@ body {
     width: 13.5rem;
     height: 2.5rem;
     cursor: pointer;
-    background-color: var(--background-color);
+    background-color: var(--off-background-color);
     transform: scale(1);
     border-radius: 0rem 0rem 0.2rem 0rem;
     transition: scale 300ms, transform 300ms;
 }
 
 .branding_block:hover {
-    background-color: var(--off-background-color);
+    background-color: var(--background-color);
 }
 
 .branding_block:active {
@@ -141,25 +141,41 @@ body {
     user-select: none;
 }
 
-.account_callout {
-    position: fixed;
+.actionbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2.5rem;
+    width: auto;
+}
+
+.account_callout_button {
+    position: absolute;
     top: 0;
     right: 0;
     height: 2.5rem;
     width: 2.5rem;
     overflow: hidden;
     box-sizing: border-box;
-    border: 0.1rem solid var(--off-background-color);
+    border: 0.1rem solid var(--grey);
     cursor: pointer;
+    background-color: var(--off-background-color);
     border-radius: 50%;
-    transition: border-radius 300ms;
+    transform: scale(1);
+    transition: scale 300ms, transform 300ms, border-radius 300ms;
 }
 
-.account_callout:hover {
+.account_callout_button:hover {
+    background-color: var(--grey);
     border-radius: 40%;
 }
 
-.account_callout img {
+.account_callout_button:active {
+    transform: scale(0.96);
+    transition: scale 300ms, transform 100ms;
+}
+
+.account_callout_button img {
     position: absolute;
     top: 0;
     right: 0;
@@ -168,15 +184,79 @@ body {
 }
 
 
+.cart_button {
+    position: absolute;
+    top: 0;
+    right: 2.5rem;
+    height: 2.5rem;
+    width: 3rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-image: url('../img/cart-shopping-svgrepo-com.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: var(--off-background-color);
+    transform: scale(1);
+    border-radius: 0rem 0rem 0.2rem 0rem;
+    transition: scale 300ms, transform 300ms;
+}
+
+.cart_button:hover {
+    background-color: var(--grey);
+}
+
+.cart_button:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 300ms, transform 100ms;
+}
+
+.search_button {
+    position: absolute;
+    top: 0;
+    right: 5.5rem;
+    height: 2.5rem;
+    width: 3rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-image: url('../img/search-alt-2-svgrepo-com.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: scale(1);
+    border-radius: 0rem 0rem 0.2rem 0rem;
+    transition: scale 300ms, transform 300ms;
+}
+
+.search_button:hover {
+    background-color: var(--grey);
+}
+
+.search_button:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 300ms, transform 100ms;
+}
+
 /* 
     Cake Gallery/catalog
 */
-.Cake_cattalog_container {
+.Cake_cattalog_container,
+.Cake_cattalog_container_shoved {
     position: absolute;
     top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     overflow: hidden;
+    transition: width 500ms;
+}
+
+.Cake_cattalog_container_shoved {
+    width: 60%;
 }
 
 .Cake_cattalog {
@@ -200,47 +280,121 @@ body {
     background-color: var(--background-color);
     cursor: pointer;
 }
-.Cake_pedistal:hover{
+
+.Cake_pedistal:hover {
     box-shadow: 0.07rem 0.07rem 0.4rem 0.2rem;
 }
 
-.Cake_pedistal .cake_image_container{
-    position: absolute;
+.cake_img {
+    position: relative;
     top: 0;
     left: 0;
+    display: block;
+    min-height: 10rem;
+    min-width: 10rem;
     height: 10rem;
     width: 10rem;
-    display:flex;
-    
-}
-
-.Cake_pedistal .cake_img {
-    position: relative;
-    height: auto;
-    width: 10rem;
-    image-rendering: auto;
+    background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .cake_pedistal_description {
-    position: absolute;
-    top: 12rem;
-    height: 5rem;
+    position: relative;
+    /*top: 12rem;*/
+    height: auto;
     width: 10rem;
     font-size: 0.9rem;
     padding: 0.1rem;
+    white-space: wrap;
     box-sizing: border-box;
     text-align: center;
 }
 
 .cake_pedistal_title {
-    position: absolute;
-    top: 10rem;
-    height: 2rem;
+    position: relative;
+    /*top: 10rem;*/
+    height: auto;
     font-size: 1.4rem;
-    white-space: nowrap;
+    white-space: wrap;
     text-align: center;
     width: 10rem;
-    line-height: 2rem;
+    line-height: 1.4rem;
+}
+
+.cake_display,
+.cake_display_hidden {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 40%;
+    background-color: var(--background-color);
+    display: block;
+}
+
+.cake_display_hidden {
+    display: none;
+}
+
+.cake_display .close_button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 3rem;
+    width: 3rem;
+    background-image: url('../img/close-md-svgrepo-com.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+.cake_display .title{
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    height: 1.7rem;
+    line-height: 1.7rem;
+    font-size: 1.7rem;
+    height: 1.7rem;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.cake_display .title{
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    height: 1.7rem;
+    line-height: 1.7rem;
+    font-size: 1.7rem;
+    height: 1.7rem;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.cake_display .banner_cake{
+    position: absolute;
+    top: 3rem;
+    width: 100%;
+    height: 20rem;
+    background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.cake_display .description{
+    position: absolute;
+    top: 23.5rem;
+    width: 100%;
+    height: auto;
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    color: var(--text-color);
 }
 
 /*    <--  Landscape layout (with min-width) -->     */
