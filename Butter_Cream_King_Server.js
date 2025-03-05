@@ -1,5 +1,43 @@
 //'node Server.js'
 //This is the server file, it will handle all requests and responses
+const placeholder_database = [
+    {
+        title: "Chocolate",
+        description: "Classic chocolate layer cake with chocolate icecream",
+        image_uri: '1.jpg',
+        uuid: '001',
+    },
+    {
+        title: "cookies and cream",
+        description: "Description of cake 2 for testing",
+        image_uri: '2.jpg',
+        uuid: '002',
+    },
+    {
+        title: "name",
+        description: "Description of cake 3 for testing",
+        image_uri: '3.jpg',
+        uuid: '003',
+    },
+    {
+        title: "strawberry",
+        description: "yummy yummy strawberry cake",
+        image_uri: '4.jpg',
+        uuid: '004',
+    },
+    {
+        title: "rainbow layer cake",
+        description: "rainbow flavoured layer cake",
+        image_uri: '5.jpg',
+        uuid: '005',
+    },
+    {
+        title: "super strawberry",
+        description: "heart shaped strawberry cake",
+        image_uri: '6.jpg',
+        uuid: '006',
+    },
+];
 
 //Server configuration
 const port = 8083;
@@ -62,23 +100,9 @@ app.get('/get/catalog', (req, res) => {//get bakerys catalog
             //res.end(JSON.stringify({ testget: "test get data received" }));
         });
 
-        //pull catalog from sql location
+        //pull catalog from maria sql database location
+        res.end(JSON.stringify(placeholder_database));
 
-        res.end(JSON.stringify(
-            [
-                {
-                    title: "Test cake 1",
-                    description: "Description of cake 1 for testing",
-                    image_uri: 'Best-Birthday-Cake-with-milk-chocolate-buttercream-SQUARE.webp',
-                    uuid: '001',
-                }, {
-                    title: "Test cake 2",
-                    description: "Description of cake 2 for testing",
-                    image_uri: '27cakerex-plzm-jumbo.jpg',
-                    uuid: '002',
-                }
-            ]
-        ));
     } catch (error) {
         logs.error('Catastrophy catalog conveyor: ', err);
     }

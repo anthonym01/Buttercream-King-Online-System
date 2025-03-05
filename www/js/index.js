@@ -76,17 +76,51 @@ let catalog_maintainer = {
         console.log("catalog startup");
         this.build();
     },
+    /*
+        Display All cakes from the database for the user to select
+    */
     build: async function () {
         console.log("Build catalog");
         request('/get/catalog').then((catalog) => {
             console.log('Got Catalog: ', catalog);//payload = { title,    description, image_uri, uuid }
-            for(let cakeindex in catalog){
+
+            const customer_cake_catalog = document.getElementById('customer_cake_catalog')
+            customer_cake_catalog.innerHTML = ""//clear old pedistals
+
+            for (let cakeindex in catalog) {// construction zone
                 let Cake_pedistal = document.createElement('div');
-                Cake_pedistal.classList="Cake_pedistal";
-                Cake_pedistal.tagName=`Cake ${cakeindex}`;
-                
+                Cake_pedistal.classList = "Cake_pedistal";
+                Cake_pedistal.tagName = `Cake ${cakeindex}`;
+                Cake_pedistal.title = `${catalog[cakeindex].title}`;
+
+                let cake_img = document.createElement('img')
+                cake_img.classList = "cake_img";
+                cake_img.src = `/img_database_store/cakes/${catalog[cakeindex].image_uri}`;
+                Cake_pedistal.appendChild(cake_img);
+
+                let cake_title = document.createElement('div');
+                cake_title.classList = "cake_pedistal_title"
+                cake_title.innerHTML = `${catalog[cakeindex].title}`;
+                Cake_pedistal.appendChild(cake_title);
+
+                let cake_description = document.createElement('div');
+                cake_description.classList = "cake_pedistal_description"
+                cake_description.innerHTML = `${catalog[cakeindex].description}`;
+                Cake_pedistal.appendChild(cake_description);
+
+                customer_cake_catalog.appendChild(Cake_pedistal);
+
+                Cake_pedistal.addEventListener('click', function () {
+                    console.log(`clicked pedistal ${cakeindex} corresponds to ${catalog[cakeindex].uuid}`)
+                    catalog_maintainer.trigger_cake(catalog[cakeindex].uuid);
+                })
             }
 
         })
+    },
+    trigger_cake: function (uuid) {
+        console.log("page cake: ", uuid);
+
+        
     },
 }

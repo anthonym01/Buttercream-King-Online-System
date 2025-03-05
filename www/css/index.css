@@ -140,7 +140,8 @@ body {
     line-height: 2.5rem;
     user-select: none;
 }
-.account_callout{
+
+.account_callout {
     position: fixed;
     top: 0;
     right: 0;
@@ -153,10 +154,12 @@ body {
     border-radius: 50%;
     transition: border-radius 300ms;
 }
-.account_callout:hover{
+
+.account_callout:hover {
     border-radius: 40%;
 }
-.account_callout img{
+
+.account_callout img {
     position: absolute;
     top: 0;
     right: 0;
@@ -168,35 +171,78 @@ body {
 /* 
     Cake Gallery/catalog
 */
-.Cake_cattalog_container{
+.Cake_cattalog_container {
     position: absolute;
-    top:0;
+    top: 0;
     height: 100%;
     width: 100%;
-    
+    overflow: hidden;
 }
-.Cake_cattalog{
+
+.Cake_cattalog {
     position: relative;
-    height: auto;
+    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    overflow-y: scroll;
 }
-.Cake_pedistal{
+
+.Cake_pedistal {
     position: relative;
-    height: 12rem;
-    width: 9rem;
+    overflow: hidden;
+    height: 17rem;
+    width: 10rem;
     margin: 2rem;
     border-radius: 0.2rem;
     box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem;
     background-color: var(--background-color);
+    cursor: pointer;
 }
-.Cake_pedistal .cake_img{
+.Cake_pedistal:hover{
+    box-shadow: 0.07rem 0.07rem 0.4rem 0.2rem;
+}
+
+.Cake_pedistal .cake_image_container{
     position: absolute;
-    height: 9rem;
-    width: 9rem;
+    top: 0;
+    left: 0;
+    height: 10rem;
+    width: 10rem;
+    display:flex;
+    
 }
+
+.Cake_pedistal .cake_img {
+    position: relative;
+    height: auto;
+    width: 10rem;
+    image-rendering: auto;
+}
+
+.cake_pedistal_description {
+    position: absolute;
+    top: 12rem;
+    height: 5rem;
+    width: 10rem;
+    font-size: 0.9rem;
+    padding: 0.1rem;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.cake_pedistal_title {
+    position: absolute;
+    top: 10rem;
+    height: 2rem;
+    font-size: 1.4rem;
+    white-space: nowrap;
+    text-align: center;
+    width: 10rem;
+    line-height: 2rem;
+}
+
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
