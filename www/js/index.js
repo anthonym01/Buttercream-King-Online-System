@@ -92,7 +92,7 @@ let catalog_maintainer = {
                 let Cake_pedistal = document.createElement('div');
                 Cake_pedistal.classList = "Cake_pedistal";
                 Cake_pedistal.tagName = `Cake ${cakeindex}`;
-                Cake_pedistal.title = `${catalog[cakeindex].title}`;
+                Cake_pedistal.title = `${catalog[cakeindex].Title}`;
 
                 let cake_img = document.createElement('div')
                 cake_img.classList = "cake_img";
@@ -101,12 +101,12 @@ let catalog_maintainer = {
 
                 let cake_title = document.createElement('div');
                 cake_title.classList = "cake_pedistal_title"
-                cake_title.innerHTML = `${catalog[cakeindex].title}`;
+                cake_title.innerHTML = `${catalog[cakeindex].Title}`;
                 Cake_pedistal.appendChild(cake_title);
 
                 let cake_description = document.createElement('div');
                 cake_description.classList = "cake_pedistal_description"
-                cake_description.innerHTML = `${catalog[cakeindex].description}`;
+                cake_description.innerHTML = `${catalog[cakeindex].Description}`;
                 Cake_pedistal.appendChild(cake_description);
 
                 customer_cake_catalog.appendChild(Cake_pedistal);
@@ -127,9 +127,9 @@ let catalog_maintainer = {
 
         post(uuid, '/get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
             console.log('Got cake ', cakefromuuid)
-            document.getElementById('cake_display_title').innerHTML=`${cakefromuuid.title}`
+            document.getElementById('cake_display_title').innerHTML=`${cakefromuuid.Title}`
             document.getElementById('cake_display_banner').style.backgroundImage = `url('/img_database_store/cakes/${cakefromuuid.image_uri}')`;
-            document.getElementById('cake_display_description').innerHTML=`${cakefromuuid.description}`
+            document.getElementById('cake_display_description').innerHTML=`${cakefromuuid.Description}`
         })
     },
     close_cake:function(){
