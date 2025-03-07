@@ -40,7 +40,14 @@ const connectionmanager = {
             });
         });
     },
-
+    insert_into_Inventory: async function (injection) {
+        logs.info('Attempt to insert ',injection,'into Inventory')
+        let query = connection.query('INSERT INTO inventory SET ?', injection, function (error, results, fields) {
+            if (error) throw error;
+            // Neat!
+        });
+        logs.info(query.sql); // INSERT INTO 
+    }
 }
 
 module.exports = connectionmanager;

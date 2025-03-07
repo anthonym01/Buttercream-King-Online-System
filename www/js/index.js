@@ -83,7 +83,7 @@ let catalog_maintainer = {
     build: async function () {
         console.log("Build catalog");
         request('/get/catalog').then((catalog) => {
-            console.log('Got Catalog: ', catalog);//payload = { title,    description, image_uri, uuid }
+            console.log('Got Catalog: ', catalog);//payload = { Title,    Description, image_uri, uuid }
 
             const customer_cake_catalog = document.getElementById('customer_cake_catalog')
             customer_cake_catalog.innerHTML = ""//clear old pedistals
