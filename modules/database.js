@@ -41,12 +41,13 @@ const connectionmanager = {
         });
     },
     insert_into_Inventory: async function (injection) {
+        let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to insert ',injection,'into Inventory')
         let query = connection.query('INSERT INTO inventory SET ?', injection, function (error, results, fields) {
-            if (error) throw error;
-            // Neat!
+            if (error) logs.error(error);
         });
-        logs.info(query.sql); // INSERT INTO 
+        logs.info(query.sql); // INSERT INTO
+        connection.end();
     }
 }
 

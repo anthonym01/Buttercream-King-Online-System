@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node Butter_Cream_King_Server.js",
-    "test-get-inventory":"node tests/database_test.js"
+    "test-database":"node tests/database_test.js"
   },
   "keywords": [
     "express",
