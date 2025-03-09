@@ -27,6 +27,35 @@ app.use(express.static('www')).listen(() => {
     logs.info('serving static files from ', __dirname + '/www');
 }).on('error', (err) => { logs.error('Express JS error: ', err) }).on('listening', () => { logs.info('Express JS listening') }).on('connection', (socket) => { logs.info('Express JS connection', socket) }).on('request', (requests) => { logs.info('Express JS connection', requests) }).on('connect', (connectx) => { logs.info('Express JS connection', connectx) });
 
+//Template post handler
+app.post('/post/template', (req, res) => {
+    try {
+        logs.info('Post template');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);
+            res.end(JSON.stringify({ answer: "post template" }));
+            //find cake
+        });
+    } catch (error) {
+        logs.error('Catastrophy on template post: ', err);
+    }
+});
+
+//Template get handler
+app.get('/get/catalog', (req, res) => {
+    try {
+        logs.info('Get template');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);
+            res.end(JSON.stringify({ answer: "get template" }));
+        });
+    } catch (error) {
+        logs.error('Catastrophy template get: ', err);
+    }
+});
+
 //get bakerys catalog
 app.get('/get/catalog', (req, res) => {
     try {
@@ -74,4 +103,3 @@ app.post('/get/cakebyuuid', (req, res) => {
         logs.error('Catastrophy on test post: ', err);
     }
 });
-
