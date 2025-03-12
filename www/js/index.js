@@ -1,3 +1,4 @@
+const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
 
 window.addEventListener('load', async function () {//Starting point
     try {
@@ -45,7 +46,7 @@ async function post(what, where) {//'fetch' data to the server
 let config = {
     /* The `config` is used to manage local application data by saving,loading, and deleting configuration settings via local storage. */
     data: {//Loacal app data
-
+        
     },
     save: async function () {//Save config via local storage
         console.table('Configuration is being saved', config.data);
@@ -82,7 +83,7 @@ let catalog_maintainer = {
     */
     build: async function () {
         console.log("Build catalog");
-        request('/get/catalog').then((catalog) => {
+        request('get/catalog').then((catalog) => {
             console.log('Got Catalog: ', catalog);//payload = { Title,    Description, image_uri, uuid }
 
             const customer_cake_catalog = document.getElementById('customer_cake_catalog')
@@ -96,7 +97,7 @@ let catalog_maintainer = {
 
                 let cake_img = document.createElement('div')
                 cake_img.classList = "cake_img";
-                cake_img.style.backgroundImage = `url('/img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
                 Cake_pedistal.appendChild(cake_img);
 
                 let cake_title = document.createElement('div');
@@ -125,10 +126,10 @@ let catalog_maintainer = {
         document.getElementById('cake_display').classList = "cake_display";
         document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container_shoved";
 
-        post(uuid, '/get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
+        post(uuid, 'get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
             console.log('Got cake ', cakefromuuid)
             document.getElementById('cake_display_title').innerHTML=`${cakefromuuid.Title}`
-            document.getElementById('cake_display_banner').style.backgroundImage = `url('/img_database_store/cakes/${cakefromuuid.image_uri}')`;
+            document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cakefromuuid.image_uri}')`;
             document.getElementById('cake_display_description').innerHTML=`${cakefromuuid.Description}`
         })
     },

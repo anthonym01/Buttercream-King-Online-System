@@ -11,7 +11,7 @@ const database = require('./modules/database');
 app.listen(port, () => {
     try {
         logs.initalize();//initalize logger
-
+        logs.info('Subpath sample ',subpath+'/get/catalog');
         logs.info('Server starting');//log server start
         logs.info('Running on port ', port);
         logs.info('Process ID: ', process.pid);
@@ -43,7 +43,7 @@ app.post('/post/template', (req, res) => {
 });
 
 //Template get handler
-app.get('/get/catalog', (req, res) => {
+app.get('/get/template', (req, res) => {
     try {
         logs.info('Get template');
         req.on('data', function (data) {
@@ -63,7 +63,7 @@ app.get('/get/catalog', (req, res) => {
         req.on('data', function (data) {
             logs.info('got payload: ', data);
         });
-        database.getInventory().then((results) => {
+        database.getCakes().then((results) => {
             logs.info('Database retuned inventory: ', results);
             res.end(JSON.stringify(results));
         })
@@ -81,14 +81,14 @@ app.post('/get/cakebyuuid', (req, res) => {
             const cakeid = JSON.parse(data);
             logs.info('got id to find : ', cakeid);
             //find cake
-            database.getInventory().then((results) => {
+            database.getCakes().then((results) => {
                 logs.info('Database retuned inventory: ', results);
                 //res.end(JSON.stringify(results));
                 let found = false;
-                for (let placeholder in results) {
-                    if (cakeid == results[placeholder].uuid) {
+                for (let searchindex in results) {
+                    if (cakeid == results[searchindex].uuid) {
                         logs.info('Found cake', cakeid);
-                        res.end(JSON.stringify(results[placeholder]));
+                        res.end(JSON.stringify(results[searchindex]));
                         found = true;
                         break;
                     }

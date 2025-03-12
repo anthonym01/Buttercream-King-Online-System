@@ -15,10 +15,34 @@ const connectionmanager = {
             }
 
             logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
-            setTimeout(() => { connection.end() }, 100);
+            setTimeout(() => {
+                connection.end()
+            }, 100);
         });
     },
-    getInventory: async function () {
+    getCakes: async function () {
+        return new Promise((resolve, reject) => {//Prommise to gather cakes from the `inventory` table of the database
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    //connection.end();
+                    reject(err);
+                }
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `inventory`', function (error, results, fields) {
+
+                    if (error) throw error;
+                    console.log('From inventory got : ', results);
+                    resolve(results);
+                    connection.end();
+                });
+            });
+        });
+    },
+    getCakesViaUuid: async function () {
         return new Promise((resolve, reject) => {// Gather data asyncronusly
             let connection = mysql.createConnection(SQLcredentials);
 
@@ -40,7 +64,7 @@ const connectionmanager = {
             });
         });
     },
-    insert_into_Inventory: async function (injection) {
+    insert_into_Cakes: async function (injection) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to insert ',injection,'into Inventory')
         let query = connection.query('INSERT INTO inventory SET ?', injection, function (error, results, fields) {
@@ -48,7 +72,8 @@ const connectionmanager = {
         });
         logs.info(query.sql); // INSERT INTO
         connection.end();
-    }
+    },
+
 }
 
 module.exports = connectionmanager;
