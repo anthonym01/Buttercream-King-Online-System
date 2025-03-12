@@ -11,7 +11,7 @@ const database = require('./modules/database');
 app.listen(port, () => {
     try {
         logs.initalize();//initalize logger
-        logs.info('Subpath sample ',subpath+'/get/catalog');
+        //logs.info('Subpath sample ',subpath+'/get/catalog');
         logs.info('Server starting');//log server start
         logs.info('Running on port ', port);
         logs.info('Process ID: ', process.pid);
@@ -80,7 +80,11 @@ app.post('/get/cakebyuuid', (req, res) => {
         req.on('data', function (data) {
             const cakeid = JSON.parse(data);
             logs.info('got id to find : ', cakeid);
+            database.getCakesViaUuid(cakeid).then((result)=>{
+                res.end(JSON.stringify(result));
+            })
             //find cake
+            /*
             database.getCakes().then((results) => {
                 logs.info('Database retuned inventory: ', results);
                 //res.end(JSON.stringify(results));
@@ -97,7 +101,7 @@ app.post('/get/cakebyuuid', (req, res) => {
                     logs.info('Could not find cake', cakeid)
                     res.end(false);
                 }
-            })
+            })*/
         });
     } catch (error) {
         logs.error('Catastrophy on test post: ', err);

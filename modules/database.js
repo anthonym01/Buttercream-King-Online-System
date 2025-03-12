@@ -5,7 +5,7 @@ const mysql = require('mysql');
 //console.log(SQLcredentials);
 
 const connectionmanager = {
-    test: async function () {
+    test: async function () {// Test Database connection
         const connection = mysql.createConnection(SQLcredentials);
 
         connection.connect(function (err) {
@@ -22,28 +22,31 @@ const connectionmanager = {
     },
     getCakes: async function () {
         return new Promise((resolve, reject) => {//Prommise to gather cakes from the `inventory` table of the database
+            
+            //Create sql connection
             let connection = mysql.createConnection(SQLcredentials);
 
-            connection.connect(function (err) {
+            connection.connect(function (err) {//initalize connection
                 if (err) {
                     logs.error('error connecting: ' + err.stack);
-                    //connection.end();
                     reject(err);
                 }
+
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
+                // Execute SQL Query
                 connection.query('SELECT * FROM `inventory`', function (error, results, fields) {
-
                     if (error) throw error;
                     console.log('From inventory got : ', results);
-                    resolve(results);
-                    connection.end();
+                    resolve(results);// 'resolve' results to be accecible to Promise
+                    connection.end();//destroy connection, so another query can take place
                 });
             });
         });
     },
-    getCakesViaUuid: async function () {
+    getCakesViaUuid: async function (uuid) {
         return new Promise((resolve, reject) => {// Gather data asyncronusly
+            logs.info('Looking for cake with uuid: ',)
             let connection = mysql.createConnection(SQLcredentials);
 
             connection.connect(function (err) {
@@ -54,11 +57,11 @@ const connectionmanager = {
                 }
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
-                connection.query('SELECT * FROM `inventory`', function (error, results, fields) {
+                connection.query('SELECT * FROM `inventory` WHERE `uuid` = ?',uuid, function (error, results, fields) {
 
                     if (error) throw error;
                     console.log('From inventory got : ', results);
-                    resolve(results);
+                    resolve(results[0]);
                     connection.end();
                 });
             });
