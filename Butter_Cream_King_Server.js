@@ -6,7 +6,7 @@ const port = 8083;
 const express = require('express');
 const app = express();
 const logs = require('./modules/logger');
-const database = require('./modules/database');
+const database = require('./modules/database_wrapper');
 
 app.listen(port, () => {
     try {

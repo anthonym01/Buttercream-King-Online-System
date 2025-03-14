@@ -22,7 +22,7 @@ const connectionmanager = {
     },
     getCakes: async function () {
         return new Promise((resolve, reject) => {//Prommise to gather cakes from the `inventory` table of the database
-            
+
             //Create sql connection
             let connection = mysql.createConnection(SQLcredentials);
 
@@ -52,12 +52,11 @@ const connectionmanager = {
             connection.connect(function (err) {
                 if (err) {
                     logs.error('error connecting: ' + err.stack);
-                    //connection.end();
                     reject(err);
                 }
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
-                connection.query('SELECT * FROM `inventory` WHERE `uuid` = ?',uuid, function (error, results, fields) {
+                connection.query('SELECT * FROM `inventory` WHERE `uuid` = ?', uuid, function (error, results, fields) {
 
                     if (error) throw error;
                     console.log('From inventory got : ', results);
@@ -69,7 +68,7 @@ const connectionmanager = {
     },
     insert_into_Cakes: async function (injection) {
         let connection = mysql.createConnection(SQLcredentials);
-        logs.info('Attempt to insert ',injection,'into Inventory')
+        logs.info('Attempt to insert ', injection, 'into Inventory')
         let query = connection.query('INSERT INTO inventory SET ?', injection, function (error, results, fields) {
             if (error) logs.error(error);
         });
