@@ -20,6 +20,9 @@ const connectionmanager = {
             }, 100);
         });
     },
+    /*
+        Inventory Table
+    */
     // SELECT * FROM `inventory`
     getCakes: async function () {
         return new Promise((resolve, reject) => {//Prommise to gather cakes from the `inventory` table of the database
@@ -97,8 +100,291 @@ const connectionmanager = {
         });
         logs.info(query.sql); // UPDATE
         connection.end();
-    }
+    },
+    /*
+        Customers Table
+    */
+    //'SELECT * FROM `Customers`'
+    getCustomers: async function () {
+        return new Promise((resolve, reject) => {
+            let connection = mysql.createConnection(SQLcredentials);
 
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Customers`', function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From customers got : ', results);
+                    resolve(results);
+                    connection.end();
+                });
+            });
+        });
+    },
+    //'SELECT * FROM `Customers` WHERE `uuid` = ?'
+    getCustomersViaUuid: async function (uuid) {
+        return new Promise((resolve, reject) => {
+            logs.info('Looking for customer with uuid: ', uuid)
+
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Customers` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From customers got : ', results);
+                    resolve(results[0]);
+                    connection.end();
+                });
+            });
+        });
+    },
+    //'SELECT * FROM `Customers` WHERE `username` = ?'
+    getCustomersViaUsername: async function (username) {
+        return new Promise((resolve, reject) => {
+            logs.info('Looking for customer with username: ', username)
+
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Customers` WHERE `username` = ?', username, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From customers got : ', results);
+                    resolve(results[0]);
+                    connection.end();
+                });
+            });
+        });
+    },
+    // INSERT INTO Customers SET ?
+    insert_into_Customers: async function (injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to insert ', injection, 'into Customers')
+        let query = connection.query('INSERT INTO Customers SET ?', injection, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    // DELETE FROM `Customers` WHERE `uuid` = ?
+    deleteCustomer: async function (uuid) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to delete customer with uuid: ', uuid)
+        let query = connection.query('DELETE FROM `Customers` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    // UPDATE `Customers` SET ? WHERE `uuid` = ?
+    updateCustomer: async function (uuid, injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to update customer with uuid: ', uuid, ' with ', injection)
+        let query = connection.query('UPDATE `Customers` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    /*
+        Orders Table
+    */
+    //'SELECT * FROM `Orders`'
+    getOrders: async function () {
+        return new Promise((resolve, reject) => {
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Orders`', function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From Orders got : ', results);
+                    resolve(results);
+                    connection.end();
+                });
+            });
+        });
+    },
+    //'SELECT * FROM `Orders` WHERE `uuid` = ?'
+    getOrdersViaUuid: async function (uuid) {
+        return new Promise((resolve, reject) => {
+            logs.info('Looking for order with uuid: ', uuid)
+
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Orders` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From Orders got : ', results);
+                    resolve(results[0]);
+                    connection.end();
+                });
+            });
+        });
+    },
+    getOrdersViaStatus: async function (status) {
+        return new Promise((resolve, reject) => {
+            logs.info('Looking for order with status: ', status)
+
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Orders` WHERE `status` = ?', status, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From Orders got : ', results);
+                    resolve(results);
+                    connection.end();
+                });
+            });
+        });
+    },
+    // INSERT INTO Orders SET ?
+    insert_into_Orders: async function (injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to insert ', injection, 'into Orders')
+        let query = connection.query('INSERT INTO Orders SET ?', injection, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    // DELETE FROM `Orders` WHERE `uuid` = ?
+    deleteOrder: async function (uuid) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to delete order with uuid: ', uuid)
+        let query = connection.query('DELETE FROM `Orders` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    // UPDATE `Orders` SET ? WHERE `uuid` = ?
+    updateOrder: async function (uuid, injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to update order with uuid: ', uuid, ' with ', injection)
+        let query = connection.query('UPDATE `Orders` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    /*
+        Staff Table
+    */
+    //'SELECT * FROM `Staff`'
+    getStaff: async function () {
+        return new Promise((resolve, reject) => {
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Staff`', function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From Staff got : ', results);
+                    resolve(results);
+                    connection.end();
+                });
+            });
+        });
+    },
+    //'SELECT * FROM `Staff` WHERE `uuid` = ?'
+    getStaffViaUuid: async function (uuid) {
+        return new Promise((resolve, reject) => {
+            logs.info('Looking for staff with uuid: ', uuid)
+
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Staff` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From Staff got : ', results);
+                    resolve(results[0]);
+                    connection.end();
+                });
+            });
+        });
+    },
+    // INSERT INTO Staff SET ?
+    insert_into_Staff: async function (injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to insert ', injection, 'into Staff')
+        let query = connection.query('INSERT INTO Staff SET ?', injection, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    // DELETE FROM `Staff` WHERE `uuid` = ?
+    deleteStaff: async function (uuid) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to delete staff with uuid: ', uuid)
+        let query = connection.query('DELETE FROM `Staff` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
+    // UPDATE `Staff` SET ? WHERE `uuid` = ?
+    updateStaff: async function (uuid, injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to update staff with uuid: ', uuid, ' with ', injection)
+        let query = connection.query('UPDATE `Staff` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql);
+        connection.end();
+    },
 }
 
 module.exports = connectionmanager;
