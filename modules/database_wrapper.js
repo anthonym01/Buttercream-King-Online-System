@@ -20,6 +20,7 @@ const connectionmanager = {
             }, 100);
         });
     },
+    // SELECT * FROM `inventory`
     getCakes: async function () {
         return new Promise((resolve, reject) => {//Prommise to gather cakes from the `inventory` table of the database
 
@@ -44,6 +45,7 @@ const connectionmanager = {
             });
         });
     },
+    //'SELECT * FROM `inventory` WHERE `uuid` = ?'
     getCakesViaUuid: async function (uuid) {
         return new Promise((resolve, reject) => {// Gather data asyncronusly
             logs.info('Looking for cake with uuid: ',)
@@ -60,12 +62,13 @@ const connectionmanager = {
 
                     if (error) throw error;
                     console.log('From inventory got : ', results);
-                    resolve(results[0]);
+                    resolve(results[0]);// 0, because only one cake is expected
                     connection.end();
                 });
             });
         });
     },
+    // INSERT INTO inventory SET ?
     insert_into_Cakes: async function (injection) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to insert ', injection, 'into Inventory')
@@ -75,6 +78,26 @@ const connectionmanager = {
         logs.info(query.sql); // INSERT INTO
         connection.end();
     },
+    // DELETE FROM `inventory` WHERE `uuid` = ?
+    deleteCake: async function (uuid) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to delete cake with uuid: ', uuid)
+        let query = connection.query('DELETE FROM `inventory` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql); // DELETE FROM
+        connection.end();
+    },
+    // UPDATE `inventory` SET ? WHERE `uuid` = ?
+    updateCake: async function (uuid, injection) {
+        let connection = mysql.createConnection(SQLcredentials);
+        logs.info('Attempt to update cake with uuid: ', uuid, ' with ', injection)
+        let query = connection.query('UPDATE `inventory` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+            if (error) logs.error(error);
+        });
+        logs.info(query.sql); // UPDATE
+        connection.end();
+    }
 
 }
 
