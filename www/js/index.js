@@ -46,7 +46,7 @@ async function post(what, where) {//'fetch' data to the server
 let config = {
     /* The `config` is used to manage local application data by saving,loading, and deleting configuration settings via local storage. */
     data: {//Loacal app data
-        
+
     },
     save: async function () {//Save config via local storage
         console.table('Configuration is being saved', config.data);
@@ -65,6 +65,12 @@ let config = {
     },
 }
 
+let session_manager = {
+    initalize: async function () {
+        console.log('Session manager startup');
+    },
+}
+
 let navigation_overide = {
     initalize: async function () {
         console.log('Navigation overider startup');
@@ -72,10 +78,12 @@ let navigation_overide = {
     }
 }
 
+
+
 let catalog_maintainer = {
     initalize: async function () {
         console.log("catalog startup");
-        document.getElementById('cake_display_close_btn').addEventListener('click',function(){catalog_maintainer.close_cake()});
+        document.getElementById('cake_display_close_btn').addEventListener('click', function () { catalog_maintainer.close_cake() });
         this.build();
     },
     /*
@@ -84,7 +92,7 @@ let catalog_maintainer = {
     build: async function () {
         console.log("Build catalog");
         request('get/catalog').then((catalog) => {
-            console.log('Got Catalog: ', catalog);//payload = { Title,    Description, image_uri, uuid }
+            console.log('Got Catalog: ', catalog);//payload = { Title,  Description, image_uri, uuid }
 
             const customer_cake_catalog = document.getElementById('customer_cake_catalog')
             customer_cake_catalog.innerHTML = ""//clear old pedistals
@@ -94,6 +102,11 @@ let catalog_maintainer = {
                 Cake_pedistal.classList = "Cake_pedistal";
                 Cake_pedistal.tagName = `Cake ${cakeindex}`;
                 Cake_pedistal.title = `${catalog[cakeindex].Title}`;
+
+                let cake_price = document.createElement('div');
+                cake_price.classList = "cake_pedistal_price"
+                cake_price.innerHTML = `\$${catalog[cakeindex].price.toFixed(2)}`;
+                Cake_pedistal.appendChild(cake_price);
 
                 let cake_img = document.createElement('div')
                 cake_img.classList = "cake_img";
@@ -128,12 +141,13 @@ let catalog_maintainer = {
 
         post(uuid, 'get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
             console.log('Got cake ', cakefromuuid)
-            document.getElementById('cake_display_title').innerHTML=`${cakefromuuid.Title}`
+            document.getElementById('cake_display_title').innerHTML = `${cakefromuuid.Title}`
             document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cakefromuuid.image_uri}')`;
-            document.getElementById('cake_display_description').innerHTML=`${cakefromuuid.Description}`
+            document.getElementById('cake_display_description').innerHTML = `${cakefromuuid.Description}`
+            document.getElementById('cake_display_price').innerHTML = `\$${cakefromuuid.price.toFixed(2)}`;
         })
     },
-    close_cake:function(){
+    close_cake: function () {
         document.getElementById('cake_display').classList = "cake_display_hidden";
         document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container";
     },

@@ -1,6 +1,15 @@
 const database = require('../modules/database_wrapper');
 try {
-    
+    database.getCustomersViaUsername("test").then((result) => {
+        //Convert to standard object
+        let customer = result;
+        customer.payment_details = JSON.parse(customer.payment_details);
+        customer.Delivery_address = JSON.parse(customer.Delivery_address);
+        customer.Cart_items = JSON.parse(customer.Cart_items);
+        customer.orders = JSON.parse(customer.orders);
+        console.log(customer);
+
+    });
     //database.getCustomers();
     //database.getCakes();
     //database.getCustomersViaUuid(2);

@@ -25,7 +25,7 @@ app.listen(port, () => {
 //bind root path to /www folder
 app.use(express.static('www')).listen(() => {
     logs.info('serving static files from ', __dirname + '/www');
-}).on('error', (err) => { logs.error('Express JS error: ', err) }).on('listening', () => { logs.info('Express JS listening') }).on('connection', (socket) => { logs.info('Express JS connection', socket) }).on('request', (requests) => { logs.info('Express JS connection', requests) }).on('connect', (connectx) => { logs.info('Express JS connection', connectx) });
+}).on('error', (err) => { logs.error('Express JS error: ', err) }).on('listening', () => { logs.info('Express JS listening') }).on('connection', (socket) => { logs.info('Express JS connection', socket) });
 
 //Template post handler
 app.post('/post/template', (req, res) => {
@@ -61,12 +61,12 @@ app.get('/get/catalog', (req, res) => {
     try {
         logs.info('Connection ', req.hostname, 'requested catalog');
         req.on('data', function (data) {
-            logs.info('got payload: ', data);
+            logs.error('got payload: ', data,' Despit not expecting any');
         });
         database.getCakes().then((results) => {
             logs.info('Database retuned inventory: ', results);
             res.end(JSON.stringify(results));
-        })
+        });
 
     } catch (error) {
         logs.error('Catastrophy catalog conveyor: ', err);
@@ -80,28 +80,9 @@ app.post('/get/cakebyuuid', (req, res) => {
         req.on('data', function (data) {
             const cakeid = JSON.parse(data);
             logs.info('got id to find : ', cakeid);
-            database.getCakesViaUuid(cakeid).then((result)=>{
+            database.getCakesViaUuid(cakeid).then((result) => {
                 res.end(JSON.stringify(result));
             })
-            //find cake
-            /*
-            database.getCakes().then((results) => {
-                logs.info('Database retuned inventory: ', results);
-                //res.end(JSON.stringify(results));
-                let found = false;
-                for (let searchindex in results) {
-                    if (cakeid == results[searchindex].uuid) {
-                        logs.info('Found cake', cakeid);
-                        res.end(JSON.stringify(results[searchindex]));
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    logs.info('Could not find cake', cakeid)
-                    res.end(false);
-                }
-            })*/
         });
     } catch (error) {
         logs.error('Catastrophy on test post: ', err);
