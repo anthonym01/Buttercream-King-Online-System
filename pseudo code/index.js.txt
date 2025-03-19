@@ -1,0 +1,71 @@
+// Global variables
+GLOBAL running_subpath = window.location.pathname
+
+// Event listener for window load
+EVENT window.addEventListener('load', ASYNC FUNCTION()
+  TRY
+    AWAIT config.load() // Load configuration from local storage
+  CATCH (err)
+    console.warn('Something bad happened: ', err)
+  FINALLY
+    navigation_overide.initalize() // Initialize navigation overrides
+    catalog_maintainer.initalize() // Initialize catalog maintenance
+  ENDTRY
+END EVENT
+
+// Function to fetch data from the server
+ASYNC FUNCTION request(what) RETURNS data OR FALSE
+  TRY
+    response = AWAIT fetch(what)
+    IF NOT response.ok THEN
+      THROW new Error('Network failure')
+    ENDIF
+    data = AWAIT response.json()
+    console.log(data)
+    RETURN data
+  CATCH (error)
+    console.error(error)
+    RETURN FALSE
+  ENDTRY
+END FUNCTION
+
+// Function to post data to the server
+ASYNC FUNCTION post(what, where) RETURNS data OR FALSE
+  TRY
+    response = AWAIT fetch(where, {
+      method: "POST",
+      body: JSON.stringify(what),
+      headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+    IF NOT response.ok THEN
+      THROW new Error('Network failure')
+    ENDIF
+    data = AWAIT response.json()
+    console.log(data)
+    RETURN data
+  CATCH (error)
+    console.error(error)
+    RETURN FALSE
+  ENDTRY
+END FUNCTION
+
+// Configuration object
+OBJECT config
+  data: {} // Local application data
+
+  ASYNC FUNCTION save()
+    console.table('Configuration is being saved', config.data)
+    localStorage.setItem("butterK_cfg", JSON.stringify(config.data))
+  END FUNCTION
+
+  FUNCTION load()
+    console.log('Configuration is being loaded')
+    config.data = JSON.parse(localStorage.getItem("butterK_cfg"))
+    console.log('config Loaded: ', config.data)
+  END FUNCTION
+
+  FUNCTION delete()
+    localStorage.clear("butterK_cfg")
+    console.log('config deleted: ')
+    console.table(config.data)
+END FUNCTION

@@ -1,0 +1,223 @@
+MODULE connectionmanager
+
+  // Import necessary modules
+  IMPORT SQLcredentials FROM './SQL_credentials'
+  IMPORT logs FROM './logger'
+  IMPORT mysql FROM 'mysql'
+
+  // Function to test the database connection
+  FUNCTION test(): ASYNC
+    connection = mysql.createConnection(SQLcredentials)
+
+    connection.connect(FUNCTION(err):
+      IF err:
+        logs.error('error connecting: ' + err.stack)
+        RETURN
+      ENDIF
+
+      logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host)
+      DELAY 100 MILLISECONDS
+      connection.end()
+    ENDFUNCTION)
+  ENDFUNCTION
+
+  // Function to get all cakes from the inventory table
+  FUNCTION getCakes(): ASYNC RETURNS Promise
+    RETURN NEW Promise(FUNCTION(resolve, reject):
+      connection = mysql.createConnection(SQLcredentials)
+
+      connection.connect(FUNCTION(err):
+        IF err:
+          logs.error('error connecting: ' + err.stack)
+          reject(err)
+          RETURN
+        ENDIF
+
+        logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host)
+
+        connection.query('SELECT * FROM `inventory`', FUNCTION(error, results, fields):
+          IF error:
+            THROW error
+          ENDIF
+          PRINT 'From inventory got : ', results
+          resolve(results)
+          connection.end()
+        ENDFUNCTION)
+      ENDFUNCTION)
+    ENDFUNCTION)
+  ENDFUNCTION
+
+  // Function to get a cake from the inventory table by UUID
+  FUNCTION getCakesViaUuid(uuid): ASYNC RETURNS Promise
+    RETURN NEW Promise(FUNCTION(resolve, reject):
+      logs.info('Looking for cake with uuid: ', uuid)
+      connection = mysql.createConnection(SQLcredentials)
+
+      connection.connect(FUNCTION(err):
+        IF err:
+          logs.error('error connecting: ' + err.stack)
+          reject(err)
+          RETURN
+        ENDIF
+
+        logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host)
+
+        connection.query('SELECT * FROM `inventory` WHERE `uuid` = ?', uuid, FUNCTION(error, results, fields):
+          IF error:
+            THROW error
+          ENDIF
+          PRINT 'From inventory got : ', results
+          resolve(results[0])
+          connection.end()
+        ENDFUNCTION)
+      ENDFUNCTION)
+    ENDFUNCTION)
+  ENDFUNCTION
+
+  // Function to insert a cake into the inventory table
+  FUNCTION insert_into_Cakes(injection): ASYNC
+    connection = mysql.createConnection(SQLcredentials)
+    logs.info('Attempt to insert ', injection, 'into Inventory')
+    query = connection.query('INSERT INTO inventory SET ?', injection, FUNCTION(error, results, fields):
+      IF error:
+        logs.error(error)
+      ENDIF
+    ENDFUNCTION)
+    logs.info(query.sql)
+    connection.end()
+  ENDFUNCTION
+
+  // Function to delete a cake from the inventory table by UUID
+  FUNCTION deleteCake(uuid): ASYNC
+    connection = mysql.createConnection(SQLcredentials)
+    logs.info('Attempt to delete cake with uuid: ', uuid)
+    query = connection.query('DELETE FROM `inventory` WHERE `uuid` = ?', uuid, FUNCTION(error, results, fields):
+      IF error:
+        logs.error(error)
+      ENDIF
+    ENDFUNCTION)
+    logs.info(query.sql)
+    connection.end()
+  ENDFUNCTION
+
+  // Function to update a cake in the inventory table by UUID
+  FUNCTION updateCake(uuid, injection): ASYNC
+    connection = mysql.createConnection(SQLcredentials)
+    logs.info('Attempt to update cake with uuid: ', uuid, ' with ', injection)
+    query = connection.query('UPDATE `inventory` SET ? WHERE `uuid` = ?', [injection, uuid], FUNCTION(error, results, fields):
+      IF error:
+        logs.error(error)
+      ENDIF
+    ENDFUNCTION)
+    logs.info(query.sql)
+    connection.end()
+  ENDFUNCTION
+
+  // Function to get all customers from the Customers table
+  FUNCTION getCustomers(): ASYNC RETURNS Promise
+    RETURN NEW Promise(FUNCTION(resolve, reject):
+      connection = mysql.createConnection(SQLcredentials)
+
+      connection.connect(FUNCTION(err):
+        IF err:
+          logs.error('error connecting: ' + err.stack)
+          reject(err)
+          RETURN
+        ENDIF
+
+        logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host)
+
+        connection.query('SELECT * FROM `Customers`', FUNCTION(error, results, fields):
+          IF error:
+            THROW error
+          ENDIF
+          PRINT 'From customers got : ', results
+          resolve(results)
+          connection.end()
+        ENDFUNCTION)
+      ENDFUNCTION)
+    ENDFUNCTION)
+  ENDFUNCTION
+
+  // Function to get a customer from the Customers table by UUID
+  FUNCTION getCustomersViaUuid(uuid): ASYNC RETURNS Promise
+      RETURN NEW Promise(FUNCTION(resolve, reject):
+          logs.info('Looking for customer with uuid: ', uuid)
+          connection = mysql.createConnection(SQLcredentials)
+          connection.connect(FUNCTION(err):
+              IF err:
+                  logs.error('error connecting: ' + err.stack)
+                  reject(err)
+                  RETURN
+              ENDIF
+              logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host)
+              connection.query('SELECT * FROM `Customers` WHERE `uuid` = ?', uuid, FUNCTION(error, results, fields):
+                  IF error:
+                      THROW error
+                  ENDIF
+                  PRINT 'From customers got : ', results
+                  resolve(results[0])
+                  connection.end()
+              ENDFUNCTION)
+          ENDFUNCTION)
+      ENDFUNCTION)
+  ENDFUNCTION
+  // Function to get a customer from the Customers table by Username
+  FUNCTION getCustomersViaUsername(username): ASYNC RETURNS Promise
+      RETURN NEW Promise(FUNCTION(resolve, reject):
+          logs.info('Looking for customer with username: ', username)
+          connection = mysql.createConnection(SQLcredentials)
+          connection.connect(FUNCTION(err):
+              IF err:
+                  logs.error('error connecting: ' + err.stack)
+                  reject(err)
+                  RETURN
+              ENDIF
+              logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host)
+              connection.query('SELECT * FROM `Customers` WHERE `username` = ?', username, FUNCTION(error, results, fields):
+                  IF error:
+                      THROW error
+                  ENDIF
+                  PRINT 'From customers got : ', results
+                  resolve(results[0])
+                  connection.end()
+              ENDFUNCTION)
+          ENDFUNCTION)
+      ENDFUNCTION)
+  ENDFUNCTION
+  // Function to insert a customer into the Customers table
+  FUNCTION insert_into_Customers(injection): ASYNC
+      connection = mysql.createConnection(SQLcredentials)
+      logs.info('Attempt to insert ', injection, 'into Customers')
+      query = connection.query('INSERT INTO Customers SET ?', injection, FUNCTION(error, results, fields):
+          IF error:
+              logs.error(error)
+          ENDIF
+      ENDFUNCTION)
+      logs.info(query.sql)
+      connection.end()
+  ENDFUNCTION
+  // Function to delete a customer from the Customers table by UUID
+  FUNCTION deleteCustomer(uuid): ASYNC
+      connection = mysql.createConnection(SQLcredentials)
+      logs.info('Attempt to delete customer with uuid: ', uuid)
+      query = connection.query('DELETE FROM `Customers` WHERE `uuid` = ?', uuid, FUNCTION(error, results, fields):
+          IF error:
+              logs.error(error)
+          ENDIF
+      ENDFUNCTION)
+      logs.info(query.sql)
+      connection.end()
+  ENDFUNCTION
+  // Function to update a customer in the Customers table by UUID
+  FUNCTION updateCustomer(uuid, injection): ASYNC
+      connection = mysql.createConnection(SQLcredentials)
+      logs.info('Attempt to update customer with uuid: ', uuid, ' with ', injection)
+      query = connection.query('UPDATE `Customers` SET ? WHERE `uuid` = ?', [injection, uuid], FUNCTION(error, results, fields):
+          IF error:
+              logs.error(error)
+          ENDIF
+      ENDFUNCTION)
+      logs.info(query.sql)
+      connection.end()
+  ENDFUNCTION

@@ -1,0 +1,90 @@
+// Server Configuration
+GLOBAL port = 8083
+GLOBAL express = REQUIRE('express')
+GLOBAL app = express()
+GLOBAL logs = REQUIRE('./modules/logger')
+GLOBAL database = REQUIRE('./modules/database_wrapper')
+
+// Start server listening on the specified port
+app.listen(port, FUNCTION()
+  TRY
+    logs.initialize() // Initialize logger
+    logs.info('Server starting') // Log server start
+    logs.info('Running on port ', port)
+    logs.info('Process ID: ', PROCESS.pid)
+    logs.info('Process path: ', PROCESS.cwd())
+  CATCH (error)
+    logs.error('Catastrophe on server start: ', error)
+  ENDTRY
+END FUNCTION)
+
+// Serve static files from the 'www' folder
+app.use(express.static('www')).listen(FUNCTION()
+  logs.info('serving static files from ', __dirname + '/www')
+END FUNCTION).on('error', FUNCTION(err)
+  logs.error('Express JS error: ', err)
+END FUNCTION).on('listening', FUNCTION()
+  logs.info('Express JS listening')
+END FUNCTION).on('connection', FUNCTION(socket)
+  logs.info('Express JS connection', socket)
+END FUNCTION)
+
+// POST handler for '/post/template'
+app.post('/post/template', FUNCTION(req, res)
+  TRY
+    logs.info('Post template')
+    req.on('data', FUNCTION(data)
+      data = JSON.parse(data)
+      logs.info('got payload: ', data)
+      res.end(JSON.stringify({ answer: "post template" }))
+    END FUNCTION)
+  CATCH (error)
+    logs.error('Catastrophe on template post: ', error)
+  ENDTRY
+END FUNCTION)
+
+// GET handler for '/get/template'
+app.get('/get/template', FUNCTION(req, res)
+  TRY
+    logs.info('Get template')
+    req.on('data', FUNCTION(data)
+      data = JSON.parse(data)
+      logs.info('got payload: ', data)
+      res.end(JSON.stringify({ answer: "get template" }))
+    END FUNCTION)
+  CATCH (error)
+    logs.error('Catastrophe template get: ', error)
+  ENDTRY
+END FUNCTION)
+
+// GET handler for '/get/catalog' (get bakery's catalog)
+app.get('/get/catalog', FUNCTION(req, res)
+  TRY
+    logs.info('Connection ', req.hostname, ' requested catalog')
+    req.on('data', FUNCTION(data)
+      logs.error('got payload: ', data, ' Despite not expecting any')
+    END FUNCTION)
+    database.getCakes().then(FUNCTION(results)
+      logs.info('Database returned inventory: ', results)
+      res.end(JSON.stringify(results))
+    END FUNCTION)
+  CATCH (error)
+    logs.error('Catastrophe catalog conveyor: ', error)
+  ENDTRY
+END FUNCTION)
+
+// POST handler for '/get/cakebyuuid' (find a cake by its UUID)
+app.post('/get/cakebyuuid', FUNCTION(req, res)
+  TRY
+    logs.info('search cake')
+    req.on('data', FUNCTION(data)
+      GLOBAL cakeid = JSON.parse(data)
+      logs.info('got id to find: ', cakeid)
+      database.getCakesViaUuid(cakeid).then(FUNCTION(result)
+        res.end(JSON.stringify(result))
+      END FUNCTION)
+    END FUNCTION)
+  CATCH (error)
+    logs.error('Catastrophe on test post: ', error)
+  ENDTRY
+END FUNCTION)
