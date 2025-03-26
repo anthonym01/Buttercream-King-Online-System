@@ -65,6 +65,9 @@ let config = {
     },
 }
 
+let properties = {
+    observingcake: null,
+}
 let session_manager = {
     initalize: async function () {
         console.log('Session manager startup');
@@ -85,6 +88,9 @@ let catalog_maintainer = {
         console.log("catalog startup");
         document.getElementById('cake_display_close_btn').addEventListener('click', function () { catalog_maintainer.close_cake() });
         document.getElementById('Procede_to_cart_button').addEventListener('click', function () { catalog_maintainer.procede_to_cart() });
+        document.getElementById('Add_to_cart_button').addEventListener('click', function (event) {
+            catalog_maintainer.add_to_cart();
+        })
         this.build();
     },
     /*
@@ -136,11 +142,11 @@ let catalog_maintainer = {
     },
     trigger_cake: async function (uuid) {// show cake display and load information for cake
         console.log("page cake: ", uuid);
-
+        catalog_maintainer.close_cake();//close any open cakes
 
         document.getElementById('cake_display').classList = "cake_display";
         document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container_shoved";
-
+        properties.observingcake = uuid;
         post(uuid, 'get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
             console.log('Got cake ', cakefromuuid)
             document.getElementById('cake_display_title').innerHTML = `${cakefromuuid.Title}`
@@ -148,23 +154,19 @@ let catalog_maintainer = {
             document.getElementById('cake_display_description').innerHTML = `${cakefromuuid.Description}`
             document.getElementById('cake_display_price').innerHTML = `\$${cakefromuuid.price.toFixed(2)}`;
         })
-        document.getElementById('Add_to_cart_button').addEventListener('click', function (event) {
-            catalog_maintainer.add_to_cart(uuid);
-        })
     },
     close_cake: function () {
         document.getElementById('cake_display').classList = "cake_display_hidden";
         document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container";
-        document.getElementById('Add_to_cart_button').removeEventListener('click');
-        document.getElementById('Add_to_cart_button').classList="add_to_cart_button"
-        document.getElementById('Procede_to_cart_button').classList="add_to_cart_button_hidden"
+        document.getElementById('Add_to_cart_button').classList = "add_to_cart_button"
+        document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button_hidden"
     },
-    add_to_cart: function (uuid) {
-        document.getElementById('Add_to_cart_button').classList="add_to_cart_button_hidden"
-        document.getElementById('Procede_to_cart_button').classList="add_to_cart_button"
-        
+    add_to_cart: function () {
+        document.getElementById('Add_to_cart_button').classList = "add_to_cart_button_hidden"
+        document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button"
+
         const quantity = document.getElementById('cake_quantity_selector').value;
-        console.log('add to cart: ', uuid, ' quantity: ', quantity);
+        console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity);
     },
     procede_to_cart: function () {
         console.log('procede to cart');
