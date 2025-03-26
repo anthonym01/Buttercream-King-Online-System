@@ -88,3 +88,13 @@ app.post('/get/cakebyuuid', (req, res) => {
         logs.error('Catastrophy on test post: ', err);
     }
 });
+
+//Redirect to staff login
+app.get('/staff', (req, res) => {
+    try {
+        logs.info('Redirecting to staff login');
+        res.redirect('/testing/staff.html');
+    } catch (error) {
+        logs.error('Catastrophy on staff redirect: ', err);
+    }
+});

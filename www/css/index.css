@@ -334,6 +334,7 @@ body {
     box-sizing: border-box;
     padding: 0.3rem;
 }
+
 /* 
     Cake Display panel
 */
@@ -412,6 +413,36 @@ body {
     color: var(--text-color);
 }
 
+.cake_quantity_selector{
+    position: absolute;
+    bottom: 0.5rem;
+    width: 80%;
+    left: 0.5rem;
+    width: calc(50% - 1rem);
+    height: 3rem;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    font-size: 2rem;
+    color: var(--text-color);
+}
+
+.add_to_cart_button,.add_to_cart_button_hidden{
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    height: 3rem;
+    width: calc(50% - 1rem);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    font-size: 2rem;
+    text-align: center;
+    line-height: 3rem;
+    cursor: pointer;
+}
+.add_to_cart_button_hidden{
+    display: none;
+}
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
