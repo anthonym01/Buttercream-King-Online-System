@@ -125,59 +125,51 @@ let ui_controller = {
         console.log('Navigation overider startup');
         this.got_to_catalog();
 
-        document.getElementById('branding_block').addEventListener('click',function(){ui_controller.got_to_catalog()});
-
-        document.getElementById('cake_display_close_btn').addEventListener('click', function () {
-            catalog_maintainer.close_cake()
-        });
-
-        document.getElementById('Procede_to_cart_button').addEventListener('click', function () {
-            catalog_maintainer.procede_to_cart()
-        });
-
-        document.getElementById('Add_to_cart_button').addEventListener('click', function (event) {
-            catalog_maintainer.add_to_cart();
-        })
+        document.getElementById('branding_block').addEventListener('click', function () { ui_controller.got_to_catalog() });
+        document.getElementById('cart_button').addEventListener('click', function () { ui_controller.go_to_cart() });
+        document.getElementById('cake_display_close_btn').addEventListener('click', function () { catalog_maintainer.close_cake() });
+        document.getElementById('Procede_to_cart_button').addEventListener('click', function () { catalog_maintainer.procede_to_cart() });
+        document.getElementById('Add_to_cart_button').addEventListener('click', function (event) { catalog_maintainer.add_to_cart() });
     },
-    got_to_catalog: function(){
+    got_to_catalog: function () {
         console.log('Navigate to catalog');
-        document.getElementById('cake_catalog_page').classList="main_view_active"
-        document.getElementById('cart_page').classList="main_view"
-        document.getElementById('orders_page').classList="main_view"
-        document.getElementById('checkout_page').classList="main_view"
-        document.getElementById('account_page').classList="main_view"
+        document.getElementById('cake_catalog_page').classList = "main_view_active"
+        document.getElementById('cart_page').classList = "main_view"
+        document.getElementById('orders_page').classList = "main_view"
+        document.getElementById('checkout_page').classList = "main_view"
+        document.getElementById('account_page').classList = "main_view"
     },
-    go_to_cart:function(){
+    go_to_cart: function () {
         console.log('Navigate to cart');
-        document.getElementById('cake_catalog_page').classList="main_view"
-        document.getElementById('cart_page').classList="main_view_active"
-        document.getElementById('orders_page').classList="main_view"
-        document.getElementById('checkout_page').classList="main_view"
-        document.getElementById('account_page').classList="main_view"
+        document.getElementById('cake_catalog_page').classList = "main_view"
+        document.getElementById('cart_page').classList = "main_view_active"
+        document.getElementById('orders_page').classList = "main_view"
+        document.getElementById('checkout_page').classList = "main_view"
+        document.getElementById('account_page').classList = "main_view"
     },
-    go_to_orders:function(){
+    go_to_orders: function () {
         console.log('Navigate to order');
-        document.getElementById('cake_catalog_page').classList="main_view"
-        document.getElementById('cart_page').classList="main_view"
-        document.getElementById('orders_page').classList="main_view_active"
-        document.getElementById('checkout_page').classList="main_view"
-        document.getElementById('account_page').classList="main_view"
+        document.getElementById('cake_catalog_page').classList = "main_view"
+        document.getElementById('cart_page').classList = "main_view"
+        document.getElementById('orders_page').classList = "main_view_active"
+        document.getElementById('checkout_page').classList = "main_view"
+        document.getElementById('account_page').classList = "main_view"
     },
-    go_to_checkout:function(){
+    go_to_checkout: function () {
         console.log('Navigate to checkout');
-        document.getElementById('cake_catalog_page').classList="main_view"
-        document.getElementById('cart_page').classList="main_view"
-        document.getElementById('orders_page').classList="main_view"
-        document.getElementById('checkout_page').classList="main_view_active"
-        document.getElementById('account_page').classList="main_view"
+        document.getElementById('cake_catalog_page').classList = "main_view"
+        document.getElementById('cart_page').classList = "main_view"
+        document.getElementById('orders_page').classList = "main_view"
+        document.getElementById('checkout_page').classList = "main_view_active"
+        document.getElementById('account_page').classList = "main_view"
     },
-    go_to_account:function(){
+    go_to_account: function () {
         console.log('Navigate to account');
-        document.getElementById('cake_catalog_page').classList="main_view"
-        document.getElementById('cart_page').classList="main_view"
-        document.getElementById('orders_page').classList="main_view"
-        document.getElementById('checkout_page').classList="main_view"
-        document.getElementById('account_page').classList="main_view_active"
+        document.getElementById('cake_catalog_page').classList = "main_view"
+        document.getElementById('cart_page').classList = "main_view"
+        document.getElementById('orders_page').classList = "main_view"
+        document.getElementById('checkout_page').classList = "main_view"
+        document.getElementById('account_page').classList = "main_view_active"
     }
 }
 
