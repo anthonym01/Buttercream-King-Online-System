@@ -56,6 +56,44 @@ app.get('/get/template', (req, res) => {
     }
 });
 
+app.post('/post/template', (req, res) => {
+    try {
+        logs.info('Post template');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);
+            res.end(JSON.stringify({ answer: "post template" }));
+            //find cake
+        });
+    } catch (error) {
+        logs.error('Catastrophy on template post: ', err);
+    }
+});
+
+//User login handler
+app.post('/post/login', (req, res) => {
+    /*This is a post request, it will be used to authenticate a user*/
+    /* TO DO: impliment session key generation and storage later */
+    try {
+        logs.info('User login started');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);
+            database.getCustomersViaUsername(data.user).then((result) => {
+                if (result.password == data.pass) {
+                    res.end(JSON.stringify({ status: "sucess" }));
+                }
+                else {
+                    res.end(JSON.stringify({ status: "fail" }));
+                }
+            });
+            //res.end(JSON.stringify({ status: "sucess" }));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on login post: ', err);
+    }
+});
+
 //get bakerys catalog
 app.get('/get/catalog', (req, res) => {
     try {

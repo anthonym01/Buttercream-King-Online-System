@@ -7,7 +7,8 @@ window.addEventListener('load', async function () {//Starting point
         console.warn('Something bad happened: ', err);
     } finally {
         //page startup
-        navigation_overide.initalize();
+        session_manager.initalize();
+        ui_controller.initalize();
         catalog_maintainer.initalize();
     }
 });
@@ -17,7 +18,7 @@ async function request(what) {// fetch data from the server
         const response = await fetch(what);
         if (!response.ok) { throw new Error('Network failiure'); }
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         return data;
     } catch (error) {
         console.error(error);
@@ -35,7 +36,7 @@ async function post(what, where) {//'fetch' data to the server
         if (!response.ok) { throw new Error('Network failiure'); }
 
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         return data;
     } catch (error) {
         console.error(error);
@@ -43,10 +44,12 @@ async function post(what, where) {//'fetch' data to the server
     }
 }
 
-/* The `config` is used to manage local application data by saving,loading, and deleting configuration settings via local storage. */
+/*
+The `config` is used to manage local application data by saving,loading, and deleting configuration settings via local storage.
+*/
 let config = {
     data: {//Loacal app data
-        credentials: { user: null, pass: null },
+        credentials: { user: "", pass: "", sessionKey: null },
     },
     save: async function () {//Save config via local storage
         console.table('Configuration is being saved', config.data);
@@ -67,17 +70,114 @@ let config = {
 
 let properties = {
     observingcake: null,
+    loggedin: false,
 }
+
+/* Logins and sign up */
 let session_manager = {
     initalize: async function () {
         console.log('Session manager startup');
+        session_manager.attempt_login();
     },
+    attempt_login: function () {// USed to get credentials on load
+        console.log('attempt login');
+        if (config.data.credentials.user != null) {
+            post(config.data.credentials, 'post/login').then((response) => {
+                console.log('login state: ', response.status);
+                if (response.status == "sucess") {
+                    properties.loggedin = true;
+                    console.log('logged in');
+                }
+                else {
+                    console.log('login failed');
+                    properties.loggedin = false;
+                    config.data.credentials = { user: null, pass: null, sessionKey: null };
+                    config.save();
+                }
+            });
+        }
+    },
+    logout: function () {
+        console.log('logout');
+        properties.loggedin = false;
+        config.data.credentials = { user: null, pass: null, sessionKey: null };
+        config.save();
+    },
+    // Login Triggered by the users action
+    login: function (user, pass) {
+        console.log('login');
+        config.data.credentials = { user: user, pass: pass, sessionKey: null };
+        config.save();
+        session_manager.attempt_login();
+    },
+    Demand_login: function () {
+        console.log('action demands login/sign up');
+        if (properties.loggedin == false) {
+            //display login form
+
+        }
+    },
+
 }
 
-let navigation_overide = {
+let ui_controller = {
     initalize: async function () {
         console.log('Navigation overider startup');
+        this.got_to_catalog();
 
+        document.getElementById('branding_block').addEventListener('click',function(){ui_controller.got_to_catalog()});
+
+        document.getElementById('cake_display_close_btn').addEventListener('click', function () {
+            catalog_maintainer.close_cake()
+        });
+
+        document.getElementById('Procede_to_cart_button').addEventListener('click', function () {
+            catalog_maintainer.procede_to_cart()
+        });
+
+        document.getElementById('Add_to_cart_button').addEventListener('click', function (event) {
+            catalog_maintainer.add_to_cart();
+        })
+    },
+    got_to_catalog: function(){
+        console.log('Navigate to catalog');
+        document.getElementById('cake_catalog_page').classList="main_view_active"
+        document.getElementById('cart_page').classList="main_view"
+        document.getElementById('orders_page').classList="main_view"
+        document.getElementById('checkout_page').classList="main_view"
+        document.getElementById('account_page').classList="main_view"
+    },
+    go_to_cart:function(){
+        console.log('Navigate to cart');
+        document.getElementById('cake_catalog_page').classList="main_view"
+        document.getElementById('cart_page').classList="main_view_active"
+        document.getElementById('orders_page').classList="main_view"
+        document.getElementById('checkout_page').classList="main_view"
+        document.getElementById('account_page').classList="main_view"
+    },
+    go_to_orders:function(){
+        console.log('Navigate to order');
+        document.getElementById('cake_catalog_page').classList="main_view"
+        document.getElementById('cart_page').classList="main_view"
+        document.getElementById('orders_page').classList="main_view_active"
+        document.getElementById('checkout_page').classList="main_view"
+        document.getElementById('account_page').classList="main_view"
+    },
+    go_to_checkout:function(){
+        console.log('Navigate to checkout');
+        document.getElementById('cake_catalog_page').classList="main_view"
+        document.getElementById('cart_page').classList="main_view"
+        document.getElementById('orders_page').classList="main_view"
+        document.getElementById('checkout_page').classList="main_view_active"
+        document.getElementById('account_page').classList="main_view"
+    },
+    go_to_account:function(){
+        console.log('Navigate to account');
+        document.getElementById('cake_catalog_page').classList="main_view"
+        document.getElementById('cart_page').classList="main_view"
+        document.getElementById('orders_page').classList="main_view"
+        document.getElementById('checkout_page').classList="main_view"
+        document.getElementById('account_page').classList="main_view_active"
     }
 }
 
@@ -86,11 +186,6 @@ let navigation_overide = {
 let catalog_maintainer = {
     initalize: async function () {
         console.log("catalog startup");
-        document.getElementById('cake_display_close_btn').addEventListener('click', function () { catalog_maintainer.close_cake() });
-        document.getElementById('Procede_to_cart_button').addEventListener('click', function () { catalog_maintainer.procede_to_cart() });
-        document.getElementById('Add_to_cart_button').addEventListener('click', function (event) {
-            catalog_maintainer.add_to_cart();
-        })
         this.build();
     },
     /*
@@ -155,7 +250,7 @@ let catalog_maintainer = {
             document.getElementById('cake_display_price').innerHTML = `\$${cakefromuuid.price.toFixed(2)}`;
         })
     },
-    close_cake: function () {
+    close_cake: function () {//Close the user cake display
         document.getElementById('cake_display').classList = "cake_display_hidden";
         document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container";
         document.getElementById('Add_to_cart_button').classList = "add_to_cart_button"
@@ -167,8 +262,5 @@ let catalog_maintainer = {
 
         const quantity = document.getElementById('cake_quantity_selector').value;
         console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity);
-    },
-    procede_to_cart: function () {
-        console.log('procede to cart');
     },
 }
