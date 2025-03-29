@@ -452,7 +452,7 @@ body {
     display: none;
 }
 
-.cake_display .close_button {
+.close_button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -570,6 +570,13 @@ body {
     color: var(--text-color);
     line-height: 1.4rem;
 }
+.Login_dialog .close_button {
+    top:0.2rem;
+    right: 0.2rem;
+    height: 2rem;
+    width: 2rem;
+}
+
 
 /*    <--  Landscape layout (with min-width) -->     */
 
