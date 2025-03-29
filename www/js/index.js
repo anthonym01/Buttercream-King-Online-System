@@ -65,6 +65,7 @@ let config = {
         console.log('config deleted: ');
         console.table(config.data);
         config.data = {};
+        config.save();
     },
 }
 
@@ -81,21 +82,27 @@ let session_manager = {
     },
     attempt_login: function () {// USed to get credentials on load
         console.log('attempt login');
-        if (config.data.credentials.user != null) {
-            post(config.data.credentials, 'post/login').then((response) => {
-                console.log('login state: ', response.status);
-                if (response.status == "sucess") {
-                    properties.loggedin = true;
-                    console.log('logged in');
-                }
-                else {
-                    console.log('login failed');
-                    properties.loggedin = false;
-                    config.data.credentials = { user: null, pass: null, sessionKey: null };
-                    config.save();
-                }
-            });
+        try {
+            if (config.data.credentials.user != null) {//if never logged in, user is null
+                post(config.data.credentials, 'post/login').then((response) => {
+                    console.log('login state: ', response.status);
+                    if (response.status == "sucess") {
+                        properties.loggedin = true;
+                        console.log('logged in');
+                    }
+                    else {
+                        console.log('login failed');
+                        properties.loggedin = false;
+                        config.data.credentials = { user: null, pass: null, sessionKey: null };
+                        config.save();
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error during login attempt: ', error);
+            session_manager.logout();
         }
+
     },
     logout: function () {
         console.log('logout');
@@ -130,6 +137,7 @@ let ui_controller = {
         document.getElementById('cake_display_close_btn').addEventListener('click', function () { catalog_maintainer.close_cake() });
         document.getElementById('Procede_to_cart_button').addEventListener('click', function () { catalog_maintainer.procede_to_cart() });
         document.getElementById('Add_to_cart_button').addEventListener('click', function (event) { catalog_maintainer.add_to_cart() });
+        document.getElementById('account_callout').addEventListener('click', function () { ui_controller.show_account_callout() });
     },
     got_to_catalog: function () {
         console.log('Navigate to catalog');
@@ -170,6 +178,16 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view_active"
+    },
+    show_account_callout: function () {
+        console.log('show account callout');
+        if (properties.loggedin == false) {
+            //display login button
+
+        } else {
+            //display account button and logout button
+        }
+        document.getElementById('account_dropdown').classList.toggle('account_dropdown_active');
     }
 }
 
@@ -255,4 +273,9 @@ let catalog_maintainer = {
         const quantity = document.getElementById('cake_quantity_selector').value;
         console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity);
     },
+    procede_to_cart: function () {
+        console.log('procede to cart from: ', properties.observingcake);
+        ui_controller.go_to_cart();
+        this.close_cake();
+    }
 }
