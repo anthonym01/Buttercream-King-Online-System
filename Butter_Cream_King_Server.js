@@ -56,14 +56,48 @@ app.get('/get/template', (req, res) => {
     }
 });
 
-app.post('/post/template', (req, res) => {
+app.post('/post/addtocart', (req, res) => {
     try {
-        logs.info('Post template');
+        logs.info('Add to cart');
         req.on('data', function (data) {
             data = JSON.parse(data);
-            logs.info('got payload: ', data);
-            res.end(JSON.stringify({ answer: "post template" }));
-            //find cake
+            logs.info('got payload: ', data);//expects { cakeid, quantity username };
+            try {
+                if (typeof (data.cakeid) != 'undefined' && typeof (data.quantity) != 'undefined' && typeof (data.username) != 'undefined') {
+                    // Get old cart data
+                    database.getCustomersViaUsername(data.username).then((result) => {
+                        let oldcart = result.Cart_items || [];
+                        logs.info('Old cart data: ', oldcart);
+                        // Check if cake is already in cart
+                        let existingItemindex = false;
+                        for(let i = 0; i < oldcart.length; i++) {
+                            if (oldcart[i].cakeid === data.cakeid) {
+                                existingItemindex = i;
+                                logs.info('Found existing item in cart: ', oldcart[i]);
+                                break;
+                            }
+                        }
+                        if (existingItemindex !== false) {
+                            // Update quantity if cake is already in cart
+                            oldcart[existingItemindex].quantity += data.quantity;
+                            logs.info('Updated existing item: ', oldcart[existingItemindex]);
+                        } else {
+                            // Add new item to cart
+                            logs.info('Adding new item to cart: ', data);
+                            oldcart.push({ cakeid: data.cakeid, quantity: data.quantity });
+                            logs.info('New cart data: ', oldcart);
+                        }
+                        // Update the cart in the database
+                        database.updateCustomer(data.username, { Cart_items: oldcart });
+                        logs.info('Updated cart: ', result);
+                        res.end(JSON.stringify({ status: "success" }));
+                    });
+
+                }
+            } catch (error) {
+                logs.error('Catastrophy on add to cart post: ', err, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
         });
     } catch (error) {
         logs.error('Catastrophy on template post: ', err);
@@ -79,16 +113,20 @@ app.post('/post/login', (req, res) => {
         req.on('data', function (data) {
             data = JSON.parse(data);
             logs.info('got payload: ', data);
-            database.getCustomersViaUsername(data.user).then((result) => {
-                console.log('Lookup result: ', result);
-                if (typeof(result)!='undefined' && result.password == data.pass) {
-                    res.end(JSON.stringify({ status: "sucess" }));
-                }
-                else {
-                    res.end(JSON.stringify({ status: "fail" }));
-                }
-            });
-            //res.end(JSON.stringify({ status: "sucess" }));
+            try {
+                database.getCustomersViaUsername(data.user).then((result) => {
+                    logs.info('Lookup result: ', result);
+                    if (typeof (result) != 'undefined' && result.password == data.pass) {
+                        res.end(JSON.stringify({ status: "sucess" }));
+                    }
+                    else {
+                        res.end(JSON.stringify({ status: "fail" }));
+                    }
+                });
+            } catch (error) {
+                logs.error('Catastrophy on login post: ', error);
+                res.end(JSON.stringify({ status: "error" }));
+            }
         });
     } catch (error) {
         logs.error('Catastrophy on login post: ', err);
@@ -100,7 +138,7 @@ app.get('/get/catalog', (req, res) => {
     try {
         logs.info('Connection ', req.hostname, 'requested catalog');
         req.on('data', function (data) {
-            logs.error('got payload: ', data,' Despit not expecting any');
+            logs.error('got payload: ', data, ' Despit not expecting any');
         });
         database.getCakes().then((results) => {
             logs.info('Database retuned inventory: ', results);

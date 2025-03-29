@@ -153,11 +153,6 @@ let ui_controller = {
         document.getElementById('account_callout').addEventListener('click', function () { ui_controller.show_account_callout() });
 
     },
-    show_login_dialog: function () {
-        console.log('show login dialog');
-        this.hide_account_callout()
-        //document.getElementById('login_dialog').classList = "login_dialog"
-    },
     got_to_catalog: function () {
         console.log('Navigate to catalog');
         document.getElementById('cake_catalog_page').classList = "main_view_active"
@@ -226,7 +221,6 @@ let ui_controller = {
     },
 
 }
-
 
 let catalog_maintainer = {
     initalize: async function () {
@@ -303,13 +297,30 @@ let catalog_maintainer = {
         document.getElementById('Add_to_cart_button').classList = "add_to_cart_button"
         document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button_hidden"
     },
-    add_to_cart: function () {
+    add_to_cart:async function () {
+        if(config.data.credentials.user == null) {//if not logged in, demand login
+            console.log('Login required to add to cart')
+            session_manager.Demand_login()
+            return false;
+        }
+
         document.getElementById('Add_to_cart_button').classList = "add_to_cart_button_hidden"
         document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button"
 
         const quantity = document.getElementById('cake_quantity_selector').value;
-        console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity);
+        console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity,'for user: ', config.data.credentials.user);
+        
+        const payload = { cakeid: properties.observingcake, quantity: quantity, username: config.data.credentials.user };
 
+        post(payload, 'post/addtocart').then((response) => {
+            console.log('add to cart response: ', response);
+            if (response.status == "sucess") {
+                console.log('added to cart');
+                //ui_controller.go_to_cart();
+            } else {
+                console.error('failed to add to cart');
+            }
+        });
     },
     procede_to_cart: function () {
         console.log('procede to cart from: ', properties.observingcake);
