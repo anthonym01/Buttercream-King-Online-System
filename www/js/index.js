@@ -89,12 +89,12 @@ let session_manager = {
                     if (response.status == "sucess") {
                         properties.loggedin = true;
                         console.log('logged in');
+                        document.getElementById('Logout_button').classList = "account_dropdown_item";
+                        document.getElementById('login_trigger_button').classList = "account_dropdown_item_hidden";
                     }
                     else {
-                        console.log('login failed');
-                        properties.loggedin = false;
-                        config.data.credentials = { user: null, pass: null, sessionKey: null };
-                        config.save();
+                        session_manager.logout();//logout if not logged in to clear keys, jingle jingle
+                        console.log('not logged in');
                     }
                 });
             }
@@ -108,6 +108,8 @@ let session_manager = {
         console.log('logout');
         properties.loggedin = false;
         config.data.credentials = { user: null, pass: null, sessionKey: null };
+        document.getElementById('Logout_button').classList = "account_dropdown_item_hidden";
+        document.getElementById('login_trigger_button').classList = "account_dropdown_item";
         config.save();
     },
     // Login Triggered by the users action
@@ -132,12 +134,19 @@ let ui_controller = {
         console.log('Navigation overider startup');
         this.got_to_catalog();
 
+        document.getElementById('login_trigger_button').addEventListener('click', function () { ui_controller.show_login_dialog() });
         document.getElementById('branding_block').addEventListener('click', function () { ui_controller.got_to_catalog() });
         document.getElementById('cart_button').addEventListener('click', function () { ui_controller.go_to_cart() });
         document.getElementById('cake_display_close_btn').addEventListener('click', function () { catalog_maintainer.close_cake() });
         document.getElementById('Procede_to_cart_button').addEventListener('click', function () { catalog_maintainer.procede_to_cart() });
         document.getElementById('Add_to_cart_button').addEventListener('click', function (event) { catalog_maintainer.add_to_cart() });
         document.getElementById('account_callout').addEventListener('click', function () { ui_controller.show_account_callout() });
+
+    },
+    show_login_dialog: function () {
+        console.log('show login dialog');
+        this.hide_account_callout()
+        //document.getElementById('login_dialog').classList = "login_dialog"
     },
     got_to_catalog: function () {
         console.log('Navigate to catalog');
@@ -146,6 +155,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
+        this.hide_account_callout()
     },
     go_to_cart: function () {
         console.log('Navigate to cart');
@@ -154,6 +164,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
+        this.hide_account_callout()
     },
     go_to_orders: function () {
         console.log('Navigate to order');
@@ -162,6 +173,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view_active"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
+        this.hide_account_callout()
     },
     go_to_checkout: function () {
         console.log('Navigate to checkout');
@@ -170,6 +182,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view_active"
         document.getElementById('account_page').classList = "main_view"
+        this.hide_account_callout()
     },
     go_to_account: function () {
         console.log('Navigate to account');
@@ -178,19 +191,21 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view_active"
+        this.hide_account_callout()
     },
     show_account_callout: function () {
         console.log('show account callout');
-        if (properties.loggedin == false) {
-            //display login button
-
+        if (document.getElementById('account_dropdown').classList != 'account_dropdown') {
+            document.getElementById('account_dropdown').classList = 'account_dropdown'
         } else {
-            //display account button and logout button
+            this.hide_account_callout()
         }
-        document.getElementById('account_dropdown').classList.toggle('account_dropdown_active');
-    }
+    },
+    hide_account_callout: function () {
+        console.log('hide account callout');
+        document.getElementById('account_dropdown').classList = 'account_dropdown_hidden';
+    },
 }
-
 
 
 let catalog_maintainer = {
@@ -251,6 +266,8 @@ let catalog_maintainer = {
 
         document.getElementById('cake_display').classList = "cake_display";
         document.getElementById('Cake_cattalog_container').classList = "Cake_cattalog_container_shoved";
+        document.getElementById('Add_to_cart_button').classList = "add_to_cart_button"
+        document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button_hidden"
         properties.observingcake = uuid;
         post(uuid, 'get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
             console.log('Got cake ', cakefromuuid)
@@ -272,6 +289,7 @@ let catalog_maintainer = {
 
         const quantity = document.getElementById('cake_quantity_selector').value;
         console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity);
+
     },
     procede_to_cart: function () {
         console.log('procede to cart from: ', properties.observingcake);

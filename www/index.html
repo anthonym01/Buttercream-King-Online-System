@@ -82,7 +82,7 @@
     </div>
 
     <!--Account dropdown-->
-    <div id="account_dropdown" class="account_dropdown">
+    <div id="account_dropdown" class="account_dropdown_hidden">
         <div class="account_dropdown_item" id="login_trigger_button">
             <div class="account_dropdown_image Login_img"></div>
             <span class="account_dropdown_item_label">Login</span>
@@ -91,16 +91,22 @@
             <div class="account_dropdown_image Account_img"></div>
             <span class="account_dropdown_item_label">Account</span>
         </div>
-        <div class="account_dropdown_item" id="Logout_button">
+        <div class="account_dropdown_item" id="Orders_button">
+            <div class="account_dropdown_image Orders_img"></div>
+            <span class="account_dropdown_item_label">Orders</span>
+        </div>
+        <div class="account_dropdown_item_hidden" id="Logout_button">
             <div class="account_dropdown_image logout_img"></div>
             <span class="account_dropdown_item_label">Logout</span>
         </div>
-        <div class="account_dropdown_item" id="orders_button">Orders</div>
-        <div class="account_dropdown_item" id="logout_button">Logout</div>
-
+    </div>
     <!--In page quick login for users-->
-    <div id="Login_dropdown" class="Login_dropdown">
-
+    <div id="Login_dialog" class="Login_dialog">
+        <div class="logintitle">Login</div>
+        <input type="text" name="username" title="Input username" id="Login_usernmae_put" class="Login_input"
+            placeholder="Username" required>
+        <input type="password" name="username" title="Input Password" id="Login_password_put" class="Login_input"
+            placeholder="Password" required>
     </div>
 
     <script src="js/index.js"></script>
