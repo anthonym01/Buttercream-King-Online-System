@@ -56,6 +56,36 @@ app.get('/get/template', (req, res) => {
     }
 });
 
+// Get cart handler
+app.post('/get/cart', (req, res) => {
+    try {
+        logs.info('Get users cart');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//expects { cakeid, quantity username };
+            try {
+                if (typeof (data) != 'undefined') {
+                    // Get old cart data
+                    database.getCustomersViaUsername(data).then((result) => {
+                        const cartdata = JSON.parse(result.Cart_items) || [];
+                        logs.info('Old cart data: ', cartdata, ' for user: ', data.username);
+                        res.end(JSON.stringify(cartdata));
+                    });
+
+                }else{
+                    logs.error('No username provided in get cart request: ', data);
+                    res.end(JSON.stringify({ status: "error" }));
+                }
+            } catch (error) {
+                logs.error('Catastrophy on Get cart: ', error, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on Get cart: ', err);
+    }
+});
+
 app.post('/post/addtocart', (req, res) => {
     try {
         logs.info('Add to cart');
@@ -66,8 +96,9 @@ app.post('/post/addtocart', (req, res) => {
                 if (typeof (data.cakeid) != 'undefined' && typeof (data.quantity) != 'undefined' && typeof (data.username) != 'undefined') {
                     // Get old cart data
                     database.getCustomersViaUsername(data.username).then((result) => {
-                        let oldcart = result.Cart_items || [];
-                        logs.info('Old cart data: ', oldcart);
+                        let oldcart = JSON.parse(result.Cart_items) || [];
+                        logs.info('Old cart data: ', oldcart, ' for user: ', data.username);
+                        console.log('Datatype: ',typeof(oldcart));
                         // Check if cake is already in cart
                         let existingItemindex = false;
                         for(let i = 0; i < oldcart.length; i++) {
@@ -79,7 +110,7 @@ app.post('/post/addtocart', (req, res) => {
                         }
                         if (existingItemindex !== false) {
                             // Update quantity if cake is already in cart
-                            oldcart[existingItemindex].quantity += data.quantity;
+                            oldcart[existingItemindex].quantity = Number(oldcart[existingItemindex].quantity) +Number(data.quantity);
                             logs.info('Updated existing item: ', oldcart[existingItemindex]);
                         } else {
                             // Add new item to cart
@@ -88,21 +119,22 @@ app.post('/post/addtocart', (req, res) => {
                             logs.info('New cart data: ', oldcart);
                         }
                         // Update the cart in the database
-                        database.updateCustomer(data.username, { Cart_items: oldcart });
+                        database.updateCustomer(data.username, { Cart_items: JSON.stringify(oldcart) });
                         logs.info('Updated cart: ', result);
                         res.end(JSON.stringify({ status: "success" }));
                     });
 
                 }
             } catch (error) {
-                logs.error('Catastrophy on add to cart post: ', err, data);
+                logs.error('Catastrophy on add to cart post: ', error, data);
                 res.end(JSON.stringify({ status: "error" }));
             }
         });
     } catch (error) {
-        logs.error('Catastrophy on template post: ', err);
+        logs.error('Catastrophy on add to cart: ', err);
     }
 });
+
 
 //User login handler
 app.post('/post/login', (req, res) => {

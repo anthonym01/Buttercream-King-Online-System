@@ -1,3 +1,5 @@
+
+
 const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
 
 window.addEventListener('load', async function () {//Starting point
@@ -10,6 +12,7 @@ window.addEventListener('load', async function () {//Starting point
         session_manager.initalize();
         ui_controller.initalize();
         catalog_maintainer.initalize();
+        cart_maintainer.initalize();
     }
 });
 
@@ -169,7 +172,8 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
-        this.hide_account_callout()
+        this.hide_account_callout();
+        cart_maintainer.load_cart();
     },
     go_to_orders: function () {
         console.log('Navigate to order');
@@ -309,12 +313,12 @@ let catalog_maintainer = {
 
         const quantity = document.getElementById('cake_quantity_selector').value;
         console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity,'for user: ', config.data.credentials.user);
-        
+
         const payload = { cakeid: properties.observingcake, quantity: quantity, username: config.data.credentials.user };
 
         post(payload, 'post/addtocart').then((response) => {
             console.log('add to cart response: ', response);
-            if (response.status == "sucess") {
+            if (response.status == "success") {
                 console.log('added to cart');
                 //ui_controller.go_to_cart();
             } else {
@@ -327,4 +331,27 @@ let catalog_maintainer = {
         ui_controller.go_to_cart();
         this.close_cake();
     }
+}
+
+let cart_maintainer = {
+    initalize: async function () {
+        console.log('Cart startup');
+    },
+    load_cart: async function () {
+        console.log('Loading cart');
+        if (config.data.credentials.user == null) {//if not logged in, demand login
+            console.log('Login required to view cart')
+            session_manager.Demand_login()
+            return false;
+        }
+        post(config.data.credentials.user, 'get/cart').then((response) => {
+            console.log('Cart response: ', response);
+            if (response.status == "success") {
+                console.log('loaded cart');
+                //ui_controller.go_to_cart();
+            } else {
+                console.error('failed to load cart');
+            }
+        });
+    },
 }

@@ -197,11 +197,11 @@ const connectionmanager = {
     // UPDATE `Customers` SET ? WHERE `uuid` = ?
     updateCustomer: async function (username, injection) {
         let connection = mysql.createConnection(SQLcredentials);
-        logs.info('Attempt to update customer with uuid: ', uuid, ' with ', injection)
+        logs.info('Attempt to update customer with uuid: ', username, ' with ', injection)
         let query = connection.query('UPDATE `Customers` SET ? WHERE `username` = ?', [injection, username], function (error, results, fields) {
             if (error) logs.error(error);
         });
-        logs.info(query.sql);
+        //logs.info(query.sql);
         connection.end();
     },
     /*
