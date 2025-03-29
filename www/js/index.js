@@ -79,6 +79,8 @@ let session_manager = {
     initalize: async function () {
         console.log('Session manager startup');
         session_manager.attempt_login();
+        document.getElementById('Login_button').addEventListener('click', function () { session_manager.login() });
+        document.getElementById('Logout_button').addEventListener('click', function () { session_manager.logout() });
     },
     attempt_login: function () {// USed to get credentials on load
         console.log('attempt login');
@@ -91,10 +93,14 @@ let session_manager = {
                         console.log('logged in');
                         document.getElementById('Logout_button').classList = "account_dropdown_item";
                         document.getElementById('login_trigger_button').classList = "account_dropdown_item_hidden";
+                        document.getElementById('Login_error_message').classList = "Login_error_message_hidden";
+                        ui_controller.hide_account_callout()
+                        ui_controller.hide_login_dialog()
                     }
                     else {
                         session_manager.logout();//logout if not logged in to clear keys, jingle jingle
-                        console.log('not logged in');
+                        console.log('login failed');
+                        document.getElementById('Login_error_message').classList = "Login_error_message";
                     }
                 });
             }
@@ -110,12 +116,16 @@ let session_manager = {
         config.data.credentials = { user: null, pass: null, sessionKey: null };
         document.getElementById('Logout_button').classList = "account_dropdown_item_hidden";
         document.getElementById('login_trigger_button').classList = "account_dropdown_item";
+        ui_controller.hide_account_callout()
+        ui_controller.hide_login_dialog()
         config.save();
     },
     // Login Triggered by the users action
-    login: function (user, pass) {
+    login: function () {
         console.log('login');
-        config.data.credentials = { user: user, pass: pass, sessionKey: null };
+        const username_put = document.getElementById('Login_usernmae_put').value||"";
+        const password_put = document.getElementById('Login_password_put').value||"";
+        config.data.credentials = { user: username_put, pass: password_put };
         config.save();
         session_manager.attempt_login();
     },
@@ -133,7 +143,7 @@ let ui_controller = {
     initalize: async function () {
         console.log('Navigation overider startup');
         this.got_to_catalog();
-
+        document.getElementById('Login_close_btn').addEventListener('click', function () { ui_controller.hide_login_dialog() });
         document.getElementById('login_trigger_button').addEventListener('click', function () { ui_controller.show_login_dialog() });
         document.getElementById('branding_block').addEventListener('click', function () { ui_controller.got_to_catalog() });
         document.getElementById('cart_button').addEventListener('click', function () { ui_controller.go_to_cart() });
@@ -205,6 +215,16 @@ let ui_controller = {
         console.log('hide account callout');
         document.getElementById('account_dropdown').classList = 'account_dropdown_hidden';
     },
+    show_login_dialog: function () {
+        console.log('show login dialog');
+        this.hide_account_callout()
+        document.getElementById('Login_dialog').classList = "Login_dialog"
+    },
+    hide_login_dialog: function () {
+        console.log('hide login dialog');
+        document.getElementById('Login_dialog').classList = "Login_dialog_hidden"
+    },
+
 }
 
 

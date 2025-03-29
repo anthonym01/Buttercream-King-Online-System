@@ -102,13 +102,21 @@
     </div>
 
     <!--In page quick login for users-->
-    <div id="Login_dialog" class="Login_dialog">
+    <div id="Login_dialog" class="Login_dialog_hidden">
         <div class="logintitle">Login</div>
         <div id="Login_close_btn" class="close_button" title="close login"></div>
-        <input type="text" name="username" title="Input username" id="Login_usernmae_put" class="Login_input"
-            placeholder="Username" required>
-        <input type="password" name="username" title="Input Password" id="Login_password_put" class="Login_input"
-            placeholder="Password" required>
+        <div class="Login_input_container">
+            <label for="username" class="Login_input_label">Username</label>
+            <input type="text" name="username" title="Input username" id="Login_usernmae_put" class="Login_input"
+                placeholder="Username" required>
+        </div>
+        <div class="Login_input_container">
+            <label for="password" class="Login_input_label">Password</label>
+            <input type="password" name="password" title="Input Password" id="Login_password_put" class="Login_input"
+                placeholder="Password" required>
+        </div>
+        <div class="Login_error_message_hidden" id="Login_error_message">Invalid username or password</div>
+        <button class="Login_button" id="Login_button">Login</button>
     </div>
 
     <script src="js/index.js"></script>

@@ -80,7 +80,8 @@ app.post('/post/login', (req, res) => {
             data = JSON.parse(data);
             logs.info('got payload: ', data);
             database.getCustomersViaUsername(data.user).then((result) => {
-                if (result.password == data.pass) {
+                console.log('Lookup result: ', result);
+                if (typeof(result)!='undefined' && result.password == data.pass) {
                     res.end(JSON.stringify({ status: "sucess" }));
                 }
                 else {

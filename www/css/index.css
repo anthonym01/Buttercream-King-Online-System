@@ -65,7 +65,7 @@ body {
     background-color: var(--background-color);
 }
 
-.loading_spinner{
+.loading_spinner {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -75,7 +75,7 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 100;
 }
 
@@ -258,7 +258,8 @@ body {
 /* 
     Account callout menu
 */
-.account_dropdown,.account_dropdown_hidden{
+.account_dropdown,
+.account_dropdown_hidden {
     position: absolute;
     top: 2.5rem;
     right: 0;
@@ -271,11 +272,13 @@ body {
     overflow: hidden;
     user-select: none;
 }
-.account_dropdown_hidden{
+
+.account_dropdown_hidden {
     display: none;
 }
 
-.account_dropdown_item,.account_dropdown_item_hidden{
+.account_dropdown_item,
+.account_dropdown_item_hidden {
     position: relative;
     height: 2.5rem;
     width: 100%;
@@ -285,20 +288,24 @@ body {
     border-radius: 0.2rem;
     transition: background-color 300ms, transform 300ms;
 }
-.account_dropdown_item_hidden{
+
+.account_dropdown_item_hidden {
     display: none;
 }
-.account_dropdown_item:hover{
+
+.account_dropdown_item:hover {
     background-color: var(--grey);
     transform: scale(1.01);
     transition: background-color 300ms, transform 300ms;
 }
-.account_dropdown_item:active{
+
+.account_dropdown_item:active {
     background-color: var(--accent-color);
     transform: scale(0.96);
     transition: background-color 0ms, transform 0ms;
 }
-.account_dropdown_image{
+
+.account_dropdown_image {
     position: absolute;
     display: block;
     top: 0;
@@ -310,22 +317,26 @@ body {
     background-repeat: no-repeat;
     background-position: center;
 }
-.Login_img{
+
+.Login_img {
     background-image: url('../img/login-svgrepo-com.svg');
 }
-.Account_img{
+
+.Account_img {
     background-image: url('../img/account-svgrepo-com.svg');
     background-size: 80%;
 }
-.Orders_img{
+
+.Orders_img {
     background-image: url('../img/orders-svgrepo-com.svg');
 }
-.logout_img{
+
+.logout_img {
     background-image: url('../img/logout-svgrepo-com.svg');
     background-size: 80%;
 }
 
-.account_dropdown_item_label{
+.account_dropdown_item_label {
     position: absolute;
     top: 0;
     left: 2.5rem;
@@ -338,6 +349,7 @@ body {
     box-sizing: border-box;
     padding-left: 0.5rem;
 }
+
 /* 
     Cake Gallery/catalog/'inventory'
 */
@@ -419,7 +431,8 @@ body {
     width: 10rem;
     line-height: 1.3rem;
 }
-.cake_pedistal_price{
+
+.cake_pedistal_price {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -444,8 +457,8 @@ body {
     width: 40%;
     background-color: var(--background-color);
     display: block;
-    overflow-y:scroll;
-    overflow-x:hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .cake_display_hidden {
@@ -465,7 +478,7 @@ body {
     cursor: pointer;
 }
 
-.cake_display .title{
+.cake_display .title {
     position: absolute;
     top: 1rem;
     width: 100%;
@@ -477,7 +490,7 @@ body {
     color: var(--text-color);
 }
 
-.cake_display .banner_cake{
+.cake_display .banner_cake {
     position: absolute;
     top: 3rem;
     width: 100%;
@@ -487,7 +500,8 @@ body {
     background-size: contain;
     background-position: center;
 }
-.cake_display_price{
+
+.cake_display_price {
     position: absolute;
     top: 23rem;
     width: 100%;
@@ -500,7 +514,7 @@ body {
     color: var(--text-color);
 }
 
-.cake_display .description{
+.cake_display .description {
     position: absolute;
     top: 24.5rem;
     width: 100%;
@@ -512,7 +526,7 @@ body {
     color: var(--text-color);
 }
 
-.cake_quantity_selector{
+.cake_quantity_selector {
     position: absolute;
     bottom: 0.5rem;
     width: 80%;
@@ -525,7 +539,8 @@ body {
     color: var(--text-color);
 }
 
-.add_to_cart_button,.add_to_cart_button_hidden{
+.add_to_cart_button,
+.add_to_cart_button_hidden {
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
@@ -538,20 +553,23 @@ body {
     text-align: center;
     line-height: 3rem;
     cursor: pointer;
-    overflow:hidden;
+    overflow: hidden;
 }
-.add_to_cart_button_hidden{
+
+.add_to_cart_button_hidden {
     display: none;
 }
 
 /* 
     Login dialog
 */
-.Login_dialog,.Login_dialog_hidden {
+.Login_dialog,
+.Login_dialog_hidden {
     position: fixed;
     top: 2.5rem;
     right: 0;
-    height: 14rem;
+    min-height: 14rem;
+    height: auto;
     width: 25rem;
     background-color: var(--background-color);
     box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
@@ -559,22 +577,123 @@ body {
     display: block;
     overflow: hidden;
 }
+
 .Login_dialog_hidden {
     display: none;
 }
-.logintitle{
+
+.logintitle {
     position: relative;
-    font-size: 1.4rem;
+    height: 2rem;
+    font-size: 1.7rem;
     text-align: center;
     width: 100%;
     color: var(--text-color);
-    line-height: 1.4rem;
+    line-height: 1.7rem;
 }
+
 .Login_dialog .close_button {
-    top:0.2rem;
+    top: 0.2rem;
     right: 0.2rem;
     height: 2rem;
     width: 2rem;
+}
+
+.Login_input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.5rem;
+    width: 100%;
+    background-color: var(--background-color);
+    font-size: 1.2rem;
+    line-height: 2.5rem;
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+.Login_input_label {
+    position: absolute;
+    top: -1rem;
+    left: 1rem;
+    height: 1.4rem;
+    width: auto;
+    font-size: 1rem;
+    line-height: 1.4rem;
+    text-align: left;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    z-index: 10;
+}
+
+.Login_input_container {
+    position: relative;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    height: 2.5rem;
+    width: calc(100% - 1rem);
+    background-color: var(--background-color);
+    /*box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);*/
+    border: 0.2rem solid var(--background-color);
+    border-radius: 0.2rem;
+}
+
+.Login_button {
+    position: relative;
+    margin-left: 30%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 3rem;
+    width: 40%;
+    background-color: var(--text-color);
+    color: var(--background-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--background-color);
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+    user-select: none;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+}
+
+.Login_button:hover {
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+}
+
+.Login_button:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+}
+
+.Login_error_message,.Login_error_message_hidden {
+    position: relative;
+    height: auto;
+    width: 100%;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--text-color);
+    line-height: 1rem;
+    box-sizing: border-box;
+    padding: 0.2rem;
+    text-shadow: 0rem 0rem 0.1rem rgba(255, 0, 0, 0.552);
+    display: block;
+}
+.Login_error_message_hidden {
+    display: none;
 }
 
 
