@@ -60,6 +60,10 @@ let config = {
     },
     load: function () {//Load config from local storage
         console.log('Configuration is being loaded');
+        if (localStorage.getItem("butterK_cfg") == null) {//if no config is found, create a new one
+            console.log('No config found, creating new one');
+            localStorage.setItem("butterK_cfg", JSON.stringify(config.data));
+        }
         config.data = JSON.parse(localStorage.getItem("butterK_cfg"));
         console.log('config Loaded: ', config.data);
     },
@@ -97,6 +101,7 @@ let session_manager = {
                         document.getElementById('Logout_button').classList = "account_dropdown_item";
                         document.getElementById('login_trigger_button').classList = "account_dropdown_item_hidden";
                         document.getElementById('Login_error_message').classList = "Login_error_message_hidden";
+                        document.getElementById('cart_title').innerHTML = `${config.data.credentials.user}'s cart`;
                         ui_controller.hide_account_callout()
                         ui_controller.hide_login_dialog()
                     }
@@ -336,22 +341,96 @@ let catalog_maintainer = {
 let cart_maintainer = {
     initalize: async function () {
         console.log('Cart startup');
+        document.getElementById('checkout_button').addEventListener('click', function () { ui_controller.go_to_checkout() });
     },
     load_cart: async function () {
         console.log('Loading cart');
         if (config.data.credentials.user == null) {//if not logged in, demand login
-            console.log('Login required to view cart')
-            session_manager.Demand_login()
+            console.log('Login required to view cart');
+            session_manager.Demand_login();
             return false;
         }
+        let counter = {items:0, total:0};
+        const catalog = await request('get/catalog');//load the catalog to get cake data
+        console.log('Got Catalog: ', catalog);
         post(config.data.credentials.user, 'get/cart').then((response) => {
             console.log('Cart response: ', response);
-            if (response.status == "success") {
+            document.getElementById('cart_container_handle').innerHTML="";
+            
+            if (response != "error") {
                 console.log('loaded cart');
+                for(let cake in response) {
+                    //console.log('cake in cart: ', response[cake]);
+                    //build cart display
+                    build_cart(response[cake]);
+                    counter.items += Number(response[cake].quantity);
+                    counter.total += Number(response[cake].quantity) * Number(catalog.find(c => c.uuid == response[cake].cakeid).price);
+                }
+                console.log('Cart total: ', counter.total, ' items: ', counter.items);
+                document.getElementById('Summary_details').innerHTML = `
+                items: ${counter.items}
+                <br>
+                Price: \$${counter.total.toFixed(2)}
+                <br><br>
+                <p>A total of ${counter.items} items in your cart, with a total price of \$${counter.total.toFixed(2)}</p>
+                <p>payment and divery information will be collected at checkout.</p>
+                <p>Click the checkout button to proceed.</p>
+                `;
                 //ui_controller.go_to_cart();
             } else {
                 console.error('failed to load cart');
             }
         });
+        //
+
+        async function build_cart(cake) {
+            console.log('Build cart for: ', cake);
+            const cake_data = catalog.find(c => c.uuid == cake.cakeid);//find the cake data in the catalog
+            console.log('Cake data: ', cake_data);//{ Title,  Description, image_uri, uuid }
+
+            const cart_item = document.createElement('div');
+            cart_item.classList = "cart_item";
+            cart_item.tagName = `Cake ${cake_data.uuid}`;
+            cart_item.title = `${cake_data.Title}`;
+
+            const cake_price = document.createElement('div');
+            cake_price.classList = "cart_item_price"
+            cake_price.innerHTML = `\$${cake_data.price.toFixed(2)}`;
+            cart_item.appendChild(cake_price);
+
+            const cake_img = document.createElement('div');
+            cake_img.classList = "cart_item_img";
+            cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+            cart_item.appendChild(cake_img);
+
+            const cake_title = document.createElement('div');
+            cake_title.classList = "cart_item_title"
+            cake_title.innerHTML = `${cake_data.Title}`;
+            cart_item.appendChild(cake_title);
+
+            const cake_description = document.createElement('div');
+            cake_description.classList = "cart_item_description";
+            cake_description.innerHTML = `${cake_data.Description}`;
+            cart_item.appendChild(cake_description);
+
+            const cake_quantity = document.createElement('input');
+            cake_quantity.type = "number";
+            cake_quantity.classList = "cart_item_quantity";
+            cake_quantity.value = Number(cake.quantity);
+            cart_item.appendChild(cake_quantity);   
+
+            document.getElementById('cart_container_handle').appendChild(cart_item);
+
+            cake_quantity.addEventListener('click', function (event) {
+                event.stopPropagation();//stop the click from triggering the cart item click event
+            })
+
+            cart_item.addEventListener('click', function () {
+                console.log(`clicked cart item ${cake_data.uuid}`)
+                catalog_maintainer.trigger_cake(cake_data.uuid);
+                ui_controller.got_to_catalog();
+            })
+            
+        }
     },
 }

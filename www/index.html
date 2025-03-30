@@ -49,7 +49,15 @@
 
     <!--Cart page-->
     <div class="main_view" id="cart_page">
-        cart page
+        <div class="title" id="cart_title">Cart</div>
+        <div class="cart_container" id="cart_container_handle">
+            <div class="loading_spinner"></div>
+        </div>
+        <div class="cart_summary">
+            <div class="title">Summary</div>
+            <p id="Summary_details">...</p>
+        </div>
+        <button class="checkout_button" id="checkout_button">Checkout</button>
     </div>
 
     <!--Orders page-->
@@ -117,6 +125,10 @@
         </div>
         <div class="Login_error_message_hidden" id="Login_error_message">Invalid username or password</div>
         <button class="Login_button" id="Login_button">Login</button>
+        <div class="sign_up_carrot" id="sign_up_carrot">
+            <span>Don't have an account? </span>
+            <button id="sign_up_button"> Sign up </button>
+        </div>
     </div>
 
     <script src="js/index.js"></script>

@@ -57,6 +57,8 @@ app.get('/get/template', (req, res) => {
 });
 
 // Get cart handler
+//This will get the users cart, and return it as a json object
+//This will be used to display the cart on the front end
 app.post('/get/cart', (req, res) => {
     try {
         logs.info('Get users cart');
@@ -86,6 +88,8 @@ app.post('/get/cart', (req, res) => {
     }
 });
 
+//Add to cart handler
+//This will add a cake to the cart, or update the quantity if it already exists
 app.post('/post/addtocart', (req, res) => {
     try {
         logs.info('Add to cart');
