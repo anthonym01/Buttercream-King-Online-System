@@ -141,7 +141,9 @@ let session_manager = {
         console.log('action demands login/sign up');
         if (properties.loggedin == false) {
             //display login form
-
+            ui_controller.show_login_dialog();
+            document.getElementById('Login_error_message').classList = "Login_error_message_hidden";
+            alert('You must log in to proceed with this action.');
         }
     },
 
@@ -151,6 +153,7 @@ let ui_controller = {
     initalize: async function () {
         console.log('Navigation overider startup');
         this.got_to_catalog();
+        
         document.getElementById('Login_close_btn').addEventListener('click', function () { ui_controller.hide_login_dialog() });
         document.getElementById('login_trigger_button').addEventListener('click', function () { ui_controller.show_login_dialog() });
         document.getElementById('branding_block').addEventListener('click', function () { ui_controller.got_to_catalog() });
@@ -172,6 +175,11 @@ let ui_controller = {
     },
     go_to_cart: function () {
         console.log('Navigate to cart');
+        if (config.data.credentials.user == null || properties.loggedin==false) {//if not logged in, demand login
+            console.log('Login required to view cart');
+            session_manager.Demand_login();
+            return false;
+        }
         document.getElementById('cake_catalog_page').classList = "main_view"
         document.getElementById('cart_page').classList = "main_view_active"
         document.getElementById('orders_page').classList = "main_view"
@@ -307,7 +315,7 @@ let catalog_maintainer = {
         document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button_hidden"
     },
     add_to_cart:async function () {
-        if(config.data.credentials.user == null) {//if not logged in, demand login
+        if(config.data.credentials.user == null ||properties.loggedin==false) {//if not logged in, demand login
             console.log('Login required to add to cart')
             session_manager.Demand_login()
             return false;
@@ -341,15 +349,19 @@ let catalog_maintainer = {
 let cart_maintainer = {
     initalize: async function () {
         console.log('Cart startup');
-        document.getElementById('checkout_button').addEventListener('click', function () { ui_controller.go_to_checkout() });
+        document.getElementById('checkout_button').addEventListener('click', function () { 
+            if (properties.counter.items == 0) {
+                console.error('No items in cart, cannot proceed to checkout');
+                alert('No items in cart, cannot proceed to checkout');
+                ui_controller.got_to_catalog();
+                return false;
+            }
+            ui_controller.go_to_checkout() 
+        });
     },
     load_cart: async function () {
         console.log('Loading cart');
-        if (config.data.credentials.user == null) {//if not logged in, demand login
-            console.log('Login required to view cart');
-            session_manager.Demand_login();
-            return false;
-        }
+        
         let counter = {items:0, total:0};
         const catalog = await request('get/catalog');//load the catalog to get cake data
         console.log('Got Catalog: ', catalog);
@@ -367,6 +379,8 @@ let cart_maintainer = {
                     counter.total += Number(response[cake].quantity) * Number(catalog.find(c => c.uuid == response[cake].cakeid).price);
                 }
                 console.log('Cart total: ', counter.total, ' items: ', counter.items);
+                properties.counter = counter;
+                //update the cart summary
                 document.getElementById('Summary_details').innerHTML = `
                 items: ${counter.items}
                 <br>
@@ -433,4 +447,14 @@ let cart_maintainer = {
             
         }
     },
+}
+
+let checkout_maintainer = {
+    initalize: async function () {
+        console.log('Checkout startup');
+    },
+    load_checkout:async function(){
+        console.log('Loading checkout');
+        
+    }
 }

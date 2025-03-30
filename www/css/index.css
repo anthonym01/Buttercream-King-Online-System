@@ -700,7 +700,8 @@ body {
 #cart_page{
 
 }
-#cart_page .title{
+
+#cart_page .title,#checkout_page .title{
     position: relative;
     font-size: 1.5rem;
     width: 100%;
@@ -841,6 +842,42 @@ body {
     cursor: pointer;
     overflow: hidden;
 }
+
+/* 
+    checkout page
+*/
+.checkout_actors{
+    position: relative;
+    width: 60%;
+    height: auto;
+    left: 0;
+}
+
+.Payment_method_container{
+    position: relative;
+    width: 90%;
+    height: 12rem;
+    margin-left: 5%;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+    border-radius: 0.2rem;
+    box-shadow: 0.07rem 0.07rem 0.2rem 0.13rem var(--text-color);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    cursor: default;
+}
+.title_Payment_method{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2rem;
+    width: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 2rem;
+    color: var(--text-color);
+}
+
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
