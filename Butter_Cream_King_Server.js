@@ -58,7 +58,6 @@ app.get('/get/template', (req, res) => {
 
 // Get cart handler
 //This will get the users cart, and return it as a json object
-//This will be used to display the cart on the front end
 app.post('/get/cart', (req, res) => {
     try {
         logs.info('Get users cart');
@@ -185,6 +184,7 @@ app.post('/post/adddeliveryaddress', (req, res) => {
         logs.error('Catastrophy on add to cart: ', err);
     }
 });
+
 // Add payment method handler
 app.post('/post/addpaymentmethod', (req, res) => {
     try {
@@ -254,7 +254,8 @@ app.get('/get/catalog', (req, res) => {
     }
 });
 
-
+//submit order handler
+//This will submit an order to the database, and update the users orders
 app.post('/post/submitorder', (req, res) => {
     console.log('Submit order');
     try {
@@ -300,7 +301,59 @@ app.post('/post/submitorder', (req, res) => {
     } catch (error) {
         logs.error('Catastrophy on add to cart: ', err);
     }
-})
+});
+
+//get orders handler
+//This will get the users orders, and return it as a json object
+app.post('/get/orders', (req, res) => {
+    try {
+        logs.info('Get users orders');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//expects username;
+            try {
+                if (typeof (data) != 'undefined') {
+                    // Get old order data
+                    database.getCustomersViaUsername(data).then((result) => {
+                        const orderdata = JSON.parse(result.orders) || [];
+                        logs.info('order data: ', orderdata, ' for user: ', data);
+                        console.log('Datatype: ', typeof (orderdata));
+                        // Translate order ids to order objects
+                        let orders = [];//Array to hold promised orders
+                        for (let i = 0; i < orderdata.length; i++) {
+                            orders.push(database.getOrdersViaUuid(orderdata[i]));
+                        }
+                        // Wait for all orders to be retrieved
+                        logs.info('Waiting for all orders to be retrieved: ', orders);
+                        // Use Promise.all to wait for all promises to resolve
+                        Promise.all(orders).then((results) => {
+                            logs.info('All orders retrieved: ', results);
+                            // Filter out orders that are not in the database
+                            let filteredOrders = results.filter((order) => {
+                                return order != undefined && order != null;
+                            });
+                            logs.info('Filtered orders: ', filteredOrders);
+                            res.end(JSON.stringify(filteredOrders));
+                        }).catch((error) => {
+                            logs.error('Error retrieving orders: ', error);
+                            res.end(JSON.stringify({ status: "error" }));
+                        });
+                    });
+
+                } else {
+                    logs.error('No username provided in get orders request: ', data);
+                    res.end(JSON.stringify({ status: "error" }));
+                }
+            } catch (error) {
+                logs.error('Catastrophy on Get orders: ', error, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on Get orders: ', err);
+    }
+});
+
 // find a cake by its uuid
 app.post('/get/cakebyuuid', (req, res) => {
     try {

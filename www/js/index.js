@@ -14,6 +14,8 @@ window.addEventListener('load', async function () {//Starting point
         catalog_maintainer.initalize();
         cart_maintainer.initalize();
         checkout_maintainer.initalize();
+        order_maintainer.initalize();
+        console.log('Page startup complete');
         //ui_controller.got_to_catalog();
     }
 });
@@ -487,6 +489,11 @@ let checkout_maintainer = {
             ui_controller.show_Add_new_payment_method_pannel();
         });
         document.getElementById('add_new_address_button').addEventListener('click', function () {
+            if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
+                console.log('Login required to add new address')
+                session_manager.Demand_login()
+                return false;
+            }
             console.log('add new address button clicked');
             ui_controller.show_Add_delivery_address_pannel();
         });
@@ -499,8 +506,8 @@ let checkout_maintainer = {
                 ui_controller.got_to_catalog();
                 return false;
             }
-            const payload = { username: config.data.credentials.user, Items: properties.cart, Status: "pending",total_price: properties.counter.total,Date: new Date().toISOString() };
-            
+            const payload = { username: config.data.credentials.user, Items: properties.cart, Status: "pending", total_price: properties.counter.total, Date: new Date().toISOString() };
+
             console.log('submit order payload: ', payload);
             post(payload, 'post/submitorder').then((response) => {
                 console.log('submit order response: ', response);
@@ -509,6 +516,8 @@ let checkout_maintainer = {
                     //ui_controller.go_to_cart();
                     setTimeout(() => {
                         ui_controller.go_to_orders();//reload the checkout data to show the new payment method
+                        order_maintainer.load_orders();//reload the orders page to show the new order
+                        properties.cart = [];//clear the cart
                     }, 1000);
                 } else {
                     console.error('failed to submit order');
@@ -609,19 +618,19 @@ let checkout_maintainer = {
                 console.log('loaded checkout data');
                 //build checkout display
                 properties.paymentinfo = JSON.parse(response.paymentinfo);//load the payment info
-                if(response.paymentinfo.length > 5){
+                if (response.paymentinfo.length > 5) {
                     //hide add new button
                     document.getElementById('add_new_payment_button').innerHTML = "change payment method"
                 }
                 properties.deliveryinfo = JSON.parse(response.deliveryinfo).address;//load the delivery info
 
-                if(response.deliveryinfo.length > 5){
+                if (response.deliveryinfo.length > 5) {
                     //hide add new button
                     document.getElementById('add_new_address_button').innerHTML = "Change delivery address"
                     document.getElementById('address_represent').innerText = `${properties.deliveryinfo}`;
                 }
 
-                if(response.deliveryinfo.length > 5 && response.paymentinfo.length > 5){
+                if (response.deliveryinfo.length > 5 && response.paymentinfo.length > 5) {
                     document.getElementById('checkout_summary_details').innerHTML = `
                     <p>Items will be deivered to :<br> ${properties.deliveryinfo}</p>
                     <p>Payment will be process with card ending in: ${properties.paymentinfo.number.slice(-4)}</p>
@@ -654,4 +663,102 @@ let checkout_maintainer = {
             document.getElementById('card_expiry_represent2').innerText = `${month}/${year.slice(2, 4)}`;
         }
     },
+}
+
+let order_maintainer = {
+    initalize: async function () {
+        console.log('Order startup');
+        document.getElementById('Orders_button').addEventListener('click', function () {
+            //demand login if not logged in
+            if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
+                console.log('Login required to view orders')
+                session_manager.Demand_login()
+                return false;
+            }
+            //load the orders page
+            ui_controller.go_to_orders();
+            order_maintainer.load_orders();
+        });
+    },
+    load_orders: async function () {
+        console.log('Loading orders');
+        document.getElementById('orders title').innerHTML = `${config.data.credentials.user}'s previous orders`;
+
+        const catalog = await request('get/catalog');//load the catalog to get cake data
+
+        post(config.data.credentials.user, 'get/orders').then((response) => {
+            console.log('Orders response: ', response);//expects [{ordernumber: 3, Items: '[{cakeid,quantity}]', Date, Status, total_price}]
+
+            if (response != "error") {
+                console.log('loaded orders');
+                //build orders display
+                document.getElementById('orders_container_handle').innerHTML = "";
+                for (let order in response) {
+                    build_order(response[order]);
+                }
+            } else {
+                console.error('failed to load orders');
+            }
+        });
+
+        async function build_order(order) {
+            console.log('Build order for: ', order);
+
+            const order_container = document.createElement('div');
+            order_container.classList = "order_container";
+            order_container.tagName = `Order #: ${order.ordernumber}`;
+            order_container.title = `Order #: ${order.ordernumber}`;
+
+            const sumation = document.createElement('div');
+            sumation.classList = "sumation"
+            const translate_date = new Date(order.Date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            sumation.innerHTML = `Order #: ${order.ordernumber} <br> Date: ${translate_date} <br> Status: ${order.Status} <br> Total Price: \$${order.total_price.toFixed(2)}`;
+            order_container.appendChild(sumation);
+
+            const order_items_constainer = document.createElement('div');
+            order_items_constainer.classList = "order_items_constainer"
+            order_container.appendChild(order_items_constainer);
+
+            const items = JSON.parse(order.Items);//parse the items from the order
+            console.log('Items: ', items);//[{cakeid,quantity}]
+
+            for (let item in items) {
+                build_order_item(items[item],order_items_constainer);//build the order item display
+            }
+
+            document.getElementById('orders_container_handle').appendChild(order_container);
+
+
+            async function build_order_item(cake,order_items_constainer_passed) {
+                console.log('Build item: ', cake, 'for order: ', order.ordernumber);
+
+                const cake_data = catalog.find(c => c.uuid == cake.cakeid);//find the cake data in the catalog
+                console.log('Cake data: ', cake_data);//{ Title,  Description, image_uri, uuid }
+
+                const order_item = document.createElement('div');
+                order_item.classList = "order_item";
+                order_item.tagName = `Cake ${cake_data.uuid}`;
+                order_item.title = `${cake_data.Title}`;
+
+                const cake_img = document.createElement('div');
+                cake_img.classList = "order_item_img";
+                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+                order_item.appendChild(cake_img);
+
+                const cake_title = document.createElement('div');
+                cake_title.classList = "order_item_title"
+                cake_title.innerHTML = `${cake_data.Title}`;
+                order_item.appendChild(cake_title);
+
+                const cake_quantity = document.createElement('div');
+                cake_quantity.classList = "order_item_quantity";
+                cake_quantity.innerHTML = `quantity: ${Number(cake.quantity)}`;
+                order_item.appendChild(cake_quantity);
+
+                order_items_constainer_passed.appendChild(order_item);
+
+            }
+
+        }
+    }
 }

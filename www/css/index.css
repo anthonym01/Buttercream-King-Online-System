@@ -89,6 +89,8 @@ body {
     height: calc(100vh - 2.5rem);
     background-color: var(--background-color);
     color: var(--text-color);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .main_view_active {
@@ -1179,6 +1181,129 @@ body {
     padding-left: 0.5rem;
 }
 
+/*
+orders_page
+*/
+#orders_page .title {
+    position: relative;
+    font-size: 1.5rem;
+    width: 100%;
+    height: 1.5rem;
+    text-align: center;
+}
+
+.orders_container_handle{
+    position: relative;
+    width: 100%;
+    display: flex;
+    height: fit-content;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.order_container{
+    position: relative;
+    overflow: hidden;
+    height: 15rem;
+    width: 25rem;
+    margin: 2rem;
+    border-radius: 0.2rem;
+    box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    background-color: var(--background-color);
+    cursor: pointer;
+    user-select: none;
+}
+
+.order_container .sumation{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 15rem;
+    white-space: wrap;
+    width: 30%;
+    font-size: 0.8rem;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 0.2rem;
+    line-height: 1rem;
+    color: var(--text-color);
+}
+
+.order_items_constainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    align-items: center;
+    height: 15rem;
+    width: 70%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.order_item{
+    /* Mini previous cart representation */
+    position: relative;
+    overflow: hidden;
+    height: 4rem;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 0.7rem;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0rem 0.15rem 0.06rem var(--text-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.order_item_img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 4rem;
+    height:4rem;
+    bsckground-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.order_item_title{
+    position: absolute;
+    top: 0rem;
+    left: 4rem;
+    height: 1.2rem;
+    font-size: 1rem;
+    padding: 0.2rem;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
+    box-sizing: border-box;
+    width: calc(100% - 4rem);
+    line-height: 1.2rem;
+}
+
+.order_item_quantity{
+    position: absolute;
+    top: 2rem;
+    left: 4rem;
+    width: calc(100% - 4rem);
+    height: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+    line-height: auto;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}

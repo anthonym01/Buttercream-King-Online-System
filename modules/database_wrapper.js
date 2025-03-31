@@ -244,7 +244,7 @@ const connectionmanager = {
 
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
-                connection.query('SELECT * FROM `Orders` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+                connection.query('SELECT * FROM `Orders` WHERE `ordernumber` = ?', uuid, function (error, results, fields) {
                     if (error) throw error;
                     console.log('From Orders got : ', results);
                     resolve(results[0]);
@@ -307,7 +307,7 @@ const connectionmanager = {
     updateOrder: async function (uuid, injection) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to update order with uuid: ', uuid, ' with ', injection)
-        let query = connection.query('UPDATE `Orders` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+        let query = connection.query('UPDATE `Orders` SET ? WHERE `ordernumber` = ?', [injection, uuid], function (error, results, fields) {
             if (error) logs.error(error);
         });
         logs.info(query.sql);
