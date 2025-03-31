@@ -158,10 +158,10 @@
         <div class="checkout_button" id="submit_order_button">Submit Order</div>
 
     </div>
-    
+
     <!--Account page-->
     <div class="main_view" id="account_page">
-        Account page
+        <div class="title" id="account_title"></div>
     </div>
 
     <!--Top bar of the site-->
@@ -172,8 +172,7 @@
         </div>
         <div class="actionbar">
             <div class="account_callout_button" id="account_callout" title="user account">
-                <img src="./img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg" id="profile_picture"
-                    alt="profile picture">
+                <img src="./img/account-svgrepo-com.svg" id="profile_picture" alt="profile picture">
             </div>
             <div class="cart_button" id="cart_button"></div>
             <div class="search_button" id="search_button"></div>
@@ -198,6 +197,29 @@
             <div class="account_dropdown_image logout_img"></div>
             <span class="account_dropdown_item_label">Logout</span>
         </div>
+    </div>
+
+    <!--Quick account info  -->
+    <div id="quick_account_info" class="quick_account_info_hidden">
+        <div class="close_button" id="quick_account_info_close_btn"></div>
+        <table>
+            <tr>
+                <th colspan="2">Account</td>
+            </tr>
+            <tr>
+                <td class="quick_account_info_label">Username</td>
+                <td class="quick_account_info_value" id="quick_account_username">-----</td>
+            </tr>
+            <tr>
+                <td class="quick_account_info_label">Loyalty points</td>
+                <td class="quick_account_info_value" id="quick_account_loyalty_points">-----</td>
+            </tr>
+            <tr>
+                <td class="quick_account_info_label">Orders</td>
+                <td class="quick_account_info_value" id="quick_account_order">-----</td>
+            </tr>
+        </table>
+        <button class="quick_account_info_logout_button" id="Logout_button_quick">Logout</button>
     </div>
 
     <!--In page quick login for users-->

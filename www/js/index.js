@@ -86,6 +86,7 @@ let properties = {
     paymentinfo: {},
     deliveryinfo: {},
     cart: [],
+    loyalty_points: 0,
     counter: { items: 0, total: 0 },
 }
 
@@ -96,6 +97,8 @@ let session_manager = {
         session_manager.attempt_login();
         document.getElementById('Login_button').addEventListener('click', function () { session_manager.login() });
         document.getElementById('Logout_button').addEventListener('click', function () { session_manager.logout() });
+        document.getElementById('Logout_button_quick').addEventListener('click', function () { session_manager.logout() });
+
     },
     attempt_login: function () {// USed to get credentials on load
         console.log('attempt login');
@@ -110,11 +113,13 @@ let session_manager = {
                         document.getElementById('login_trigger_button').classList = "account_dropdown_item_hidden";
                         document.getElementById('Login_error_message').classList = "Login_error_message_hidden";
                         document.getElementById('cart_title').innerHTML = `${config.data.credentials.user}'s cart`;
+                        document.getElementById('quick_account_username').innerText = `${config.data.credentials.user}`;
                         ui_controller.hide_account_callout()
                         ui_controller.hide_login_dialog()
+
                     }
                     else {
-                        session_manager.logout();//logout if not logged in to clear keys, jingle jingle
+                        //session_manager.logout();//logout if not logged in to clear keys, jingle jingle
                         console.log('login failed');
                         document.getElementById('Login_error_message').classList = "Login_error_message";
                     }
@@ -122,7 +127,7 @@ let session_manager = {
             }
         } catch (error) {
             console.error('Error during login attempt: ', error);
-            session_manager.logout();
+            //session_manager.logout();
         }
 
     },
@@ -135,6 +140,7 @@ let session_manager = {
         ui_controller.hide_account_callout()
         ui_controller.hide_login_dialog()
         config.save();
+        location.reload();//reload the page to clear the session
     },
     // Login Triggered by the users action
     login: function () {
@@ -144,6 +150,10 @@ let session_manager = {
         config.data.credentials = { user: username_put, pass: password_put };
         config.save();
         session_manager.attempt_login();
+        cart_maintainer.load_cart();//load the cart after login
+        checkout_maintainer.load_checkout();//load the checkout after login
+        order_maintainer.get_loyalty_points();//load the loyalty points after login
+
     },
     Demand_login: function () {
         console.log('action demands login/sign up');
@@ -172,6 +182,8 @@ let ui_controller = {
         document.getElementById('Procede_to_cart_button').addEventListener('click', function () { catalog_maintainer.procede_to_cart() });
         document.getElementById('Add_to_cart_button').addEventListener('click', function (event) { catalog_maintainer.add_to_cart() });
         document.getElementById('account_callout').addEventListener('click', function () { ui_controller.show_account_callout() });
+        document.getElementById('account_button').addEventListener('click', function () { ui_controller.show_quick_account_info() });
+        document.getElementById('quick_account_info_close_btn').addEventListener('click', function () { ui_controller.hide_quick_account_info() });
 
     },
     got_to_catalog: function () {
@@ -200,14 +212,25 @@ let ui_controller = {
     },
     go_to_orders: function () {
         console.log('Navigate to order');
+        if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
+            console.log('Login required to view orders')
+            session_manager.Demand_login()
+            return false;
+        }
         document.getElementById('cake_catalog_page').classList = "main_view"
         document.getElementById('cart_page').classList = "main_view"
         document.getElementById('orders_page').classList = "main_view_active"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
         this.hide_account_callout()
+        this.hide_quick_account_info()
     },
     go_to_checkout: function () {
+        if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
+            console.log('Login required to view checkout')
+            session_manager.Demand_login()
+            return false;
+        }
         console.log('Navigate to checkout');
         document.getElementById('cake_catalog_page').classList = "main_view"
         document.getElementById('cart_page').classList = "main_view"
@@ -215,9 +238,15 @@ let ui_controller = {
         document.getElementById('checkout_page').classList = "main_view_active"
         document.getElementById('account_page').classList = "main_view"
         this.hide_account_callout()
+        this.hide_quick_account_info()
         checkout_maintainer.load_checkout();
     },
     go_to_account: function () {
+        if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
+            console.log('Login required to view account')
+            session_manager.Demand_login()
+            return false;
+        }
         console.log('Navigate to account');
         document.getElementById('cake_catalog_page').classList = "main_view"
         document.getElementById('cart_page').classList = "main_view"
@@ -225,14 +254,30 @@ let ui_controller = {
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view_active"
         this.hide_account_callout()
+        this.hide_quick_account_info()
     },
     show_account_callout: function () {
         console.log('show account callout');
         if (document.getElementById('account_dropdown').classList != 'account_dropdown') {
             document.getElementById('account_dropdown').classList = 'account_dropdown'
+        this.hide_quick_account_info()
         } else {
             this.hide_account_callout()
+        this.hide_quick_account_info()
+
         }
+    },
+    show_quick_account_info: function () {
+        if (properties.loggedin == false) {//if not logged in, demand login
+            console.log('Login required to view account')
+            session_manager.Demand_login()
+            return false;
+        }
+        document.getElementById('quick_account_info').classList = 'quick_account_info'
+        this.hide_account_callout()
+    },
+    hide_quick_account_info: function () {
+        document.getElementById('quick_account_info').classList = 'quick_account_info_hidden'
     },
     hide_account_callout: function () {
         console.log('hide account callout');
@@ -241,10 +286,13 @@ let ui_controller = {
     show_login_dialog: function () {
         console.log('show login dialog');
         this.hide_account_callout()
+        this.hide_quick_account_info()
         document.getElementById('Login_dialog').classList = "Login_dialog"
     },
     hide_login_dialog: function () {
         console.log('hide login dialog');
+        this.hide_account_callout()
+        this.hide_quick_account_info()
         document.getElementById('Login_dialog').classList = "Login_dialog_hidden"
     },
     show_Add_new_payment_method_pannel: function () {
@@ -390,6 +438,11 @@ let cart_maintainer = {
             }
             ui_controller.go_to_checkout()
         });
+        setTimeout(() => {
+            if (properties.loggedin == true) {
+                this.load_cart();//load the cart on startup
+            }
+        }, 500);
     },
     load_cart: async function () {
         console.log('Loading cart');
@@ -485,9 +538,8 @@ let cart_maintainer = {
 let checkout_maintainer = {
     initalize: async function () {
         console.log('Checkout startup');
-        document.getElementById('add_new_payment_button').addEventListener('click', function () {
-            ui_controller.show_Add_new_payment_method_pannel();
-        });
+        document.getElementById('add_new_payment_button').addEventListener('click', function () { ui_controller.show_Add_new_payment_method_pannel() });
+
         document.getElementById('add_new_address_button').addEventListener('click', function () {
             if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
                 console.log('Login required to add new address')
@@ -559,7 +611,7 @@ let checkout_maintainer = {
                     document.getElementById('add_new_address_button').innerHTML = "Change delivery address"
                     setTimeout(() => {
                         checkout_maintainer.load_checkout();//reload the checkout data to show the new payment method
-                    }, 1000);
+                    }, 700);
                     //ui_controller.go_to_cart();
                 } else {
                     console.error('failed to add delivery address');
@@ -568,6 +620,7 @@ let checkout_maintainer = {
                 }
             });
         });
+
         //update the card representation name
         document.getElementById('creditcard_name_put').addEventListener('change', function () { update_card_name(); });
         document.getElementById('creditcard_name_put').addEventListener('input', function () { update_card_name(); });
@@ -607,6 +660,11 @@ let checkout_maintainer = {
             properties.paymentinfo.cvc = cvc;//save the name to the properties object
             checkout_maintainer.update_card_representation();
         }
+        setTimeout(() => {
+            if (properties.loggedin == true) {
+                this.load_checkout();//load the checkout data on startup
+            }
+        }, 750);
 
     },
     load_checkout: async function () {
@@ -679,6 +737,28 @@ let order_maintainer = {
             ui_controller.go_to_orders();
             order_maintainer.load_orders();
         });
+        setTimeout(() => {
+            if (properties.loggedin == true) {
+                this.load_orders();//load the orders on startup
+            }
+        },1000);
+        this.get_loyalty_points();//load the loyalty points on startup
+    },
+    get_loyalty_points: async function () {
+        console.log('Get loyalty points');
+        if(config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, ignore
+            return false;
+        }
+        post(config.data.credentials.user, 'get/loyaltypoints').then((response) => {
+            console.log('Loyalty points response: ', response);//expects {points: 3}
+            if (response != "error") {
+                console.log('loaded loyalty points');
+                properties.loyalty_points = response.loyaltypoints;
+                document.getElementById('quick_account_loyalty_points').innerText = `${response.loyaltypoints}`;
+            } else {
+                console.error('failed to load loyalty points');
+            }
+        });
     },
     load_orders: async function () {
         console.log('Loading orders');
@@ -688,6 +768,7 @@ let order_maintainer = {
 
         post(config.data.credentials.user, 'get/orders').then((response) => {
             console.log('Orders response: ', response);//expects [{ordernumber: 3, Items: '[{cakeid,quantity}]', Date, Status, total_price}]
+            document.getElementById('quick_account_order').innerText = `${response.length}`;
 
             if (response != "error") {
                 console.log('loaded orders');
@@ -723,13 +804,13 @@ let order_maintainer = {
             console.log('Items: ', items);//[{cakeid,quantity}]
 
             for (let item in items) {
-                build_order_item(items[item],order_items_constainer);//build the order item display
+                build_order_item(items[item], order_items_constainer);//build the order item display
             }
 
             document.getElementById('orders_container_handle').appendChild(order_container);
 
 
-            async function build_order_item(cake,order_items_constainer_passed) {
+            async function build_order_item(cake, order_items_constainer_passed) {
                 console.log('Build item: ', cake, 'for order: ', order.ordernumber);
 
                 const cake_data = catalog.find(c => c.uuid == cake.cakeid);//find the cake data in the catalog

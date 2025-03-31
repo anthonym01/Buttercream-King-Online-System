@@ -1304,6 +1304,54 @@ orders_page
     box-sizing: border-box;
     color: var(--text-color);
 }
+
+.quick_account_info,.quick_account_info_hidden {
+    position: fixed;
+    top: 2.5rem;
+    right: 0;
+    height: fit-content;
+    width: 12rem;
+    background-color: var(--background-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.3rem;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 50;
+    font-size: 0.9rem;
+}
+.quick_account_info_hidden {
+    display: none;
+}
+
+.quick_account_info th{text-align: center; font-size: 1rem;}
+.quick_account_info table{width: 100%;}
+
+.quick_account_info_logout_button{
+    position: relative;
+    margin-left: 10%;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    height: 2rem;
+    font-size: 1rem;
+    line-height: 2rem;
+    width: 80%;
+    background-color: var(--text-color);
+    color: var(--background-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--background-color);
+    cursor: pointer;
+    border-radius: 0.3rem;
+    overflow: hidden;
+}
+
+.quick_account_info .close_button{
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+}
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}

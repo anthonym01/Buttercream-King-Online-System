@@ -370,6 +370,35 @@ app.post('/get/cakebyuuid', (req, res) => {
     }
 });
 
+app.post('/get/loyaltypoints', (req, res) => {
+    try {
+        logs.info('Get loyalty points');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//expects username;
+            try {
+                if (typeof (data) != 'undefined') {
+                    // Get old cart data
+                    database.getCustomersViaUsername(data).then((result) => {
+                        const loyaltypoints = Number(result.loyalty_points) || 0;
+                        logs.info('Loyalty points: ', loyaltypoints, ' for user: ', data);
+                        res.end(JSON.stringify({ loyaltypoints: loyaltypoints }));
+                    });
+
+                } else {
+                    logs.error('No username provided in get cart request: ', data);
+                    res.end(JSON.stringify({ status: "error" }));
+                }
+            } catch (error) {
+                logs.error('Catastrophy on Get cart: ', error, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on Get cart: ', err);
+    }
+});
+
 //Redirect to staff login
 app.get('/staff', (req, res) => {
     try {
