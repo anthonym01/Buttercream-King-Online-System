@@ -64,18 +64,94 @@
     <div class="main_view" id="orders_page">
         Orders page
     </div>
+
     <!--checkout page-->
     <div class="main_view" id="checkout_page">
+
+        <!--Add new payment method-->
+        <div class="hard_page_shader_hidden" id="payment_hard_page_shader"></div>
+        <div class="Payment_method_add_edit_pannel_hidden" id="Add_new_payment_method_pannel" name="payment input form">
+            <div class="close_button" title="close" id="Add_new_payment_method_pannel_close_button"></div>
+            <div class="title_Payment_method">Add Payment Method</div>
+            <div class="creditcard_name_put">
+                <label for="creditcard_name" class="Login_input_label">Name on card</label>
+                <input type="text" name="credit card name" title="Input name on card" id="creditcard_name_put"
+                    class="Login_input" placeholder="Name on card" required>
+            </div>
+            <div class="creditcard_name_put">
+                <label for="creditcard_number" class="Login_input_label">Card number</label>
+                <input type="text" name="creditcard_number" title="Input card number" id="creditcard_number_put"
+                    class="Login_input" placeholder="Card number" required>
+            </div>
+            <div class="date_expiry_cvc_container">
+                <div class="date_expiry_put">
+                    <label for="expiry_date" class="Login_input_label">Expiry date</label>
+                    <input type="month" name="expiry_date" title="Input expiry date" id="expiry_date_put"
+                        class="cvc_put_input" min="2025-4" placeholder="MM/YY" required>
+                </div>
+                <div class="cvc_put">
+                    <label for="cvc" class="Login_input_label">CVC</label>
+                    <input type="number" name="cvc" title="Input cvc" id="cvc_put" class="cvc_put_input"
+                        placeholder="CVC" required>
+                </div>
+            </div>
+            <div class="card_type_representation_container">
+                <div class="card_type_representation">
+                    <div class="card_type_representation_container_shader"></div>
+                    <div class="chip"></div>
+                    <div class="card_type" id="card_type_represent"></div>
+                    <div class="card_name" id="card_name_represent">----- -----</div>
+                    <div class="card_number" id="card_number_represent">----------------</div>
+                    <div class="card_expiry_date" id="card_expiry_represent">--/--</div>
+                </div>
+            </div>
+            <div class="card_save_button" id="card_save_button">Save</div>
+        </div>
+
+        <!--Address input form-->
+        <div class="hard_page_shader_hidden" id="address_hard_page_shader"></div>
+        <div class="Payment_method_add_edit_pannel_hidden" id="Add_new_address_pannel" name="address input form">
+            <div class="close_button" title="close" id="Add_new_address_pannel_close_button"></div>
+            <div class="title_Payment_method">Add Address</div>
+            <div class="address_put_container">
+                <textarea type="text" name="credit card name" title="Input Address" id="address_name_put"
+                    class="address_put" placeholder="Address for delivery" required></textarea>
+            </div>
+            <div class="card_save_button" id="address_save_button">Save</div>
+        </div>
+
+        <!--Main checkout page-->
         <div class="title">Checkout</div>
         <div class="checkout_actors">
             <div class="Payment_method_container" id="Payment_method_container">
                 <div class="title_Payment_method">Payment Method</div>
-
+                <div class="card_type_representation_container" id="card_type_representation_container_secondary">
+                    <div class="card_type_representation">
+                        <div class="card_type_representation_container_shader"></div>
+                        <div class="chip"></div>
+                        <div class="card_type" id="card_type_represent2"></div>
+                        <div class="card_name" id="card_name_represent2">----- -----</div>
+                        <div class="card_number" id="card_number_represent2">----------------</div>
+                        <div class="card_expiry_date" id="card_expiry_represent2">--/--</div>
+                    </div>
+                </div>
+                <button class="Payment_method_first_time_add_new_button" id="add_new_payment_button">Add new Payment
+                    Method</button>
             </div>
             <div class="Payment_method_container" id="Delivery_address_container">
                 <div class="title_Payment_method">Delivery Address</div>
+                <div class="address_represent">
+                    <p id="address_represent">address for delivery</p>
+                </div>
+                <button class="Payment_method_first_time_add_new_button" id="add_new_address_button">Add new
+                    Address</button>
             </div>
         </div>
+        <div class="checkout_summary">
+            <div class="title">Summary</div>
+            <p id="checkout_summary_details">...</p>
+        </div>
+        <div class="checkout_button" id="submit_order_button">Submit Order</div>
 
     </div>
     <!--Account page-->

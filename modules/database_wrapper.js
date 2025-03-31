@@ -278,13 +278,20 @@ const connectionmanager = {
     },
     // INSERT INTO Orders SET ?
     insert_into_Orders: async function (injection) {
-        let connection = mysql.createConnection(SQLcredentials);
-        logs.info('Attempt to insert ', injection, 'into Orders')
-        let query = connection.query('INSERT INTO Orders SET ?', injection, function (error, results, fields) {
-            if (error) logs.error(error);
+        return new Promise((resolve, reject) => {
+            let connection = mysql.createConnection(SQLcredentials);
+            logs.info('Attempt to insert ', injection, 'into Orders')
+            let query = connection.query('INSERT INTO Orders SET ?', injection, function (error, results, fields) {
+                if (error) {
+                    logs.error(error);
+                    reject(error);
+                }
+                console.log("results data: ", results);
+                resolve(results);
+            });
+            logs.info(query.sql);
+            connection.end();
         });
-        logs.info(query.sql);
-        connection.end();
     },
     // DELETE FROM `Orders` WHERE `uuid` = ?
     deleteOrder: async function (uuid) {

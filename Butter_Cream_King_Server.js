@@ -64,17 +64,17 @@ app.post('/get/cart', (req, res) => {
         logs.info('Get users cart');
         req.on('data', function (data) {
             data = JSON.parse(data);
-            logs.info('got payload: ', data);//expects { cakeid, quantity username };
+            logs.info('got payload: ', data);//expects username;
             try {
                 if (typeof (data) != 'undefined') {
                     // Get old cart data
                     database.getCustomersViaUsername(data).then((result) => {
                         const cartdata = JSON.parse(result.Cart_items) || [];
-                        logs.info('Old cart data: ', cartdata, ' for user: ', data.username);
+                        logs.info('Old cart data: ', cartdata, ' for user: ', data);
                         res.end(JSON.stringify(cartdata));
                     });
 
-                }else{
+                } else {
                     logs.error('No username provided in get cart request: ', data);
                     res.end(JSON.stringify({ status: "error" }));
                 }
@@ -102,10 +102,10 @@ app.post('/post/addtocart', (req, res) => {
                     database.getCustomersViaUsername(data.username).then((result) => {
                         let oldcart = JSON.parse(result.Cart_items) || [];
                         logs.info('Old cart data: ', oldcart, ' for user: ', data.username);
-                        console.log('Datatype: ',typeof(oldcart));
+                        console.log('Datatype: ', typeof (oldcart));
                         // Check if cake is already in cart
                         let existingItemindex = false;
-                        for(let i = 0; i < oldcart.length; i++) {
+                        for (let i = 0; i < oldcart.length; i++) {
                             if (oldcart[i].cakeid === data.cakeid) {
                                 existingItemindex = i;
                                 logs.info('Found existing item in cart: ', oldcart[i]);
@@ -114,7 +114,7 @@ app.post('/post/addtocart', (req, res) => {
                         }
                         if (existingItemindex !== false) {
                             // Update quantity if cake is already in cart
-                            oldcart[existingItemindex].quantity = Number(oldcart[existingItemindex].quantity) +Number(data.quantity);
+                            oldcart[existingItemindex].quantity = Number(oldcart[existingItemindex].quantity) + Number(data.quantity);
                             logs.info('Updated existing item: ', oldcart[existingItemindex]);
                         } else {
                             // Add new item to cart
@@ -139,6 +139,74 @@ app.post('/post/addtocart', (req, res) => {
     }
 });
 
+//get/checkoutdata handler
+//This will get the users checkout data, and return it as a json object, specifically the address and payment method
+app.post('/get/checkoutdata', (req, res) => {
+    try {
+        logs.info('Post template');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//quick checkout data, expects username ;
+            database.getCustomersViaUsername(data).then((result) => {
+                logs.info('Checkout data for : ', result);
+                if (typeof (result) != 'undefined') {
+                    res.end(JSON.stringify({ deliveryinfo: result.Delivery_address, paymentinfo: result.payment_details }));
+                } else {
+                    res.end(JSON.stringify({ status: "error" }));
+                }
+            });//find cake
+        });
+    } catch (error) {
+        logs.error('Catastrophy on template post: ', err);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});
+
+//Add delivery address handler
+//This will add a delivery address to the users account
+app.post('/post/adddeliveryaddress', (req, res) => {
+    try {
+        logs.info('Add delivery address');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//expects { address, username };
+            try {
+                if (typeof (data.Delivery_address) != 'undefined' && typeof (data.username) != 'undefined') {
+                    database.updateCustomer(data.username, { Delivery_address: JSON.stringify({ address: data.Delivery_address }) });
+                    logs.info('Updated delivery address: ', data.address, ' for user: ', data.username);
+                    res.end(JSON.stringify({ status: "success" }));
+                }
+            } catch (error) {
+                logs.error('Catastrophy on add to cart post: ', error, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on add to cart: ', err);
+    }
+});
+// Add payment method handler
+app.post('/post/addpaymentmethod', (req, res) => {
+    try {
+        logs.info('Add payment method');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//expects { card, username };
+            try {
+                if (typeof (data.card) != 'undefined' && typeof (data.username) != 'undefined') {
+                    database.updateCustomer(data.username, { payment_details: JSON.stringify(data.card) });
+                    logs.info('Updated payment method: ', data.card, ' for user: ', data.username);
+                    res.end(JSON.stringify({ status: "success" }));
+                }
+            } catch (error) {
+                logs.error('Catastrophy on add to cart post: ', error, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on add to cart: ', err);
+    }
+});
 
 //User login handler
 app.post('/post/login', (req, res) => {
@@ -186,6 +254,53 @@ app.get('/get/catalog', (req, res) => {
     }
 });
 
+
+app.post('/post/submitorder', (req, res) => {
+    console.log('Submit order');
+    try {
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//{ username, Items: {}, Status,total_price: float,Date: ISOString };
+            try {
+                const order = {
+                    Items: JSON.stringify(data.Items),
+                    Status: data.Status,
+                    total_price: Number(data.total_price),
+                    Date: new Date()//data.Date
+                }
+                if (typeof (data.username) != 'undefined') {
+                    database.insert_into_Orders(order).then((result) => {
+                        logs.info('Order submitted: ', result);
+
+                        const orderid = result.insertId;
+                        //Update the Customer with the order id
+                        database.getCustomersViaUsername(data.username).then((result) => {
+                            let oldorderdata = JSON.parse(result.orders) || [];
+                            logs.info('Old order data: ', oldorderdata, ' for user: ', data.username);
+                            console.log('Datatype: ', typeof (oldorderdata));
+
+                            logs.info('Adding new order to user: ', oldorderdata);
+                            oldorderdata.push(orderid);
+                            logs.info('New orders data: ', oldorderdata);
+
+                            // Update the cart in the database
+                            database.updateCustomer(data.username, { orders: JSON.stringify(oldorderdata), Cart_items: JSON.stringify([]) });
+                            // Clear the cart after order is submitted
+                            logs.info('Updated user orders: ', oldorderdata);
+                            res.end(JSON.stringify({ status: "success" }));
+                        });
+                        res.end(JSON.stringify({ status: "success" }));
+                    });
+                }
+            } catch (error) {
+                logs.error('Catastrophy on add to cart post: ', error, data);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on add to cart: ', err);
+    }
+})
 // find a cake by its uuid
 app.post('/get/cakebyuuid', (req, res) => {
     try {

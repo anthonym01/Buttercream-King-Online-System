@@ -375,7 +375,7 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .Cake_pedistal {
@@ -457,7 +457,7 @@ body {
     width: 40%;
     background-color: var(--background-color);
     display: block;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -476,6 +476,7 @@ body {
     background-size: cover;
     background-position: center;
     cursor: pointer;
+    z-index: 999;
 }
 
 .cake_display .title {
@@ -679,7 +680,8 @@ body {
     transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
 }
 
-.Login_error_message,.Login_error_message_hidden {
+.Login_error_message,
+.Login_error_message_hidden {
     position: relative;
     height: auto;
     width: 100%;
@@ -692,16 +694,16 @@ body {
     text-shadow: 0rem 0rem 0.1rem rgba(255, 0, 0, 0.552);
     display: block;
 }
+
 .Login_error_message_hidden {
     display: none;
 }
 
 
-#cart_page{
+#cart_page {}
 
-}
-
-#cart_page .title,#checkout_page .title{
+#cart_page .title,
+#checkout_page .title {
     position: relative;
     font-size: 1.5rem;
     width: 100%;
@@ -709,7 +711,7 @@ body {
     text-align: center;
 }
 
-.cart_container{
+.cart_container {
     position: absolute;
     left: 0;
     top: 2.5rem;
@@ -718,11 +720,11 @@ body {
     display: block;
     justify-content: center;
     flex-wrap: wrap;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
-.cart_item{
+.cart_item {
     position: relative;
     overflow: hidden;
     height: 5rem;
@@ -737,7 +739,7 @@ body {
     cursor: pointer;
 }
 
-.cart_item_price{
+.cart_item_price {
     position: absolute;
     top: 0;
     right: 0;
@@ -751,7 +753,7 @@ body {
     color: var(--text-color);
 }
 
-.cart_item_img{
+.cart_item_img {
     position: absolute;
     top: 0;
     left: 0;
@@ -766,7 +768,7 @@ body {
     background-position: center;
 }
 
-.cart_item_title{
+.cart_item_title {
     position: absolute;
     top: 0;
     left: 5rem;
@@ -782,7 +784,7 @@ body {
     padding-left: 0.6rem;
 }
 
-.cart_item_description{
+.cart_item_description {
     position: absolute;
     top: 1.3rem;
     left: 5rem;
@@ -798,7 +800,8 @@ body {
     padding-left: 0.6rem;
     padding-right: 0.6rem;
 }
-.cart_item_quantity{
+
+.cart_item_quantity {
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
@@ -812,7 +815,7 @@ body {
     color: var(--text-color);
 }
 
-.cart_summary{
+.cart_summary {
     position: absolute;
     top: 2.5rem;
     right: 0;
@@ -820,14 +823,14 @@ body {
     width: 50%;
     background-color: var(--background-color);
     display: block;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
-.checkout_button{
+.checkout_button {
     position: fixed;
     bottom: 0.5rem;
     right: 0.5rem;
@@ -843,20 +846,29 @@ body {
     overflow: hidden;
 }
 
+/*.checkout_button:hover {
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+}*/
+.checkout_button:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+}
+
 /* 
     checkout page
 */
-.checkout_actors{
+.checkout_actors {
     position: relative;
     width: 60%;
     height: auto;
     left: 0;
 }
 
-.Payment_method_container{
+.Payment_method_container {
     position: relative;
     width: 90%;
-    height: 12rem;
+    height: 16rem;
     margin-left: 5%;
     margin-bottom: 1.5rem;
     margin-top: 1rem;
@@ -866,16 +878,305 @@ body {
     background-color: var(--background-color);
     cursor: default;
 }
-.title_Payment_method{
-    position: absolute;
-    top: 0;
-    left: 0;
+
+.title_Payment_method {
+    position: relative;
     height: 2rem;
     width: 100%;
     font-size: 1.5rem;
     text-align: center;
     line-height: 2rem;
     color: var(--text-color);
+}
+
+.Payment_method_first_time_add_new_button,
+.Payment_method_first_time_add_new_button_hidden {
+    position: relative;
+    margin-top: 0.7rem;
+    margin-left: 25%;
+    height: 2rem;
+    width: 50%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--background-color);
+    font-size: 1.1rem;
+    text-align: center;
+    line-height: 2rem;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+    user-select: none;
+}
+
+.Payment_method_first_time_add_new_button_hidden {
+    display: none;
+}
+
+/*.Payment_method_first_time_add_new_button:hover {
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+    background-color: var(--off-background-color);
+}*/
+.Payment_method_first_time_add_new_button:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+}
+
+.hard_page_shader,
+.hard_page_shader_hidden {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--background-color);
+    /*filter: blur(0.1rem);*/
+    backdrop-filter: blur(2rem) brightness(0.75);
+    opacity: 0.7;
+    display: block;
+    z-index: 50;
+}
+
+.hard_page_shader_hidden {
+    display: none;
+}
+
+.Payment_method_add_edit_pannel,
+.Payment_method_add_edit_pannel_hidden {
+    position: absolute;
+    top: 2.5rem;
+    left: 25%;
+    height: calc(100% - 5rem);
+    width: 50%;
+    background-color: var(--background-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.3rem;
+    display: block;
+    opacity: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 100;
+}
+
+.Payment_method_add_edit_pannel_hidden {
+    display: none;
+}
+
+.Payment_method_add_edit_pannel .close_button {
+    top: 0rem;
+    right: 0rem;
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
+}
+
+.creditcard_name_put,.creditcard_name_put_error {
+    position: relative;
+    margin-left: 10%;
+    margin-top: 2rem;
+    height: 2.5rem;
+    width: 80%;
+}
+.creditcard_name_put_error{
+    border: 0.2rem solid red;
+}
+.date_expiry_cvc_container {
+    position: relative;
+    margin-left: 10%;
+    margin-top: 2rem;
+    height: 2.5rem;
+    width: 80%;
+}
+
+.cvc_put {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2.5rem;
+    width: 47%;
+}
+
+.date_expiry_put {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.5rem;
+    width: 47%;
+}
+
+.cvc_put_input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2.5rem;
+    width: 100%;
+    background-color: var(--background-color);
+    font-size: 1.2rem;
+    line-height: 2.5rem;
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+/* credit card representation */
+.card_type_representation_container {
+    position: relative;
+    margin-top: 1rem;
+    min-height: 10rem;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card_type_representation_container .card_type_representation {
+    position: relative;
+    height: 10rem;
+    width: 18rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    /*background-color: var(--accent-color);*/
+    box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.2rem;
+    cursor: default;
+    user-select: none;
+    overflow: hidden;
+    background-image: url('../img/jamaica-svgrepo-com.svg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card_type_representation_container_shader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.2rem;
+    background-color: var(--background-color);
+    filter: blur(0.2rem);
+    opacity: 0.8;
+}
+
+.card_type_representation .chip {
+    position: absolute;
+    top: 3rem;
+    left: 1rem;
+    height: 3rem;
+    width: 3rem;
+    background-image: url('../img/sim-card-chip-svgrepo-com.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card_type_representation .card_type {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    height: 2rem;
+    width: 4rem;
+    text-align: center;
+    background-image: url('../img/visa-svgrepo-com.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card_name{
+    position: absolute;
+    top: 8.5rem;
+    left: 0.5rem;
+    height: 1rem;
+    width: auto;
+    font-size: 1rem;
+    text-align: left;
+    line-height: 1rem;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+.card_number{
+    position: absolute;
+    top: 5.5rem;
+    left: 1rem;
+    height: 1.2rem;
+    width: calc(100% - 2rem);
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.2rem;
+    color: var(--text-color);
+}
+
+.card_expiry_date{
+    position: absolute;
+    bottom: 1.7rem;
+    right: 6rem;
+    height: 1rem;
+    width: 4rem;
+    font-size: 1rem;
+    text-align: right;
+    line-height: 1rem;
+    color: var(--text-color);
+}
+
+.card_save_button{
+    position: relative;
+    margin-left: 10%;
+    margin-top: 1.5rem;
+    height: 3rem;
+    width: 80%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 3rem;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.address_put_container{
+    position: relative;
+    margin-left: 10%;
+    margin-top: 2rem;
+    min-height: 10rem;
+    height: auto;
+    width: 80%;
+}
+.address_put{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    min-height: 10rem;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--background-color);
+    font-size: 1.2rem;
+    line-height: 2.5rem;
+    text-align: left;
+}
+#address_represent{
+    padding: 0.5rem;
+}
+.checkout_summary{
+    position: absolute;
+    top: 2.5rem;
+    right: 0;
+    height: calc(100% - 2.5rem);
+    width: 40%;
+    background-color: var(--background-color);
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-left: 0.5rem;
 }
 
 /*    <--  Landscape layout (with min-width) -->     */

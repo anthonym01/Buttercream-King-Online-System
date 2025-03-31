@@ -13,6 +13,8 @@ window.addEventListener('load', async function () {//Starting point
         ui_controller.initalize();
         catalog_maintainer.initalize();
         cart_maintainer.initalize();
+        checkout_maintainer.initalize();
+        //ui_controller.got_to_catalog();
     }
 });
 
@@ -79,6 +81,10 @@ let config = {
 let properties = {
     observingcake: null,
     loggedin: false,
+    paymentinfo: {},
+    deliveryinfo: {},
+    cart: [],
+    counter: { items: 0, total: 0 },
 }
 
 /* Logins and sign up */
@@ -131,8 +137,8 @@ let session_manager = {
     // Login Triggered by the users action
     login: function () {
         console.log('login');
-        const username_put = document.getElementById('Login_usernmae_put').value||"";
-        const password_put = document.getElementById('Login_password_put').value||"";
+        const username_put = document.getElementById('Login_usernmae_put').value || "";
+        const password_put = document.getElementById('Login_password_put').value || "";
         config.data.credentials = { user: username_put, pass: password_put };
         config.save();
         session_manager.attempt_login();
@@ -153,7 +159,9 @@ let ui_controller = {
     initalize: async function () {
         console.log('Navigation overider startup');
         this.got_to_catalog();
-        
+
+        document.getElementById('Add_new_address_pannel_close_button').addEventListener('click', function () { ui_controller.hide_Add_delivery_address_pannel() });
+        document.getElementById('Add_new_payment_method_pannel_close_button').addEventListener('click', function () { ui_controller.hide_Add_new_payment_method_pannel() });
         document.getElementById('Login_close_btn').addEventListener('click', function () { ui_controller.hide_login_dialog() });
         document.getElementById('login_trigger_button').addEventListener('click', function () { ui_controller.show_login_dialog() });
         document.getElementById('branding_block').addEventListener('click', function () { ui_controller.got_to_catalog() });
@@ -175,7 +183,7 @@ let ui_controller = {
     },
     go_to_cart: function () {
         console.log('Navigate to cart');
-        if (config.data.credentials.user == null || properties.loggedin==false) {//if not logged in, demand login
+        if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
             console.log('Login required to view cart');
             session_manager.Demand_login();
             return false;
@@ -205,6 +213,7 @@ let ui_controller = {
         document.getElementById('checkout_page').classList = "main_view_active"
         document.getElementById('account_page').classList = "main_view"
         this.hide_account_callout()
+        checkout_maintainer.load_checkout();
     },
     go_to_account: function () {
         console.log('Navigate to account');
@@ -235,6 +244,26 @@ let ui_controller = {
     hide_login_dialog: function () {
         console.log('hide login dialog');
         document.getElementById('Login_dialog').classList = "Login_dialog_hidden"
+    },
+    show_Add_new_payment_method_pannel: function () {
+        console.log('show add new payment method');
+        document.getElementById('payment_hard_page_shader').classList = "hard_page_shader"
+        document.getElementById('Add_new_payment_method_pannel').classList = "Payment_method_add_edit_pannel"
+    },
+    hide_Add_new_payment_method_pannel: function () {
+        console.log('hide add new payment method');
+        document.getElementById('payment_hard_page_shader').classList = "hard_page_shader_hidden"
+        document.getElementById('Add_new_payment_method_pannel').classList = "Payment_method_add_edit_pannel_hidden"
+    },
+    show_Add_delivery_address_pannel: function () {
+        console.log('show add new payment method');
+        document.getElementById('address_hard_page_shader').classList = "hard_page_shader"
+        document.getElementById('Add_new_address_pannel').classList = "Payment_method_add_edit_pannel"
+    },
+    hide_Add_delivery_address_pannel: function () {
+        console.log('hide add new payment method');
+        document.getElementById('address_hard_page_shader').classList = "hard_page_shader_hidden"
+        document.getElementById('Add_new_address_pannel').classList = "Payment_method_add_edit_pannel_hidden"
     },
 
 }
@@ -314,8 +343,8 @@ let catalog_maintainer = {
         document.getElementById('Add_to_cart_button').classList = "add_to_cart_button"
         document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button_hidden"
     },
-    add_to_cart:async function () {
-        if(config.data.credentials.user == null ||properties.loggedin==false) {//if not logged in, demand login
+    add_to_cart: async function () {
+        if (config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, demand login
             console.log('Login required to add to cart')
             session_manager.Demand_login()
             return false;
@@ -325,7 +354,7 @@ let catalog_maintainer = {
         document.getElementById('Procede_to_cart_button').classList = "add_to_cart_button"
 
         const quantity = document.getElementById('cake_quantity_selector').value;
-        console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity,'for user: ', config.data.credentials.user);
+        console.log('add to cart: ', properties.observingcake, ' quantity: ', quantity, 'for user: ', config.data.credentials.user);
 
         const payload = { cakeid: properties.observingcake, quantity: quantity, username: config.data.credentials.user };
 
@@ -349,29 +378,31 @@ let catalog_maintainer = {
 let cart_maintainer = {
     initalize: async function () {
         console.log('Cart startup');
-        document.getElementById('checkout_button').addEventListener('click', function () { 
+
+        document.getElementById('checkout_button').addEventListener('click', function () {
             if (properties.counter.items == 0) {
                 console.error('No items in cart, cannot proceed to checkout');
                 alert('No items in cart, cannot proceed to checkout');
                 ui_controller.got_to_catalog();
                 return false;
             }
-            ui_controller.go_to_checkout() 
+            ui_controller.go_to_checkout()
         });
     },
     load_cart: async function () {
         console.log('Loading cart');
-        
-        let counter = {items:0, total:0};
+
+        let counter = { items: 0, total: 0 };
         const catalog = await request('get/catalog');//load the catalog to get cake data
         console.log('Got Catalog: ', catalog);
         post(config.data.credentials.user, 'get/cart').then((response) => {
             console.log('Cart response: ', response);
-            document.getElementById('cart_container_handle').innerHTML="";
-            
+            properties.cart = response;//save the cart to the properties object
+            document.getElementById('cart_container_handle').innerHTML = "";
+
             if (response != "error") {
                 console.log('loaded cart');
-                for(let cake in response) {
+                for (let cake in response) {
                     //console.log('cake in cart: ', response[cake]);
                     //build cart display
                     build_cart(response[cake]);
@@ -431,7 +462,7 @@ let cart_maintainer = {
             cake_quantity.type = "number";
             cake_quantity.classList = "cart_item_quantity";
             cake_quantity.value = Number(cake.quantity);
-            cart_item.appendChild(cake_quantity);   
+            cart_item.appendChild(cake_quantity);
 
             document.getElementById('cart_container_handle').appendChild(cart_item);
 
@@ -444,7 +475,7 @@ let cart_maintainer = {
                 catalog_maintainer.trigger_cake(cake_data.uuid);
                 ui_controller.got_to_catalog();
             })
-            
+
         }
     },
 }
@@ -452,9 +483,175 @@ let cart_maintainer = {
 let checkout_maintainer = {
     initalize: async function () {
         console.log('Checkout startup');
+        document.getElementById('add_new_payment_button').addEventListener('click', function () {
+            ui_controller.show_Add_new_payment_method_pannel();
+        });
+        document.getElementById('add_new_address_button').addEventListener('click', function () {
+            console.log('add new address button clicked');
+            ui_controller.show_Add_delivery_address_pannel();
+        });
+
+        document.getElementById('submit_order_button').addEventListener('click', function () {
+            console.log('submit order button clicked');
+            if (properties.counter.items == 0) {
+                console.error('No items in cart, cannot proceed to checkout');
+                alert('No items in cart, cannot proceed to checkout');
+                ui_controller.got_to_catalog();
+                return false;
+            }
+            const payload = { username: config.data.credentials.user, Items: properties.cart, Status: "pending",total_price: properties.counter.total,Date: new Date().toISOString() };
+            
+            console.log('submit order payload: ', payload);
+            post(payload, 'post/submitorder').then((response) => {
+                console.log('submit order response: ', response);
+                if (response.status == "success") {
+                    console.log('order submitted');
+                    //ui_controller.go_to_cart();
+                    setTimeout(() => {
+                        ui_controller.go_to_orders();//reload the checkout data to show the new payment method
+                    }, 1000);
+                } else {
+                    console.error('failed to submit order');
+                    alert('Failed to submit order, please try again later.');
+                }
+            });
+        });
+
+        document.getElementById('card_save_button').addEventListener('click', function () {
+            console.log('Save card button clicked');
+
+            const payload = { card: properties.paymentinfo, username: config.data.credentials.user };
+            post(payload, 'post/addpaymentmethod').then((response) => {
+                console.log('add payment method response: ', response);
+                if (response.status == "success") {
+                    console.log('added payment method');
+                    ui_controller.hide_Add_new_payment_method_pannel();
+                    //ui_controller.go_to_cart();
+                    setTimeout(() => {
+                        checkout_maintainer.load_checkout();//reload the checkout data to show the new payment method
+                    }, 1000);
+                } else {
+                    console.error('failed to add payment method');
+                    alert('Failed to add payment method, please try again later.');
+                }
+            });
+        });
+
+        document.getElementById('address_save_button').addEventListener('click', function () {
+            console.log('Save address button clicked');
+            properties.deliveryinfo = document.getElementById('address_name_put').value;
+            const payload = { Delivery_address: properties.deliveryinfo, username: config.data.credentials.user };
+            post(payload, 'post/adddeliveryaddress').then((response) => {
+                console.log('add delivery address response: ', response);
+                if (response.status == "success") {
+                    console.log('added delivery address');
+                    ui_controller.hide_Add_delivery_address_pannel();
+                    document.getElementById('address_represent').innerText = `${properties.deliveryinfo}`;
+                    document.getElementById('add_new_address_button').innerHTML = "Change delivery address"
+                    setTimeout(() => {
+                        checkout_maintainer.load_checkout();//reload the checkout data to show the new payment method
+                    }, 1000);
+                    //ui_controller.go_to_cart();
+                } else {
+                    console.error('failed to add delivery address');
+                    alert('Failed to add delivery address, please try again later.');
+                    ui_controller.hide_Add_delivery_address_pannel();
+                }
+            });
+        });
+        //update the card representation name
+        document.getElementById('creditcard_name_put').addEventListener('change', function () { update_card_name(); });
+        document.getElementById('creditcard_name_put').addEventListener('input', function () { update_card_name(); });
+        async function update_card_name() {
+            const name = document.getElementById('creditcard_name_put').value;
+            console.log('credit card name: ', name);
+            properties.paymentinfo.name = name;//save the name to the properties object
+            checkout_maintainer.update_card_representation();
+        }
+
+        //update the card representation expiry date
+        document.getElementById('expiry_date_put').addEventListener('change', function () { update_expiry_date(); });
+        document.getElementById('expiry_date_put').addEventListener('input', function () { update_expiry_date(); });
+        async function update_expiry_date() {
+            const expire = document.getElementById('expiry_date_put').value;
+            console.log('cc expiry: ', expire);
+            properties.paymentinfo.expire = expire;//save the name to the properties object
+            checkout_maintainer.update_card_representation();
+        }
+
+        //update the card representation expiry date
+        document.getElementById('creditcard_number_put').addEventListener('change', function () { update_creditcard_number(); });
+        document.getElementById('creditcard_number_put').addEventListener('input', function () { update_creditcard_number(); });
+        async function update_creditcard_number() {
+            const number = document.getElementById('creditcard_number_put').value;
+            console.log('cc number: ', number);
+            properties.paymentinfo.number = number;//save the name to the properties object
+            checkout_maintainer.update_card_representation();
+        }
+
+        //update ccv
+        document.getElementById('cvc_put').addEventListener('change', function () { update_cvc(); });
+        document.getElementById('cvc_put').addEventListener('input', function () { update_cvc(); });
+        async function update_cvc() {
+            const cvc = document.getElementById('cvc_put').value;
+            console.log('cc cvc: ', cvc);
+            properties.paymentinfo.cvc = cvc;//save the name to the properties object
+            checkout_maintainer.update_card_representation();
+        }
+
     },
-    load_checkout:async function(){
+    load_checkout: async function () {
         console.log('Loading checkout');
-        
-    }
+        //load credit card info and delivery address if any
+        post(config.data.credentials.user, 'get/checkoutdata').then((response) => {
+            console.log('Checkout data: ', response);
+            if (response != "error") {
+                console.log('loaded checkout data');
+                //build checkout display
+                properties.paymentinfo = JSON.parse(response.paymentinfo);//load the payment info
+                if(response.paymentinfo.length > 5){
+                    //hide add new button
+                    document.getElementById('add_new_payment_button').innerHTML = "change payment method"
+                }
+                properties.deliveryinfo = JSON.parse(response.deliveryinfo).address;//load the delivery info
+
+                if(response.deliveryinfo.length > 5){
+                    //hide add new button
+                    document.getElementById('add_new_address_button').innerHTML = "Change delivery address"
+                    document.getElementById('address_represent').innerText = `${properties.deliveryinfo}`;
+                }
+
+                if(response.deliveryinfo.length > 5 && response.paymentinfo.length > 5){
+                    document.getElementById('checkout_summary_details').innerHTML = `
+                    <p>Items will be deivered to :<br> ${properties.deliveryinfo}</p>
+                    <p>Payment will be process with card ending in: ${properties.paymentinfo.number.slice(-4)}</p>
+                    <p>Click the checkout button to proceed.</p>
+                    `
+                }
+                this.update_card_representation();//update the card representation
+
+
+            } else {
+                console.error('failed to load checkout data');
+            }
+        });
+
+    },
+    update_card_representation: async function () {
+        if (properties.paymentinfo.name != undefined) {
+            document.getElementById('card_name_represent').innerText = `${properties.paymentinfo.name}`;
+            document.getElementById('card_name_represent2').innerText = `${properties.paymentinfo.name}`;
+        }
+        if (properties.paymentinfo.number != undefined) {
+            document.getElementById('card_number_represent').innerText = `${properties.paymentinfo.number}`;
+            document.getElementById('card_number_represent2').innerText = `**** **** **** ${properties.paymentinfo.number.slice(-4)}`;
+        }
+        if (properties.paymentinfo.expire != undefined) {
+            const year = properties.paymentinfo.expire.slice(0, 4);
+            const month = properties.paymentinfo.expire.slice(5, 7);
+
+            document.getElementById('card_expiry_represent').innerText = `${month}/${year.slice(2, 4)}`;
+            document.getElementById('card_expiry_represent2').innerText = `${month}/${year.slice(2, 4)}`;
+        }
+    },
 }
