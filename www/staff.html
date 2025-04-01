@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,42 @@
     <title>Staff Butter cream king</title>
 
     <title>Staff Page</title>
-    <link rel="stylesheet" href="/www/css/index.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
 
+    <div class="main_view_active" id="staff_login_page">
+        <div class="sign_up_container">
+            <div class="title">Staff Sign in</div>
+            <div class="Login_input_container">
+                <label for="username" class="Login_input_label">Username</label>
+                <input type="text" name="username" title="Input username" id="log_in_username_put" class="Login_input"
+                    placeholder="Username" required>
+            </div>
+            <div class="Login_input_container">
+                <label for="password" class="Login_input_label">Password</label>
+                <input type="password" name="password" title="Input Password" id="log_in_password_put"
+                    class="Login_input" placeholder="Password" required>
+            </div>
+            <div class="sign_up_error_message_hidden" id="log_in_error_message">Invalid username or password</div>
+            <button class="Login_button" id="submit_log_in_button">Sign up</button>
+        </div>
+    </div>
+
+    <div class="main_view" id="staff_main_page">
+        <div class="main_view_title">Staff Page</div>
+        <div class="main_view_content">
+            <div class="main_view_content_title">Welcome to the Staff Page</div>
+            <div class="main_view_content_text">You can manage the system from here.</div>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="nav_menu" id="nav_menu_target"></div>
+    </div>
+
+    <script src="js/staff.js"></script>
 </body>
+
 </html>

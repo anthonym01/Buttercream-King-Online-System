@@ -1,4 +1,3 @@
-
 const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
 
 window.addEventListener('load', async function () {//Starting point
@@ -9,6 +8,7 @@ window.addEventListener('load', async function () {//Starting point
     } finally {
         //page startup
         console.log('Page startup complete');
+        ui_controller.initalize();
         //ui_controller.got_to_catalog();
     }
 });
@@ -49,7 +49,7 @@ The `config` is used to manage local application data by saving,loading, and del
 */
 let config = {
     data: {//Loacal app data
-        credentials: { user: "", pass: "", token: "",privilage:0 },//User credentials
+        credentials: { user: "", pass: "", token: "", privilage: 0 },//User credentials
     },
     save: async function () {//Save config via local storage
         console.table('Configuration is being saved', config.data);
@@ -73,3 +73,12 @@ let config = {
     },
 }
 
+let ui_controller = {
+    initalize: function () {//Initialize the UI
+        console.log('UI controller is being initialized');
+    },
+}
+
+let session_manager = {
+
+}

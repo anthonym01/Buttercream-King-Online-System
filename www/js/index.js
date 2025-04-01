@@ -1,5 +1,4 @@
 
-
 const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
 
 window.addEventListener('load', async function () {//Starting point
@@ -15,6 +14,7 @@ window.addEventListener('load', async function () {//Starting point
         cart_maintainer.initalize();
         checkout_maintainer.initalize();
         order_maintainer.initalize();
+        search_handler.initalize();
         console.log('Page startup complete');
         //ui_controller.got_to_catalog();
     }
@@ -949,5 +949,15 @@ let order_maintainer = {
             }
 
         }
+    }
+}
+
+let search_handler = {
+    initalize:function(){
+        console.log('Search startup');
+        document.getElementById('search_button').addEventListener('input', function () {
+            console.log('search button clicked');
+            
+        });
     }
 }

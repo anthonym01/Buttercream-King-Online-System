@@ -40,8 +40,11 @@
 
 .dark {
     --text-color: rgb(255, 255, 255);
-    --background-color: rgb(0, 0, 0);
-    --grey: rgb(54, 54, 54);
+    --accent-color: hsl(204, 100%, 50%);
+    --background-color: rgb(30, 30, 30);
+    --off-background-color: rgb(48, 48, 48);
+    --logo: url('../img/cupcake-svgrepo-com.svg');
+    --grey: rgb(61, 61, 61);
     --inversion_factor: invert(1);
     /*Invert black and white images*/
 }
@@ -1276,7 +1279,7 @@ orders_page
     width: 4rem;
     height: 4rem;
     bsckground-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -1407,6 +1410,12 @@ orders_page
 }
 .sign_up_error_message_hidden {
     display: none;
+}
+
+
+/* Staff actions */
+.menu_target{
+    
 }
 
 /*    <--  Landscape layout (with min-width) -->     */
