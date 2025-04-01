@@ -455,7 +455,7 @@ app.post('/get/loyaltypoints', (req, res) => {
 app.get('/staff', (req, res) => {
     try {
         logs.info('Redirecting to staff login');
-        res.redirect('/testing/staff.html');
+        res.redirect('/staff.html');
     } catch (error) {
         logs.error('Catastrophy on staff redirect: ', err);
     }
