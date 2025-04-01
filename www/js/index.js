@@ -113,7 +113,7 @@ let session_manager = {
     attempt_login: function () {// USed to get credentials on load
         console.log('attempt login');
         try {
-            if (config.data.credentials.user != null) {//if never logged in, user is null
+            if (config.data.credentials.user != null && config.data.credentials.user!="") {//if never logged in
                 post(config.data.credentials, 'post/login').then((response) => {
                     console.log('login state: ', response.status);
                     if (response.status == "sucess") {
