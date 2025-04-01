@@ -577,6 +577,8 @@ body {
     background-color: var(--background-color);
     box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
     border-radius: 0.3rem;
+    box-sizing: border-box;
+    padding: 0.3rem;
     display: block;
     overflow: hidden;
 }
@@ -973,16 +975,19 @@ body {
     cursor: pointer;
 }
 
-.creditcard_name_put,.creditcard_name_put_error {
+.creditcard_name_put,
+.creditcard_name_put_error {
     position: relative;
     margin-left: 10%;
     margin-top: 2rem;
     height: 2.5rem;
     width: 80%;
 }
-.creditcard_name_put_error{
+
+.creditcard_name_put_error {
     border: 0.2rem solid red;
 }
+
 .date_expiry_cvc_container {
     position: relative;
     margin-left: 10%;
@@ -1091,7 +1096,7 @@ body {
     background-position: center;
 }
 
-.card_name{
+.card_name {
     position: absolute;
     top: 8.5rem;
     left: 0.5rem;
@@ -1104,7 +1109,7 @@ body {
     color: var(--text-color);
 }
 
-.card_number{
+.card_number {
     position: absolute;
     top: 5.5rem;
     left: 1rem;
@@ -1116,7 +1121,7 @@ body {
     color: var(--text-color);
 }
 
-.card_expiry_date{
+.card_expiry_date {
     position: absolute;
     bottom: 1.7rem;
     right: 6rem;
@@ -1128,7 +1133,7 @@ body {
     color: var(--text-color);
 }
 
-.card_save_button{
+.card_save_button {
     position: relative;
     margin-left: 10%;
     margin-top: 1.5rem;
@@ -1144,7 +1149,7 @@ body {
     overflow: hidden;
 }
 
-.address_put_container{
+.address_put_container {
     position: relative;
     margin-left: 10%;
     margin-top: 2rem;
@@ -1152,7 +1157,8 @@ body {
     height: auto;
     width: 80%;
 }
-.address_put{
+
+.address_put {
     position: relative;
     height: 100%;
     width: 100%;
@@ -1164,10 +1170,12 @@ body {
     line-height: 2.5rem;
     text-align: left;
 }
-#address_represent{
+
+#address_represent {
     padding: 0.5rem;
 }
-.checkout_summary{
+
+.checkout_summary {
     position: absolute;
     top: 2.5rem;
     right: 0;
@@ -1192,7 +1200,7 @@ orders_page
     text-align: center;
 }
 
-.orders_container_handle{
+.orders_container_handle {
     position: relative;
     width: 100%;
     display: flex;
@@ -1204,7 +1212,7 @@ orders_page
     overflow-x: hidden;
 }
 
-.order_container{
+.order_container {
     position: relative;
     overflow: hidden;
     height: 15rem;
@@ -1219,7 +1227,7 @@ orders_page
     user-select: none;
 }
 
-.order_container .sumation{
+.order_container .sumation {
     position: absolute;
     top: 0;
     right: 0;
@@ -1234,7 +1242,7 @@ orders_page
     color: var(--text-color);
 }
 
-.order_items_constainer{
+.order_items_constainer {
     position: absolute;
     top: 0;
     left: 0;
@@ -1246,7 +1254,7 @@ orders_page
     overflow-x: hidden;
 }
 
-.order_item{
+.order_item {
     /* Mini previous cart representation */
     position: relative;
     overflow: hidden;
@@ -1260,20 +1268,20 @@ orders_page
     color: var(--text-color);
 }
 
-.order_item_img{
+.order_item_img {
     position: absolute;
     top: 0;
     left: 0;
     display: block;
     width: 4rem;
-    height:4rem;
+    height: 4rem;
     bsckground-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.order_item_title{
+.order_item_title {
     position: absolute;
     top: 0rem;
     left: 4rem;
@@ -1290,7 +1298,7 @@ orders_page
     line-height: 1.2rem;
 }
 
-.order_item_quantity{
+.order_item_quantity {
     position: absolute;
     top: 2rem;
     left: 4rem;
@@ -1305,7 +1313,8 @@ orders_page
     color: var(--text-color);
 }
 
-.quick_account_info,.quick_account_info_hidden {
+.quick_account_info,
+.quick_account_info_hidden {
     position: fixed;
     top: 2.5rem;
     right: 0;
@@ -1320,14 +1329,21 @@ orders_page
     z-index: 50;
     font-size: 0.9rem;
 }
+
 .quick_account_info_hidden {
     display: none;
 }
 
-.quick_account_info th{text-align: center; font-size: 1rem;}
-.quick_account_info table{width: 100%;}
+.quick_account_info th {
+    text-align: center;
+    font-size: 1rem;
+}
 
-.quick_account_info_logout_button{
+.quick_account_info table {
+    width: 100%;
+}
+
+.quick_account_info_logout_button {
     position: relative;
     margin-left: 10%;
     margin-top: 0.75rem;
@@ -1344,7 +1360,7 @@ orders_page
     overflow: hidden;
 }
 
-.quick_account_info .close_button{
+.quick_account_info .close_button {
     position: absolute;
     top: 0.2rem;
     right: 0.2rem;
@@ -1352,6 +1368,47 @@ orders_page
     width: 2rem;
     cursor: pointer;
 }
+
+.sign_up_carrot {
+    text-align: center;
+}
+
+.sign_up_container {
+    position: relative;
+    margin-left: 30%;
+    margin-top: 4rem;
+    height: auto;
+    width: 40%;
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.3rem;
+    background-color: var(--background-color);
+    display: block;
+    overflow: hidden;
+    z-index: 100;
+    padding: 0.5rem;
+}
+
+.sign_up_container .title {
+    position: relative;
+    height: 2rem;
+    font-size: 1.5rem;
+    text-align: center;
+    width: 100%;
+    color: var(--text-color);
+    line-height: 1.5rem;
+}
+
+.sign_up_error_message,.sign_up_error_message_hidden {
+    text-align: center;
+    width: 100%;
+    font-size: 0.9rem;
+    display: block;
+    color: red;
+}
+.sign_up_error_message_hidden {
+    display: none;
+}
+
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}

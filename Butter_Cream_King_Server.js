@@ -220,10 +220,11 @@ app.post('/post/login', (req, res) => {
             try {
                 database.getCustomersViaUsername(data.user).then((result) => {
                     logs.info('Lookup result: ', result);
-                    if (typeof (result) != 'undefined' && result.password == data.pass) {
+                    if (typeof (result) != 'undefined' && result.length!=0 && result.password == data.pass) {
                         res.end(JSON.stringify({ status: "sucess" }));
                     }
                     else {
+                        logs.info('User does not exist or password is incorrect: ', data.user);
                         res.end(JSON.stringify({ status: "fail" }));
                     }
                 });
@@ -234,6 +235,52 @@ app.post('/post/login', (req, res) => {
         });
     } catch (error) {
         logs.error('Catastrophy on login post: ', err);
+    }
+});
+
+//User registration handler
+app.post('/post/signup', (req, res) => {
+    /*This is a post request, it will be used to register a user*/
+    try {
+        logs.info('User signup started');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);// { user, pass };
+
+            try {
+                if (typeof (data.user) != 'undefined' && typeof (data.pass) != 'undefined') {
+                    database.getCustomersViaUsername(data.user).then((result) => {
+                        if (typeof (result) == 'undefined'|| result.length == 0) {
+                            logs.info('User does not exist, creating new user: ', data.user);
+                            // Create new user
+                            const newUser = {
+                                username: data.user,
+                                password: data.pass,
+                                Cart_items: JSON.stringify([]),
+                                orders: JSON.stringify([]),
+                                Delivery_address: JSON.stringify({ }),
+                                payment_details: JSON.stringify({}),
+                                loyalty_points: 0,
+                            }
+                            //Insert new user into database
+                            database.insert_into_Customers(newUser).then((result) => {
+                                logs.info('User created: ', result);
+                            });
+                            res.end(JSON.stringify({ status: "success" }));
+                        } else {
+                            res.end(JSON.stringify({ status: "exists" }));
+                        }
+                    });
+                } else {
+                    res.end(JSON.stringify({ status: "error" }));
+                }
+            } catch (error) {
+                logs.error('Catastrophy on signup post: ', error);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on signup post: ', err);
     }
 });
 
@@ -289,6 +336,11 @@ app.post('/post/submitorder', (req, res) => {
                             // Clear the cart after order is submitted
                             logs.info('Updated user orders: ', oldorderdata);
                             res.end(JSON.stringify({ status: "success" }));
+
+                            // update loyalty points
+                            let loyaltypoints = Math.floor(data.total_price / 100);
+                            logs.info('Adding loyalty points: ', loyaltypoints, ' for user: ', data.username);
+                            database.updateCustomer(data.username, { loyalty_points: Number(result.loyalty_points) + Number(loyaltypoints) });
                         });
                         res.end(JSON.stringify({ status: "success" }));
                     });

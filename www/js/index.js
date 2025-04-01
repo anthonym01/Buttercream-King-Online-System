@@ -99,6 +99,16 @@ let session_manager = {
         document.getElementById('Logout_button').addEventListener('click', function () { session_manager.logout() });
         document.getElementById('Logout_button_quick').addEventListener('click', function () { session_manager.logout() });
 
+        document.getElementById('submit_sign_up_button').addEventListener('click', function () { session_manager.submit_sign_up() });
+
+        document.getElementById('sign_up_username_put').addEventListener('change', function () { session_manager.comparate_password() });
+        document.getElementById('sign_up_username_put').addEventListener('input', function () { session_manager.comparate_password() });
+        document.getElementById('sign_up_password_put').addEventListener('change', function () { session_manager.comparate_password() });
+        document.getElementById('sign_up_password_put2').addEventListener('change', function () { session_manager.comparate_password() });
+        document.getElementById('sign_up_password_put').addEventListener('input', function () { session_manager.comparate_password() });
+        document.getElementById('sign_up_password_put2').addEventListener('input', function () { session_manager.comparate_password() });
+
+        
     },
     attempt_login: function () {// USed to get credentials on load
         console.log('attempt login');
@@ -114,14 +124,15 @@ let session_manager = {
                         document.getElementById('Login_error_message').classList = "Login_error_message_hidden";
                         document.getElementById('cart_title').innerHTML = `${config.data.credentials.user}'s cart`;
                         document.getElementById('quick_account_username').innerText = `${config.data.credentials.user}`;
-                        ui_controller.hide_account_callout()
-                        ui_controller.hide_login_dialog()
+                        ui_controller.hide_account_callout();
+                        ui_controller.hide_login_dialog();
 
                     }
                     else {
                         //session_manager.logout();//logout if not logged in to clear keys, jingle jingle
-                        console.log('login failed');
-                        document.getElementById('Login_error_message').classList = "Login_error_message";
+                        console.log('login failed/not logged in');
+                        //alert('Login failed, please try again.');
+                        //document.getElementById('Login_error_message').classList = "Login_error_message";
                     }
                 });
             }
@@ -147,13 +158,21 @@ let session_manager = {
         console.log('login');
         const username_put = document.getElementById('Login_usernmae_put').value || "";
         const password_put = document.getElementById('Login_password_put').value || "";
+        if (username_put == "" || password_put == "") {
+            console.log('Login failed, empty fields');
+            document.getElementById('Login_error_message').classList = "Login_error_message";
+            document.getElementById('Login_error_message').innerHTML = "Please fill in all fields";
+            return false;
+        }
+
         config.data.credentials = { user: username_put, pass: password_put };
         config.save();
         session_manager.attempt_login();
-        cart_maintainer.load_cart();//load the cart after login
-        checkout_maintainer.load_checkout();//load the checkout after login
-        order_maintainer.get_loyalty_points();//load the loyalty points after login
-
+        setTimeout(() => {
+            if (properties.loggedin == true) {
+                        location.reload();
+            }
+        }, 1000);//wait for the login to finish before reloading the page
     },
     Demand_login: function () {
         console.log('action demands login/sign up');
@@ -164,13 +183,86 @@ let session_manager = {
             alert('You must log in to proceed with this action.');
         }
     },
+    comparate_password:function(username, password, password2) {
+        console.log('comparate password');
+        if(username == undefined){
+            username = document.getElementById('sign_up_username_put').value || "";
+        }
+        if(password == undefined){
+            password = document.getElementById('sign_up_password_put').value || "";
+        }
+        if(password2 == undefined){
+            password2 = document.getElementById('sign_up_password_put2').value || "";
+        }
+        if (username.length < 3) {
+            console.log('username too short');
+            document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
+            document.getElementById('sign_up_error_message').innerHTML = "Username too short, must be at least 3 characters";
+            return false;
+        } else if (username.length > 20) {
+            console.log('username too long');
+            document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
+            document.getElementById('sign_up_error_message').innerHTML = "Username too long, must be at most 20 characters";
+            return false;
+        } else if (password.length < 4) {
+            console.log('password too short');
+            document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
+            document.getElementById('sign_up_error_message').innerHTML = "Password too short, must be at least 4 characters";
+            return false;
+        } else if (password.length > 20) {
+            console.log('password too long');
+            document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
+            document.getElementById('sign_up_error_message').innerHTML = "Password too long, must be at most 20 characters";
+            return false;
+        }
 
+        if (password != password2) {
+            console.log('passwords do not match');
+            document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
+            document.getElementById('sign_up_error_message').innerHTML = "Passwords do not match";
+            return false;
+        }
+        
+        document.getElementById('sign_up_error_message').classList = "sign_up_error_message_hidden";
+        document.getElementById('sign_up_error_message').innerHTML = "";
+        return true;
+    },
+    submit_sign_up: function () {
+        console.log('submit sign up');
+
+        const username_put = document.getElementById('sign_up_username_put').value || "";
+        const password_put = document.getElementById('sign_up_password_put').value || "";
+        const password_put2 = document.getElementById('sign_up_password_put2').value || "";
+
+        const validity = session_manager.comparate_password(username_put, password_put, password_put2)|| false;
+        const payload = { user: username_put, pass: password_put };
+
+        if(validity == true){
+            post(payload, 'post/signup').then((response) => {
+                console.log('sign up response: ', response);
+                if (response.status == "success") {
+                    console.log('sign up success');
+                    alert('Sign up success, please log in to continue.');
+                    location.reload();//reload the page to clear the session
+                    //ui_controller.got_to_catalog();
+                } if (response.status == "exists") {
+                    console.error('sign up failed, user exists');
+                    document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
+                    document.getElementById('sign_up_error_message').innerHTML = "Passwords do not match";
+                } else {
+                    console.error('failed to sign up');
+                }
+            });
+        }
+    },
 }
 
 let ui_controller = {
     initalize: async function () {
         console.log('Navigation overider startup');
         this.got_to_catalog();
+
+        document.getElementById('sign_up_button').addEventListener('click', function () { ui_controller.go_to_sign_up() });
 
         document.getElementById('Add_new_address_pannel_close_button').addEventListener('click', function () { ui_controller.hide_Add_delivery_address_pannel() });
         document.getElementById('Add_new_payment_method_pannel_close_button').addEventListener('click', function () { ui_controller.hide_Add_new_payment_method_pannel() });
@@ -186,6 +278,18 @@ let ui_controller = {
         document.getElementById('quick_account_info_close_btn').addEventListener('click', function () { ui_controller.hide_quick_account_info() });
 
     },
+    go_to_sign_up: function () {
+        console.log('Navigate to sign up');
+        document.getElementById('cake_catalog_page').classList = "main_view"
+        document.getElementById('cart_page').classList = "main_view"
+        document.getElementById('orders_page').classList = "main_view"
+        document.getElementById('checkout_page').classList = "main_view"
+        document.getElementById('account_page').classList = "main_view"
+        document.getElementById('sign_up_page').classList = "main_view_active"
+        this.hide_account_callout();
+        this.hide_quick_account_info();
+        this.hide_login_dialog();
+    },
     got_to_catalog: function () {
         console.log('Navigate to catalog');
         document.getElementById('cake_catalog_page').classList = "main_view_active"
@@ -193,6 +297,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
+        document.getElementById('sign_up_page').classList = "main_view"
         this.hide_account_callout()
     },
     go_to_cart: function () {
@@ -207,6 +312,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
+        document.getElementById('sign_up_page').classList = "main_view"
         this.hide_account_callout();
         cart_maintainer.load_cart();
     },
@@ -222,6 +328,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view_active"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
+        document.getElementById('sign_up_page').classList = "main_view"
         this.hide_account_callout()
         this.hide_quick_account_info()
     },
@@ -236,6 +343,7 @@ let ui_controller = {
         document.getElementById('cart_page').classList = "main_view"
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view_active"
+        document.getElementById('sign_up_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view"
         this.hide_account_callout()
         this.hide_quick_account_info()
@@ -253,6 +361,7 @@ let ui_controller = {
         document.getElementById('orders_page').classList = "main_view"
         document.getElementById('checkout_page').classList = "main_view"
         document.getElementById('account_page').classList = "main_view_active"
+        document.getElementById('sign_up_page').classList = "main_view"
         this.hide_account_callout()
         this.hide_quick_account_info()
     },
@@ -260,11 +369,10 @@ let ui_controller = {
         console.log('show account callout');
         if (document.getElementById('account_dropdown').classList != 'account_dropdown') {
             document.getElementById('account_dropdown').classList = 'account_dropdown'
-        this.hide_quick_account_info()
+            this.hide_quick_account_info()
         } else {
             this.hide_account_callout()
-        this.hide_quick_account_info()
-
+            this.hide_quick_account_info()
         }
     },
     show_quick_account_info: function () {
@@ -741,14 +849,14 @@ let order_maintainer = {
             if (properties.loggedin == true) {
                 this.load_orders();//load the orders on startup
             }
-        },1000);
-        this.get_loyalty_points();//load the loyalty points on startup
+        }, 1000);
     },
     get_loyalty_points: async function () {
         console.log('Get loyalty points');
-        if(config.data.credentials.user == null || properties.loggedin == false) {//if not logged in, ignore
+        if (properties.loggedin == false) {//if not logged in, ignore
             return false;
         }
+
         post(config.data.credentials.user, 'get/loyaltypoints').then((response) => {
             console.log('Loyalty points response: ', response);//expects {points: 3}
             if (response != "error") {
@@ -781,7 +889,7 @@ let order_maintainer = {
                 console.error('failed to load orders');
             }
         });
-
+        this.get_loyalty_points();//get the loyalty points for the user
         async function build_order(order) {
             console.log('Build order for: ', order);
 
