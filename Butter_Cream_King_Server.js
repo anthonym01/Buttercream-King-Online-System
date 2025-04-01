@@ -460,3 +460,31 @@ app.get('/staff', (req, res) => {
         logs.error('Catastrophy on staff redirect: ', err);
     }
 });
+
+//Get staff login
+app.post('/get/stafflogin', (req, res) => {
+    try {
+        logs.info('User login started');
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);
+            try {
+                database.getStaffViaUsername(data.user).then((result) => {
+                    logs.info('Lookup result: ', result);
+                    if (typeof (result) != 'undefined' && result.length!=0 && result.password == data.pass) {
+                        res.end(JSON.stringify({ status: "sucess" ,privilage: result.privilage_level}));
+                    }
+                    else {
+                        logs.info('User does not exist or password is incorrect: ', data.user);
+                        res.end(JSON.stringify({ status: "fail" }));
+                    }
+                });
+            } catch (error) {
+                logs.error('Catastrophy on login post: ', error);
+                res.end(JSON.stringify({ status: "error" }));
+            }
+        });
+    } catch (error) {
+        logs.error('Catastrophy on login post: ', err);
+    }
+})

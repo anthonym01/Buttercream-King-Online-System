@@ -21,11 +21,11 @@ const connectionmanager = {
         });
     },
     /*
-        Inventory Table
+        Cakes Table
     */
-    // SELECT * FROM `inventory`
+    // SELECT * FROM `cakes`
     getCakes: async function () {
-        return new Promise((resolve, reject) => {//Prommise to gather cakes from the `inventory` table of the database
+        return new Promise((resolve, reject) => {//Prommise to gather cakes from the `cakes` table of the database
 
             //Create sql connection
             let connection = mysql.createConnection(SQLcredentials);
@@ -39,7 +39,7 @@ const connectionmanager = {
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
                 // Execute SQL Query
-                connection.query('SELECT * FROM `inventory`', function (error, results, fields) {
+                connection.query('SELECT * FROM `cakes`', function (error, results, fields) {
                     if (error) throw error;
                     console.log('From inventory got : ', results);
                     resolve(results);// 'resolve' results to be accecible to Promise
@@ -48,7 +48,7 @@ const connectionmanager = {
             });
         });
     },
-    //'SELECT * FROM `inventory` WHERE `uuid` = ?'
+    //'SELECT * FROM `cakes` WHERE `uuid` = ?'
     getCakesViaUuid: async function (uuid) {
         return new Promise((resolve, reject) => {// Gather data asyncronusly
             logs.info('Looking for cake with uuid: ',)
@@ -61,7 +61,7 @@ const connectionmanager = {
                 }
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
-                connection.query('SELECT * FROM `inventory` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+                connection.query('SELECT * FROM `cakes` WHERE `uuid` = ?', uuid, function (error, results, fields) {
 
                     if (error) throw error;
                     console.log('From inventory got : ', results);
@@ -81,21 +81,21 @@ const connectionmanager = {
         logs.info(query.sql); // INSERT INTO
         connection.end();
     },
-    // DELETE FROM `inventory` WHERE `uuid` = ?
+    // DELETE FROM `cakes` WHERE `uuid` = ?
     deleteCake: async function (uuid) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to delete cake with uuid: ', uuid)
-        let query = connection.query('DELETE FROM `inventory` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+        let query = connection.query('DELETE FROM `cakes` WHERE `uuid` = ?', uuid, function (error, results, fields) {
             if (error) logs.error(error);
         });
         logs.info(query.sql); // DELETE FROM
         connection.end();
     },
-    // UPDATE `inventory` SET ? WHERE `uuid` = ?
+    // UPDATE `cakes` SET ? WHERE `uuid` = ?
     updateCake: async function (uuid, injection) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to update cake with uuid: ', uuid, ' with ', injection)
-        let query = connection.query('UPDATE `inventory` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+        let query = connection.query('UPDATE `cakes` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
             if (error) logs.error(error);
         });
         logs.info(query.sql); // UPDATE
@@ -333,6 +333,30 @@ const connectionmanager = {
                     if (error) throw error;
                     console.log('From Staff got : ', results);
                     resolve(results);
+                    connection.end();
+                });
+            });
+        });
+    },
+    //'SELECT * FROM `Staff` WHERE `username` = ?'
+    getStaffViaUsername: async function (username) {
+        return new Promise((resolve, reject) => {
+            logs.info('Looking for staff with username: ', username)
+
+            let connection = mysql.createConnection(SQLcredentials);
+
+            connection.connect(function (err) {
+                if (err) {
+                    logs.error('error connecting: ' + err.stack);
+                    reject(err);
+                }
+
+                logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
+
+                connection.query('SELECT * FROM `Staff` WHERE `username` = ?', username, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log('From Staff got : ', results);
+                    resolve(results[0]);
                     connection.end();
                 });
             });

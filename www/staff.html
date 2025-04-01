@@ -27,20 +27,45 @@
                     class="Login_input" placeholder="Password" required>
             </div>
             <div class="sign_up_error_message_hidden" id="log_in_error_message">Invalid username or password</div>
-            <button class="Login_button" id="submit_log_in_button">Sign up</button>
+            <button class="Login_button" id="submit_log_in_button">Login</button>
         </div>
     </div>
 
+    <div class="main_view" id="manage_catalog_page">
+        Catalog page
+    </div>
+    <div class="main_view" id="manage_staff_page">
+        staff page
+    </div>
+    <div class="main_view" id="manage_orders_page">
+        orders page
+    </div>
+    <div class="main_view" id="manage_Customers_page">
+        customers page
+    </div>
+
+    <!--Staff page, doubles as a big menu -->
     <div class="main_view" id="staff_main_page">
-        <div class="main_view_title">Staff Page</div>
-        <div class="main_view_content">
-            <div class="main_view_content_title">Welcome to the Staff Page</div>
-            <div class="main_view_content_text">You can manage the system from here.</div>
+        <div class="fullview_menu_container">
+            <div class="fullview_menu_item" id="Catalog_fullview_menu_item">Catalog</div>
+            <div class="fullview_menu_item" id="Staff_fullview_menu_item">Staff</div>
+            <div class="fullview_menu_item" id="Customers_fullview_menu_item">Customers</div>
+            <div class="fullview_menu_item" id="Orders_fullview_menu_item">Orders</div>
+            <div class="fullview_menu_item" id="Logout_fullview_menu_item">Logout</div>
         </div>
     </div>
 
     <div class="navbar">
-        <div class="nav_menu" id="nav_menu_target"></div>
+        <div class="menu_target_hidden" id="nav_menu_target" title="menu"></div>
+        <div class="staffidentifier" id="staffidentifier">Not Logged in</div>
+    </div>
+
+    <div class="staff_dropdown_menu_hidden" id="staff_dropdown_menu">
+        <div class="staff_dropdown_menu_item" id="Catalog_menu_item">Catalog</div>
+        <div class="staff_dropdown_menu_item" id="Staff_menu_item">Staff</div>
+        <div class="staff_dropdown_menu_item" id="Customers_menu_item">Customers</div>
+        <div class="staff_dropdown_menu_item" id="Orders_menu_item">Orders</div>
+        <div class="staff_dropdown_menu_item" id="Logout_menu_item">Logout</div>
     </div>
 
     <script src="js/staff.js"></script>

@@ -1401,22 +1401,160 @@ orders_page
     line-height: 1.5rem;
 }
 
-.sign_up_error_message,.sign_up_error_message_hidden {
+.sign_up_error_message,
+.sign_up_error_message_hidden {
     text-align: center;
     width: 100%;
     font-size: 0.9rem;
     display: block;
     color: red;
 }
+
 .sign_up_error_message_hidden {
     display: none;
 }
 
 
 /* Staff actions */
-.menu_target{
-    
+
+.staffidentifier {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.1rem;
+    text-align: center;
+    color: var(--text-color);
+    width: 100%;
+    height: 100%;
+    line-height: 2.5rem;
+    box-sizing: border-box;
+    padding: 0.3rem;
+
 }
+
+.menu_target,.menu_target_hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('../img/menu-svgrepo-com.svg');
+    z-index: 100;
+    cursor: pointer;
+    display: block;
+}
+.menu_target_hidden {
+    display: none;
+}
+
+/*
+    fullview_menu
+*/
+.fullview_menu_container {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    height: calc(100% - 2.5rem);
+    width: 100%;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fullview_menu_item {
+    position: relative;
+    height: 5rem;
+    width: 11rem;
+    font-size: 1.6rem;
+    line-height: 5rem;
+    cursor: pointer;
+    background-color: var(--off-background-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.2rem;
+    color: var(--text-color);
+    text-align: center;
+    margin: 1rem;
+    transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+    user-select: none;
+}
+
+.fullview_menu_item:hover {
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+    background-color: var(--off-background-color);
+}
+
+.fullview_menu_item:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+}
+
+.staff_dropdown_menu,
+.staff_dropdown_menu_hidden {
+    position: fixed;
+    top: 2.5rem;
+    left: 0;
+    height: auto;
+    width: 13rem;
+    display: block;
+    background-color: var(--background-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.staff_dropdown_menu_hidden {
+    display: none;
+}
+
+.staff_dropdown_menu .title{
+    position: relative;
+    height: 2rem;
+    font-size: 1rem;
+    text-align: center;
+    width: 100%;
+    color: var(--text-color);
+    line-height: 1.5rem;
+}
+.staff_dropdown_menu .close_button {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+}
+
+.staff_dropdown_menu_item{
+    position: relative;
+    height: 2.5rem;
+    width: 100%;
+    font-size: 1.2rem;
+    line-height: 2.5rem;
+    text-align: center;
+    box-sizing: border-box  ;
+    color: var(--text-color);
+    cursor: pointer;
+    background-color: var(--background-color);
+    border-radius: 0.2rem;
+    transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+    user-select: none;
+}
+.staff_dropdown_menu_item:hover{
+    background-color: var(--off-background-color);
+}
+.staff_dropdown_menu_item:active{
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+}
+
 
 /*    <--  Landscape layout (with min-width) -->     */
 
