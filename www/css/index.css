@@ -34,7 +34,7 @@
     --background-color: rgb(255, 255, 255);
     --off-background-color: rgb(230, 230, 230);
     --grey: rgb(212, 212, 212);
-    --logo: url('../img/cupcake-svgrepo-com.svg');
+    --logo: url('../img/logo.png');
     --inversion_factor: invert(0);
 }
 
@@ -43,7 +43,7 @@
     --accent-color: hsl(204, 100%, 50%);
     --background-color: rgb(30, 30, 30);
     --off-background-color: rgb(48, 48, 48);
-    --logo: url('../img/cupcake-svgrepo-com.svg');
+    --logo: url('../img/logo.png');
     --grey: rgb(61, 61, 61);
     --inversion_factor: invert(1);
     /*Invert black and white images*/
@@ -142,7 +142,7 @@ body {
     left: 0;
     height: 2.5rem;
     width: 2.5rem;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-image: var(--logo);
 }
