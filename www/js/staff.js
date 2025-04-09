@@ -10,6 +10,8 @@ window.addEventListener('load', async function () {//Starting point
         //page startup
         console.log('Page startup complete');
         session_manager.initalize();
+        staff_manager.initalize();
+        catalog_manager.initalize();
         ui_controller.initalize();
         //ui_controller.got_to_catalog();
     }
@@ -83,7 +85,7 @@ let config = {
 let ui_controller = {
     initalize: function () {//Initialize the UI
         console.log('UI controller is being initialized');
-        
+
         document.getElementById('Catalog_fullview_menu_item').addEventListener('click', async function () {//Catalog button
             console.log('Catalog button clicked');
             ui_controller.go_to_catalog();
@@ -120,7 +122,7 @@ let ui_controller = {
             ui_controller.go_to_customers();
         });
 
-        document.getElementById('nav_menu_target').addEventListener('click',function () {//Main menu button
+        document.getElementById('nav_menu_target').addEventListener('click', function () {//Main menu button
             console.log('Main menu button clicked');
             if (document.getElementById('staff_dropdown_menu').classList == "staff_dropdown_menu") {
                 ui_controller.close_staff_dropdown_menu();
@@ -266,5 +268,41 @@ let session_manager = {
         config.save();
         alert('Logged out');
         location.reload();
+    },
+}
+
+let catalog_manager = {
+    initalize: function () {//Initialize the catalog manager
+        console.log('Catalog manager is being initialized');
+        this.loadCatalog();
+    },
+    loadCatalog: async function () {//Load the catalog from the server
+        console.log('Loading catalog');
+        let data = await request('get/catalog/');
+        if (data == false || data == undefined) {
+            console.log('Failed to load catalog');
+            return false;
+        }
+        console.log('Catalog loaded', data);
+    },
+    addProduct: async function () {//Add a product to the catalog
+        console.log('Adding product');
+        
+    },
+}
+
+let staff_manager = {
+    initalize: function () {//Initialize the staff manager
+        console.log('Staff manager is being initialized');
+        this.loadStaff();
+    },
+    loadStaff: async function () {//Load the staff from the server
+        console.log('Loading staff');
+        let data = await request('get/staff/');
+        if (data == false || data == undefined) {
+            console.log('Failed to load staff');
+            return false;
+        }
+        console.log('gots Staff', data);
     },
 }

@@ -323,18 +323,18 @@ app.post('/post/submitorder', (req, res) => {
                         const orderid = result.insertId;
                         //Update the Customer with the order id
                         database.getCustomersViaUsername(data.username).then((result) => {
-                            let oldorderdata = JSON.parse(result.orders) || [];
-                            logs.info('Old order data: ', oldorderdata, ' for user: ', data.username);
-                            console.log('Datatype: ', typeof (oldorderdata));
+                            let old_order_data = JSON.parse(result.orders) || [];
+                            logs.info('Old order data: ', old_order_data, ' for user: ', data.username);
+                            console.log('Datatype: ', typeof (old_order_data));
 
-                            logs.info('Adding new order to user: ', oldorderdata);
-                            oldorderdata.push(orderid);
-                            logs.info('New orders data: ', oldorderdata);
+                            logs.info('Adding new order to user: ', old_order_data);
+                            old_order_data.push(orderid);
+                            logs.info('New orders data: ', old_order_data);
 
                             // Update the cart in the database
-                            database.updateCustomer(data.username, { orders: JSON.stringify(oldorderdata), Cart_items: JSON.stringify([]) });
+                            database.updateCustomer(data.username, { orders: JSON.stringify(old_order_data), Cart_items: JSON.stringify([]) });
                             // Clear the cart after order is submitted
-                            logs.info('Updated user orders: ', oldorderdata);
+                            logs.info('Updated user orders: ', old_order_data);
                             res.end(JSON.stringify({ status: "success" }));
 
                             // update loyalty points
@@ -355,7 +355,7 @@ app.post('/post/submitorder', (req, res) => {
     }
 });
 
-//get orders handler
+//get orders for a user
 //This will get the users orders, and return it as a json object
 app.post('/get/orders', (req, res) => {
     try {
@@ -486,5 +486,18 @@ app.post('/get/stafflogin', (req, res) => {
         });
     } catch (error) {
         logs.error('Catastrophy on login post: ', err);
+    }
+})
+
+// get all staff mambers for display
+app.get('/get/staff', (req, res) => {
+    try {
+        logs.info('Get all staff members');
+        database.getStaff().then((result) => {
+            res.end(JSON.stringify(result));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on get staff: ', err);
+        res.end(JSON.stringify({ status: "error" }));
     }
 })
