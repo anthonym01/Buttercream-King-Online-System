@@ -395,13 +395,17 @@ body {
     width: 10rem;
     margin: 2rem;
     border-radius: 0.2rem;
-    box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem;
+    box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
     background-color: var(--background-color);
     cursor: pointer;
+    transition: box-shadow 300ms,scale 300ms;
+    scale: 1.0;
 }
 
 .Cake_pedistal:hover {
-    box-shadow: 0.07rem 0.07rem 0.4rem 0.2rem;
+    box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
+    transition: box-shadow 100ms,scale 100ms;
+    scale: 1.05;
 }
 
 .cake_img {
@@ -453,6 +457,9 @@ body {
     text-align: right;
     box-sizing: border-box;
     padding: 0.3rem;
+    background-color: var(--off-background-color);
+    color: var(--text-color);
+    border-radius: 0.4rem 0 0 0;
 }
 
 /* 
@@ -508,7 +515,7 @@ body {
     height: 20rem;
     background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
 }
 
@@ -1561,6 +1568,19 @@ orders_page
     transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
 }
 
+/* Staff catalogue */
+/* 
+    For all Staff sections contains the catalogue of items, staff, customers, inventory, etc.
+*/
+.staff_catalog {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
 
 /*    <--  Landscape layout (with min-width) -->     */
 

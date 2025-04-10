@@ -1,5 +1,8 @@
 
-const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
+//const running_subpath = window.location.origin;// Used to redirect 
+const running_subpath = '';// Used to redirect 
+
+// requests if a subpath is used with nginx
 
 window.addEventListener('load', async function () {//Starting point
     try {
@@ -274,16 +277,50 @@ let session_manager = {
 let catalog_manager = {
     initalize: function () {//Initialize the catalog manager
         console.log('Catalog manager is being initialized');
-        this.loadCatalog();
+        this.build();
     },
-    loadCatalog: async function () {//Load the catalog from the server
-        console.log('Loading catalog');
-        let data = await request('get/catalog/');
-        if (data == false || data == undefined) {
-            console.log('Failed to load catalog');
-            return false;
-        }
-        console.log('Catalog loaded', data);
+    build: async function () {
+        console.log("Build catalog");
+        const inventory_catalog = document.getElementById('inventory_catalog');
+        inventory_catalog.innerHTML = "";//Clear the catalog
+
+        request('get/catalog').then((catalog) => {
+            console.log('Got Catalog: ', catalog);//payload = { Title,  Description, image_uri, uuid }
+
+            for (let cakeindex in catalog) {// construction zone
+                const Cake_pedistal = document.createElement('div');
+                Cake_pedistal.classList = "Cake_pedistal";
+                Cake_pedistal.tagName = `Cake ${cakeindex}`;
+                Cake_pedistal.title = `${catalog[cakeindex].Title}`;
+
+                const cake_price = document.createElement('div');
+                cake_price.classList = "cake_pedistal_price"
+                cake_price.innerHTML = `\$${catalog[cakeindex].price.toFixed(2)}`;
+                Cake_pedistal.appendChild(cake_price);
+
+                const cake_img = document.createElement('div')
+                cake_img.classList = "cake_img";
+                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                Cake_pedistal.appendChild(cake_img);
+
+                const cake_title = document.createElement('div');
+                cake_title.classList = "cake_pedistal_title"
+                cake_title.innerHTML = `${catalog[cakeindex].Title}`;
+                Cake_pedistal.appendChild(cake_title);
+
+                const cake_description = document.createElement('div');
+                cake_description.classList = "cake_pedistal_description"
+                cake_description.innerHTML = `${catalog[cakeindex].Description}`;
+                Cake_pedistal.appendChild(cake_description);
+
+                inventory_catalog.appendChild(Cake_pedistal);
+
+                Cake_pedistal.addEventListener('click', function () {
+                    console.log('clicked pedistal for cake',catalog[cakeindex]);
+                })
+            }
+
+        })
     },
     addProduct: async function () {//Add a product to the catalog
         console.log('Adding product');

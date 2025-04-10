@@ -1,5 +1,6 @@
 
-const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
+//const running_subpath = window.location.pathname;// Used to redirect requests if a subpath is used with nginx
+const running_subpath = '';// Used to redirect requests if a subpath is used with nginx
 
 window.addEventListener('load', async function () {//Starting point
     try {
@@ -492,7 +493,7 @@ let catalog_maintainer = {
             document.getElementById('cake_display_title').innerHTML = `${cakefromuuid.Title}`
             document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cakefromuuid.image_uri}')`;
             document.getElementById('cake_display_description').innerHTML = `${cakefromuuid.Description}`
-            document.getElementById('cake_display_price').innerHTML = `\$${cakefromuuid.price.toFixed(2)}`;
+            document.getElementById('cake_display_price').innerHTML = `Price: \$${cakefromuuid.price.toFixed(2)} JMD`;
         })
     },
     close_cake: function () {//Close the user cake display
@@ -813,6 +814,9 @@ let checkout_maintainer = {
 
     },
     update_card_representation: async function () {
+
+        // To do: update the card representation with the new data
+        // validate the card data and show errors if any
         if (properties.paymentinfo.name != undefined) {
             document.getElementById('card_name_represent').innerText = `${properties.paymentinfo.name}`;
             document.getElementById('card_name_represent2').innerText = `${properties.paymentinfo.name}`;
