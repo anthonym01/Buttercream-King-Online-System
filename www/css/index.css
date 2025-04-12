@@ -1618,6 +1618,17 @@ orders_page
     display: block;
 }
 
+.editor_pannel_active .title,.editor_pannel .title {
+    position: relative;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    height: 1.7rem;
+    line-height: 1.7rem;
+    font-size: 1.7rem;
+    text-align: center;
+    color: var(--text-color);
+}
 
 /*    <--  Landscape layout (with min-width) -->     */
 

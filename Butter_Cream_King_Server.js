@@ -4,10 +4,10 @@
 //Server configuration
 const port = 8083;
 const path = require('path');
-const fs = require('fs');
+//const fs = require('fs');
 const express = require('express');
 const fileUpload = require('express-fileupload');
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const app = express();
 app.use(fileUpload());
 const logs = require('./modules/logger');
@@ -225,7 +225,7 @@ app.post('/post/login', (req, res) => {
             try {
                 database.getCustomersViaUsername(data.user).then((result) => {
                     logs.info('Lookup result: ', result);
-                    if (typeof (result) != 'undefined' && result.length!=0 && result.password == data.pass) {
+                    if (typeof (result) != 'undefined' && result.length != 0 && result.password == data.pass) {
                         res.end(JSON.stringify({ status: "sucess" }));
                     }
                     else {
@@ -255,7 +255,7 @@ app.post('/post/signup', (req, res) => {
             try {
                 if (typeof (data.user) != 'undefined' && typeof (data.pass) != 'undefined') {
                     database.getCustomersViaUsername(data.user).then((result) => {
-                        if (typeof (result) == 'undefined'|| result.length == 0) {
+                        if (typeof (result) == 'undefined' || result.length == 0) {
                             logs.info('User does not exist, creating new user: ', data.user);
                             // Create new user
                             const newUser = {
@@ -263,7 +263,7 @@ app.post('/post/signup', (req, res) => {
                                 password: data.pass,
                                 Cart_items: JSON.stringify([]),
                                 orders: JSON.stringify([]),
-                                Delivery_address: JSON.stringify({ }),
+                                Delivery_address: JSON.stringify({}),
                                 payment_details: JSON.stringify({}),
                                 loyalty_points: 0,
                             }
@@ -476,8 +476,8 @@ app.post('/get/stafflogin', (req, res) => {
             try {
                 database.getStaffViaUsername(data.user).then((result) => {
                     logs.info('Lookup result: ', result);
-                    if (typeof (result) != 'undefined' && result.length!=0 && result.password == data.pass) {
-                        res.end(JSON.stringify({ status: "sucess" ,privilage: result.privilage_level}));
+                    if (typeof (result) != 'undefined' && result.length != 0 && result.password == data.pass) {
+                        res.end(JSON.stringify({ status: "sucess", privilage: result.privilage_level }));
                     }
                     else {
                         logs.info('User does not exist or password is incorrect: ', data.user);
@@ -496,23 +496,23 @@ app.post('/get/stafflogin', (req, res) => {
 
 app.post('/uploadcakedata', (req, res) => {
     // Log the files to the console
+    console.log(req.body);// expects { cake_name, cake_price, }
     console.log(req.files);
     const { image } = req.files;
-
 
     // If no image submitted, exit
     if (!image) return res.sendStatus(400);
     // If doesn't have image mime type prevent from uploading
     if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
 
-    
     // Check if file exists
 
     // Move the uploaded image to our upload folder
     image.mv(path.join(__dirname, 'www/img_database_store/test', image.name));
 
+
     // All good
-    //res.sendStatus(200);
+    res.sendStatus(200);
 });
 
 // get all staff mambers for display

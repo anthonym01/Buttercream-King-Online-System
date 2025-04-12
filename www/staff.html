@@ -36,23 +36,31 @@
 
     <div class="main_view" id="manage_catalog_page">
         <div class="staff_catalog" id="inventory_catalog">
-            
+
         </div>
         <div class="editor_pannel" id="add_new_product_pannel">
             <div title="close" class="close_button" id="close_add_new_product_pannel_button"></div>
-            <div class="title">Add new product</div>
 
-            <form action="uploadcakedata" target="dummyframe" method="POST" enctype="multipart/form-data">
+            <div class="title">Add new product</div>
+            <form action="uploadcakedata" target="dummyframe" method="POST" enctype="multipart/form-data"
+                id="add_new_product_form">
                 <input type="file" id="cake_img_input" name="image" />
+                <label for="cake_name" class="">Name</label>
+                <input type="text" name="cake_name" id="cake_name_input" class="" placeholder="Cake name" required>
+                <label for="cake_price" class="">Cake price</label>
+                <input type="number" name="cake_price" id="cake_price_input" class="" placeholder="$00.00" required>
+                <label for="cake_description" class="">Description</label>
+                <textarea type="text" name="cake_description" id="cake_description_input" class="" placeholder="Cake name"></textarea>
+
                 <button type="submit">Upload</button>
             </form>
-            
+
         </div>
     </div>
 
     <div class="main_view" id="manage_staff_page">
         <div class="staff_catalog" id="staff_catalog">
-            
+
         </div>
     </div>
 
@@ -77,6 +85,7 @@
 
     <div class="navbar">
         <div class="menu_target_hidden" id="nav_menu_target" title="menu"></div>
+
         <div class="staff_dropdown_menu_hidden" id="staff_dropdown_menu">
             <div class="staff_dropdown_menu_item" id="Catalog_menu_item">Catalog</div>
             <div class="staff_dropdown_menu_item" id="Staff_menu_item">Staff</div>
@@ -84,10 +93,11 @@
             <div class="staff_dropdown_menu_item" id="Orders_menu_item">Orders</div>
             <div class="staff_dropdown_menu_item" id="Logout_menu_item">Logout</div>
         </div>
+
         <div class="staffidentifier" id="staffidentifier">Not Logged in</div>
     </div>
 
-    <iframe src="" name="dummyframe" id="dummyframe" frameborder="0" style="display: none;" ></iframe>   
+    <iframe src="" name="dummyframe" id="dummyframe" frameborder="0" style="display: none;"></iframe>
 
     <script src="js/staff.js"></script>
 </body>
