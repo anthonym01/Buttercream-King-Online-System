@@ -3,8 +3,13 @@
 
 //Server configuration
 const port = 8083;
+const path = require('path');
+const fs = require('fs');
 const express = require('express');
+const fileUpload = require('express-fileupload');
+const bodyParser = require('body-parser');
 const app = express();
+app.use(fileUpload());
 const logs = require('./modules/logger');
 const database = require('./modules/database_wrapper');
 
@@ -488,6 +493,27 @@ app.post('/get/stafflogin', (req, res) => {
         logs.error('Catastrophy on login post: ', err);
     }
 })
+
+app.post('/uploadcakedata', (req, res) => {
+    // Log the files to the console
+    console.log(req.files);
+    const { image } = req.files;
+
+
+    // If no image submitted, exit
+    if (!image) return res.sendStatus(400);
+    // If doesn't have image mime type prevent from uploading
+    if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
+
+    
+    // Check if file exists
+
+    // Move the uploaded image to our upload folder
+    image.mv(path.join(__dirname, 'www/img_database_store/test', image.name));
+
+    // All good
+    //res.sendStatus(200);
+});
 
 // get all staff mambers for display
 app.get('/get/staff', (req, res) => {

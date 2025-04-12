@@ -85,124 +85,6 @@ let config = {
     },
 }
 
-let ui_controller = {
-    initalize: function () {//Initialize the UI
-        console.log('UI controller is being initialized');
-
-        document.getElementById('Catalog_fullview_menu_item').addEventListener('click', async function () {//Catalog button
-            console.log('Catalog button clicked');
-            ui_controller.go_to_catalog();
-        });
-        document.getElementById('Catalog_menu_item').addEventListener('click', async function () {//Catalog button
-            console.log('Catalog button clicked');
-            ui_controller.go_to_catalog();
-        });
-
-        document.getElementById('Staff_fullview_menu_item').addEventListener('click', async function () {//Staff button
-            console.log('Staff button clicked');
-            ui_controller.go_to_staff();
-        });
-        document.getElementById('Staff_menu_item').addEventListener('click', async function () {//Staff button
-            console.log('Staff button clicked');
-            ui_controller.go_to_staff();
-        });
-
-        document.getElementById('Orders_fullview_menu_item').addEventListener('click', async function () {//Orders button
-            console.log('Orders button clicked');
-            ui_controller.go_to_orders();
-        });
-        document.getElementById('Orders_menu_item').addEventListener('click', async function () {//Orders button
-            console.log('Orders button clicked');
-            ui_controller.go_to_orders();
-        });
-
-        document.getElementById('Customers_fullview_menu_item').addEventListener('click', async function () {//Customers button
-            console.log('Customers button clicked');
-            ui_controller.go_to_customers();
-        });
-        document.getElementById('Customers_menu_item').addEventListener('click', async function () {//Customers button
-            console.log('Customers button clicked');
-            ui_controller.go_to_customers();
-        });
-
-        document.getElementById('nav_menu_target').addEventListener('click', function () {//Main menu button
-            console.log('Main menu button clicked');
-            if (document.getElementById('staff_dropdown_menu').classList == "staff_dropdown_menu") {
-                ui_controller.close_staff_dropdown_menu();
-            } else {
-                ui_controller.open_staff_dropdown_menu();
-            }
-        });
-    },
-    close_staff_dropdown_menu: function () {//Close the dropdown menu 
-        console.log('Closing dropdown menu');
-        document.getElementById('staff_dropdown_menu').classList = "staff_dropdown_menu_hidden";
-    },
-    open_staff_dropdown_menu: function () {//Open the dropdown menu
-        console.log('Opening dropdown menu');
-        document.getElementById('staff_dropdown_menu').classList = "staff_dropdown_menu";
-    },
-    go_to_main_menu: function () {//Go to the main menu
-        console.log('Going to main menu');
-        this.close_staff_dropdown_menu();
-        document.getElementById('nav_menu_target').classList = "menu_target";
-        document.getElementById('staff_main_page').classList = "main_view_active";
-        document.getElementById('staff_login_page').classList = "main_view";
-        document.getElementById('manage_catalog_page').classList = "main_view";
-        document.getElementById('manage_staff_page').classList = "main_view";
-        document.getElementById('manage_orders_page').classList = "main_view";
-        document.getElementById('manage_Customers_page').classList = "main_view";
-    },
-    go_to_catalog: function () {
-        //Go to the catalog page
-        console.log('Going to catalog');
-        this.close_staff_dropdown_menu();
-        document.getElementById('staff_main_page').classList = "main_view";
-        document.getElementById('staff_login_page').classList = "main_view";
-        document.getElementById('manage_catalog_page').classList = "main_view_active";
-        document.getElementById('manage_staff_page').classList = "main_view";
-        document.getElementById('manage_orders_page').classList = "main_view";
-        document.getElementById('manage_Customers_page').classList = "main_view";
-    },
-    go_to_staff: function () {
-        //Go to the staff page
-        console.log('Going to staff');
-        this.close_staff_dropdown_menu();
-        document.getElementById('staff_main_page').classList = "main_view";
-        document.getElementById('staff_login_page').classList = "main_view";
-        document.getElementById('manage_catalog_page').classList = "main_view";
-        document.getElementById('manage_staff_page').classList = "main_view_active";
-        document.getElementById('manage_orders_page').classList = "main_view";
-        document.getElementById('manage_Customers_page').classList = "main_view";
-    },
-    go_to_orders: function () {
-        //Go to the orders page
-        console.log('Going to orders');
-        this.close_staff_dropdown_menu();
-        document.getElementById('staff_main_page').classList = "main_view";
-        document.getElementById('staff_login_page').classList = "main_view";
-        document.getElementById('manage_catalog_page').classList = "main_view";
-        document.getElementById('manage_staff_page').classList = "main_view";
-        document.getElementById('manage_orders_page').classList = "main_view_active";
-        document.getElementById('manage_Customers_page').classList = "main_view";
-    },
-    go_to_customers: function () {
-        //Go to the customers page
-        console.log('Going to customers');
-        this.close_staff_dropdown_menu();
-        document.getElementById('staff_main_page').classList = "main_view";
-        document.getElementById('staff_login_page').classList = "main_view";
-        document.getElementById('manage_catalog_page').classList = "main_view";
-        document.getElementById('manage_staff_page').classList = "main_view";
-        document.getElementById('manage_orders_page').classList = "main_view";
-        document.getElementById('manage_Customers_page').classList = "main_view_active";
-    },
-    show_add_product: function () {
-        document.getElementById('add_new_product_pannel').classList = "editor_pannel_active";
-        document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
-    }
-}
-
 let session_manager = {
     initalize: function () {//Initialize the session manager
         console.log('Session manager is being initialized');
@@ -275,6 +157,134 @@ let session_manager = {
         config.save();
         alert('Logged out');
         location.reload();
+    },
+}
+
+//UI controller
+let ui_controller = {
+    initalize: function () {//Initialize the UI
+        console.log('UI controller is being initialized');
+
+        document.getElementById('Catalog_fullview_menu_item').addEventListener('click', async function () {//Catalog button
+            console.log('Catalog button clicked');
+            ui_controller.go_to_catalog();
+        });
+        document.getElementById('Catalog_menu_item').addEventListener('click', async function () {//Catalog button
+            console.log('Catalog button clicked');
+            ui_controller.go_to_catalog();
+        });
+
+        document.getElementById('Staff_fullview_menu_item').addEventListener('click', async function () {//Staff button
+            console.log('Staff button clicked');
+            ui_controller.go_to_staff();
+        });
+        document.getElementById('Staff_menu_item').addEventListener('click', async function () {//Staff button
+            console.log('Staff button clicked');
+            ui_controller.go_to_staff();
+        });
+
+        document.getElementById('Orders_fullview_menu_item').addEventListener('click', async function () {//Orders button
+            console.log('Orders button clicked');
+            ui_controller.go_to_orders();
+        });
+        document.getElementById('Orders_menu_item').addEventListener('click', async function () {//Orders button
+            console.log('Orders button clicked');
+            ui_controller.go_to_orders();
+        });
+
+        document.getElementById('Customers_fullview_menu_item').addEventListener('click', async function () {//Customers button
+            console.log('Customers button clicked');
+            ui_controller.go_to_customers();
+        });
+        document.getElementById('Customers_menu_item').addEventListener('click', async function () {//Customers button
+            console.log('Customers button clicked');
+            ui_controller.go_to_customers();
+        });
+
+        document.getElementById('nav_menu_target').addEventListener('click', function () {//Main menu button
+            console.log('Main menu button clicked');
+            if (document.getElementById('staff_dropdown_menu').classList == "staff_dropdown_menu") {
+                ui_controller.close_staff_dropdown_menu();
+            } else {
+                ui_controller.open_staff_dropdown_menu();
+            }
+        });
+
+        document.getElementById('close_add_new_product_pannel_button').addEventListener('click',function(){
+            console.log('Close add new product panel button clicked');
+            ui_controller.hide_add_product();
+        })
+    },
+    close_staff_dropdown_menu: function () {//Close the dropdown menu 
+        console.log('Closing dropdown menu');
+        document.getElementById('staff_dropdown_menu').classList = "staff_dropdown_menu_hidden";
+    },
+    open_staff_dropdown_menu: function () {//Open the dropdown menu
+        console.log('Opening dropdown menu');
+        document.getElementById('staff_dropdown_menu').classList = "staff_dropdown_menu";
+    },
+    go_to_main_menu: function () {//Go to the main menu
+        console.log('Going to main menu');
+        this.close_staff_dropdown_menu();
+        document.getElementById('nav_menu_target').classList = "menu_target";
+        document.getElementById('staff_main_page').classList = "main_view_active";
+        document.getElementById('staff_login_page').classList = "main_view";
+        document.getElementById('manage_catalog_page').classList = "main_view";
+        document.getElementById('manage_staff_page').classList = "main_view";
+        document.getElementById('manage_orders_page').classList = "main_view";
+        document.getElementById('manage_Customers_page').classList = "main_view";
+    },
+    go_to_catalog: function () {
+        //Go to the catalog page
+        console.log('Going to catalog');
+        this.close_staff_dropdown_menu();
+        document.getElementById('staff_main_page').classList = "main_view";
+        document.getElementById('staff_login_page').classList = "main_view";
+        document.getElementById('manage_catalog_page').classList = "main_view_active";
+        document.getElementById('manage_staff_page').classList = "main_view";
+        document.getElementById('manage_orders_page').classList = "main_view";
+        document.getElementById('manage_Customers_page').classList = "main_view";
+    },
+    go_to_staff: function () {
+        //Go to the staff page
+        console.log('Going to staff');
+        this.close_staff_dropdown_menu();
+        document.getElementById('staff_main_page').classList = "main_view";
+        document.getElementById('staff_login_page').classList = "main_view";
+        document.getElementById('manage_catalog_page').classList = "main_view";
+        document.getElementById('manage_staff_page').classList = "main_view_active";
+        document.getElementById('manage_orders_page').classList = "main_view";
+        document.getElementById('manage_Customers_page').classList = "main_view";
+    },
+    go_to_orders: function () {
+        //Go to the orders page
+        console.log('Going to orders');
+        this.close_staff_dropdown_menu();
+        document.getElementById('staff_main_page').classList = "main_view";
+        document.getElementById('staff_login_page').classList = "main_view";
+        document.getElementById('manage_catalog_page').classList = "main_view";
+        document.getElementById('manage_staff_page').classList = "main_view";
+        document.getElementById('manage_orders_page').classList = "main_view_active";
+        document.getElementById('manage_Customers_page').classList = "main_view";
+    },
+    go_to_customers: function () {
+        //Go to the customers page
+        console.log('Going to customers');
+        this.close_staff_dropdown_menu();
+        document.getElementById('staff_main_page').classList = "main_view";
+        document.getElementById('staff_login_page').classList = "main_view";
+        document.getElementById('manage_catalog_page').classList = "main_view";
+        document.getElementById('manage_staff_page').classList = "main_view";
+        document.getElementById('manage_orders_page').classList = "main_view";
+        document.getElementById('manage_Customers_page').classList = "main_view_active";
+    },
+    show_add_product: function () {//Show the add product panel in the catalog
+        document.getElementById('add_new_product_pannel').classList = "editor_pannel_active";
+        document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
+    },
+    hide_add_product: function () {//Hide the add product panel in the catalog
+        document.getElementById('add_new_product_pannel').classList = "editor_pannel";
+        document.getElementById('inventory_catalog').classList = "staff_catalog";
     },
 }
 
