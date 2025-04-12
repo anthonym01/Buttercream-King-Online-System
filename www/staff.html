@@ -41,10 +41,12 @@
         <div class="editor_pannel" id="add_new_product_pannel">
             <div title="close" class="close_button" id="close_add_new_product_pannel_button"></div>
             <div class="title">Add new product</div>
-            <form action="uploadcakedata" method="POST" enctype="multipart/form-data">
+
+            <form action="uploadcakedata" target="dummyframe" method="POST" enctype="multipart/form-data">
                 <input type="file" id="cake_img_input" name="image" />
                 <button type="submit">Upload</button>
             </form>
+            
         </div>
     </div>
 
@@ -85,7 +87,7 @@
         <div class="staffidentifier" id="staffidentifier">Not Logged in</div>
     </div>
 
-    
+    <iframe src="" name="dummyframe" id="dummyframe" frameborder="0" style="display: none;" ></iframe>   
 
     <script src="js/staff.js"></script>
 </body>
