@@ -38,15 +38,32 @@
         <div class="staff_catalog" id="inventory_catalog">
             
         </div>
+        <div class="editor_pannel" id="add_new_product_pannel">
+            <div class="Editor_super_pannel_title">Add new product</div>
+            <div class="Editor_super_pannel_input_container">
+                <label for="product_name" class="Editor_super_pannel_input_label">Product name</label>
+                <input type="text" name="product_name" id="product_name_input" class="Editor_super_pannel_input"
+                    placeholder="Product name" required>
+            </div>
+            <div class="Editor_super_pannel_input_container">
+                <label for="product_price" class="Editor_super_pannel_input_label">Product price</label>
+                <input type="number" name="product_price" id="product_price_input" class="Editor_super_pannel_input"
+                    placeholder="Product price" required>
+            </div>
+            <button class="Editor_super_pannel_button" id="add_product_button">Add product</button>
+        </div>
     </div>
+
     <div class="main_view" id="manage_staff_page">
         <div class="staff_catalog" id="staff_catalog">
             
         </div>
     </div>
+
     <div class="main_view" id="manage_orders_page">
         orders pagediv
     </div>
+
     <div class="main_view" id="manage_Customers_page">
         customers page
     </div>
@@ -64,16 +81,17 @@
 
     <div class="navbar">
         <div class="menu_target_hidden" id="nav_menu_target" title="menu"></div>
+        <div class="staff_dropdown_menu_hidden" id="staff_dropdown_menu">
+            <div class="staff_dropdown_menu_item" id="Catalog_menu_item">Catalog</div>
+            <div class="staff_dropdown_menu_item" id="Staff_menu_item">Staff</div>
+            <div class="staff_dropdown_menu_item" id="Customers_menu_item">Customers</div>
+            <div class="staff_dropdown_menu_item" id="Orders_menu_item">Orders</div>
+            <div class="staff_dropdown_menu_item" id="Logout_menu_item">Logout</div>
+        </div>
         <div class="staffidentifier" id="staffidentifier">Not Logged in</div>
     </div>
 
-    <div class="staff_dropdown_menu_hidden" id="staff_dropdown_menu">
-        <div class="staff_dropdown_menu_item" id="Catalog_menu_item">Catalog</div>
-        <div class="staff_dropdown_menu_item" id="Staff_menu_item">Staff</div>
-        <div class="staff_dropdown_menu_item" id="Customers_menu_item">Customers</div>
-        <div class="staff_dropdown_menu_item" id="Orders_menu_item">Orders</div>
-        <div class="staff_dropdown_menu_item" id="Logout_menu_item">Logout</div>
-    </div>
+    
 
     <script src="js/staff.js"></script>
 </body>

@@ -388,7 +388,7 @@ body {
     overflow-y: auto;
 }
 
-.Cake_pedistal {
+.Cake_pedistal,.Cake_pedistal_short {
     position: relative;
     overflow: hidden;
     height: 17rem;
@@ -402,10 +402,21 @@ body {
     scale: 1.0;
 }
 
-.Cake_pedistal:hover {
+.Cake_pedistal_short {
+    height: 12rem;
+    transform: translateY(2rem);
+}
+
+.Cake_pedistal:hover,.Cake_pedistal_short:hover {
     box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
     transition: box-shadow 100ms,scale 100ms;
-    scale: 1.05;
+    scale: 1.03;
+}
+
+.Cake_pedistal:active,.Cake_pedistal_short:active {
+    box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
+    transition: box-shadow 100ms,scale 0ms;
+    scale: 0.97;
 }
 
 .cake_img {
@@ -1571,9 +1582,12 @@ orders_page
 /* Staff catalogue */
 /* 
     For all Staff sections contains the catalogue of items, staff, customers, inventory, etc.
+    uses .Cake_pedistal class for each item in the catalogue.
 */
-.staff_catalog {
-    position: relative;
+.staff_catalog,.staff_catalog_compressed {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     display: flex;
@@ -1581,6 +1595,29 @@ orders_page
     flex-wrap: wrap;
     overflow-y: auto;
 }
+
+.staff_catalog_compressed{
+    display: flex;
+    width: 60%;
+}
+
+.editor_pannel,.editor_pannel_active {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 40%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+}
+
+.editor_pannel_active {
+    display: block;
+}
+
 
 /*    <--  Landscape layout (with min-width) -->     */
 

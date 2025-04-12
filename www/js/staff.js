@@ -197,6 +197,10 @@ let ui_controller = {
         document.getElementById('manage_orders_page').classList = "main_view";
         document.getElementById('manage_Customers_page').classList = "main_view_active";
     },
+    show_add_product: function () {
+        document.getElementById('add_new_product_pannel').classList = "editor_pannel_active";
+        document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
+    }
 }
 
 let session_manager = {
@@ -284,6 +288,29 @@ let catalog_manager = {
         const inventory_catalog = document.getElementById('inventory_catalog');
         inventory_catalog.innerHTML = "";//Clear the catalog
 
+        //Add new product button
+        const add_product_button = document.createElement('div');
+        add_product_button.classList = "Cake_pedistal_short";
+        add_product_button.tagName = `Cake add new`;
+        add_product_button.title = `Add New Cake`;
+
+        const cake_img = document.createElement('div');
+        cake_img.classList = "cake_img";
+        cake_img.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+        add_product_button.appendChild(cake_img);
+
+        const cake_title = document.createElement('div');
+        cake_title.classList = "cake_pedistal_title"
+        cake_title.innerHTML = `Add New Cake`;
+        add_product_button.appendChild(cake_title);
+
+        inventory_catalog.appendChild(add_product_button);
+
+        add_product_button.addEventListener('click', function () {
+            ui_controller.show_add_product();
+        });
+
+        //Load the catalog from the server
         request('get/catalog').then((catalog) => {
             console.log('Got Catalog: ', catalog);//payload = { Title,  Description, image_uri, uuid }
 
@@ -316,7 +343,7 @@ let catalog_manager = {
                 inventory_catalog.appendChild(Cake_pedistal);
 
                 Cake_pedistal.addEventListener('click', function () {
-                    console.log('clicked pedistal for cake',catalog[cakeindex]);
+                    console.log('clicked pedistal for cake', catalog[cakeindex].uuid);
                 })
             }
 
@@ -324,8 +351,12 @@ let catalog_manager = {
     },
     addProduct: async function () {//Add a product to the catalog
         console.log('Adding product');
-        
+
     },
+    editProduct: async function (uuid) {//Edit a product in the catalog
+        console.log('Editing product', uuid);
+
+    }
 }
 
 let staff_manager = {
