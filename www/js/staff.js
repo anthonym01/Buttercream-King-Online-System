@@ -210,10 +210,31 @@ let ui_controller = {
             }
         });
 
+        //close the add new product panel
         document.getElementById('close_add_new_product_pannel_button').addEventListener('click',function(){
             console.log('Close add new product panel button clicked');
             ui_controller.hide_add_product();
-        })
+        });
+
+
+        //Image preview processing
+        const cake_img_preview = document.getElementById('cake_img_preview');
+        const cake_img_input = document.getElementById('cake_img_input');
+        cake_img_input.addEventListener('change', function (event) {
+            console.log('Image input changed');
+            console.log(event.target.files);
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    cake_img_preview.style.backgroundImage = `url('${e.target.result}')`;
+                    cake_img_preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                cake_img_preview.style.display = 'none';
+            }
+        });
     },
     close_staff_dropdown_menu: function () {//Close the dropdown menu 
         console.log('Closing dropdown menu');

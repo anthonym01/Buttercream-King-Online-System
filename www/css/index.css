@@ -1630,6 +1630,18 @@ orders_page
     color: var(--text-color);
 }
 
+.cake_img_preview{
+    position: relative;
+    height: 12rem;
+    width: 100%;
+    background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
 /*    <--  Landscape layout (with min-width) -->     */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
