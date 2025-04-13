@@ -498,17 +498,17 @@ app.post('/uploadcakedata', (req, res) => {
     // Log the files to the console
     console.log(req.body);// expects { cake_name, cake_price, }
     console.log(req.files);
-    const { image } = req.files;
+    const { image_file } = req.files;
 
     // If no image submitted, exit
-    if (!image) return res.sendStatus(400);
+    //if (!image_file) return res.sendStatus(400);
     // If doesn't have image mime type prevent from uploading
-    if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
+    //if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
 
     // Check if file exists
 
     // Move the uploaded image to our upload folder
-    image.mv(path.join(__dirname, 'www/img_database_store/test', image.name));
+    image_file.mv(path.join(__dirname, 'www/img_database_store/test', image_file.name));
 
 
     // All good

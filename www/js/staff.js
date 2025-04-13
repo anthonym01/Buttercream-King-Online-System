@@ -211,19 +211,25 @@ let ui_controller = {
         });
 
         //close the add new product panel
-        document.getElementById('close_add_new_product_pannel_button').addEventListener('click',function(){
+        document.getElementById('close_add_new_product_pannel_button').addEventListener('click', function () {
             console.log('Close add new product panel button clicked');
             ui_controller.hide_add_product();
         });
 
 
         //Image preview processing
-        const cake_img_preview = document.getElementById('cake_img_preview');
+        const cake_img_preview = document.getElementById
+            ('cake_img_preview');
         const cake_img_input = document.getElementById('cake_img_input');
+        cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+        cake_img_preview.addEventListener('click', function () {
+            console.log('Image preview clicked');
+            cake_img_input.click();//force click
+        });
+
         cake_img_input.addEventListener('change', function (event) {
-            console.log('Image input changed');
-            console.log(event.target.files);
             const file = event.target.files[0];
+            console.log('Image input changed', file);
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -232,9 +238,13 @@ let ui_controller = {
                 }
                 reader.readAsDataURL(file);
             } else {
-                cake_img_preview.style.display = 'none';
+                //cake_img_preview.style.display = 'none';
+                //reset the image preview
+                cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+                cake_img_preview.style.display = 'block';
             }
         });
+
     },
     close_staff_dropdown_menu: function () {//Close the dropdown menu 
         console.log('Closing dropdown menu');
