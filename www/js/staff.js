@@ -227,7 +227,7 @@ let ui_controller = {
             cake_img_input.click();//force click
         });
 
-        cake_img_input.addEventListener('change',async function (event) {
+        cake_img_input.addEventListener('change', async function (event) {
             const file = event.target.files[0];
             console.log('Image input changed', file);
             if (file) {
@@ -415,7 +415,29 @@ let catalog_manager = {
             method: 'POST',
             body: formData,
         });
-        console.log('Response: ',await response.json());
+
+        //dissable button durring upload
+        document.getElementById('upload_product_button').disabled = true;
+
+        /*
+            Create dynamic loading animation here later
+        */
+
+        const response_data = await response.json();
+        console.log('Response data: ', response_data);
+
+
+        if (response_data.status == 'success') {
+            console.log('Product added');
+            alert('Product added');
+            ui_controller.hide_add_product();
+            catalog_manager.build();
+            document.getElementById('upload_product_button').disabled = false;
+        } else {
+            console.log('Product not added');
+            alert('Error, was not added, image file may be too large to upload');
+            document.getElementById('upload_product_button').disabled = false;
+        }
 
     },
     editProduct: async function (uuid) {//Edit a product in the catalog

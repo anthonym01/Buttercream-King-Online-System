@@ -9,7 +9,7 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 //const bodyParser = require('body-parser');
 const app = express();
-app.use(fileUpload());
+app.use(fileUpload());//allow file uploads via formData
 const logs = require('./modules/logger');
 const database = require('./modules/database_wrapper');
 
@@ -313,7 +313,7 @@ app.post('/post/submitorder', (req, res) => {
     try {
         req.on('data', function (data) {
             data = JSON.parse(data);
-            logs.info('got payload: ', data);//{ username, Items: {}, Status,total_price: float,Date: ISOString };
+            logs.info('got payload: ', data);//{ username, Items: [{cakeid:#,quantity:#}], Status,total_price: float,Date: ISOString };
             try {
                 const order = {
                     Items: JSON.stringify(data.Items),
@@ -495,25 +495,50 @@ app.post('/get/stafflogin', (req, res) => {
 })
 
 app.post('/post/uploadcakedata', (req, res) => {
-    // Log the files to the console
-    console.log(req.body);// expects { cake_name, cake_price, }
-    console.log(req.files);
+    try {
+        console.log('Upload cake data');
+        console.log(req.body);// expects: { title,description, price }
+        console.log(req.files);//formData 
 
-    const { image_file } = req.files;
+        const { image_file } = req.files;
 
-    // If no image submitted, exit
-    //if (!image_file) return res.sendStatus(400);
-    // If doesn't have image mime type prevent from uploading
-    //if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
+        // Check if image is uploaded
+        //if (!image_file) return res.sendStatus(400);
+        // Check if image is too big
+        //if (image_file.size > 1000000) return res.sendStatus(400);
 
-    // Check if file exists
+        //Create a new cake object
+        const cake = {
+            Title: req.body.title,
+            Description: req.body.Description||'empty',
+            price: req.body.price,
+            image_uri:'',//fix no default image uri later
+        }
 
-    // Move the uploaded image to our upload folder
-    image_file.mv(path.join(__dirname, 'www/img_database_store/test', `${String(16)}${path.extname(image_file.name)}`));
+        database.insert_into_Cakes(cake).then((result) => {
+            logs.info('Cake created: ', result);
 
+            const cakeid = result.insertId;
 
-    // All good
-    res.end(JSON.stringify({ status: "success" }));
+            const imagename = `${String(cakeid)}${path.extname(image_file.name)}`;
+            console.log('Image name: ', imagename);
+            //Update the Cake with the image id
+            image_file.mv(path.join(__dirname, 'www/img_database_store/cakes', imagename));
+            database.updateCake(cakeid, { image_uri: imagename });
+            // Move the uploaded image to our upload folder
+        });
+        // If no image submitted, exit
+        //if (!image_file) return res.sendStatus(400);
+        // If doesn't have image mime type prevent from uploading
+        //if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
+        // Check if file exists
+        // Move the uploaded image to our upload folder
+        // All good
+        res.end(JSON.stringify({ status: "success" }));
+    } catch (error) {
+        logs.error('Catastrophy on upload cake data: ', error);
+        res.end(JSON.stringify({ status: "failiure critical error" }));
+    }
 });
 
 // get all staff mambers for display

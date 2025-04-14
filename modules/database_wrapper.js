@@ -41,7 +41,7 @@ const connectionmanager = {
                 // Execute SQL Query
                 connection.query('SELECT * FROM `cakes`', function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From inventory got : ', results);
+                    console.log('From cakes got : ', results);
                     resolve(results);// 'resolve' results to be accecible to Promise
                     connection.end();//destroy connection, so another query can take place
                 });
@@ -51,7 +51,7 @@ const connectionmanager = {
     //'SELECT * FROM `cakes` WHERE `uuid` = ?'
     getCakesViaUuid: async function (uuid) {
         return new Promise((resolve, reject) => {// Gather data asyncronusly
-            logs.info('Looking for cake with uuid: ',)
+            logs.info('Looking for cake with uuid: ',uuid)
             let connection = mysql.createConnection(SQLcredentials);
 
             connection.connect(function (err) {
@@ -64,22 +64,29 @@ const connectionmanager = {
                 connection.query('SELECT * FROM `cakes` WHERE `uuid` = ?', uuid, function (error, results, fields) {
 
                     if (error) throw error;
-                    console.log('From inventory got : ', results);
+                    logs.info('From cakes got : ', results);
                     resolve(results[0]);// 0, because only one cake is expected
                     connection.end();
                 });
             });
         });
     },
-    // INSERT INTO inventory SET ?
+    // INSERT INTO cakes SET ?
     insert_into_Cakes: async function (injection) {
-        let connection = mysql.createConnection(SQLcredentials);
-        logs.info('Attempt to insert ', injection, 'into Inventory')
-        let query = connection.query('INSERT INTO inventory SET ?', injection, function (error, results, fields) {
-            if (error) logs.error(error);
+        return new Promise((resolve, reject) => {
+            let connection = mysql.createConnection(SQLcredentials);
+            logs.info('Attempt to insert ', injection, 'into cakes')
+            let query = connection.query('INSERT INTO cakes SET ?', injection, function (error, results, fields) {
+                if (error) {
+                    logs.error(error)
+                    reject(error);
+                };
+                console.log("results data: ", results);
+                resolve(results);
+            });
+            logs.info(query.sql); // INSERT INTO
+            connection.end();
         });
-        logs.info(query.sql); // INSERT INTO
-        connection.end();
     },
     // DELETE FROM `cakes` WHERE `uuid` = ?
     deleteCake: async function (uuid) {
@@ -106,6 +113,7 @@ const connectionmanager = {
     */
     //'SELECT * FROM `Customers`'
     getCustomers: async function () {
+        logs.info('Get all customers');
         return new Promise((resolve, reject) => {
             let connection = mysql.createConnection(SQLcredentials);
 
@@ -119,7 +127,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Customers`', function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From customers got : ', results);
+                    //console.log('From customers got : ', results);
                     resolve(results);
                     connection.end();
                 });
