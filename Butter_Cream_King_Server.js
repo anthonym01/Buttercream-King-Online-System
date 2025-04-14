@@ -494,10 +494,11 @@ app.post('/get/stafflogin', (req, res) => {
     }
 })
 
-app.post('/uploadcakedata', (req, res) => {
+app.post('/post/uploadcakedata', (req, res) => {
     // Log the files to the console
     console.log(req.body);// expects { cake_name, cake_price, }
     console.log(req.files);
+
     const { image_file } = req.files;
 
     // If no image submitted, exit
@@ -508,11 +509,11 @@ app.post('/uploadcakedata', (req, res) => {
     // Check if file exists
 
     // Move the uploaded image to our upload folder
-    image_file.mv(path.join(__dirname, 'www/img_database_store/test', image_file.name));
+    image_file.mv(path.join(__dirname, 'www/img_database_store/test', `${String(16)}${path.extname(image_file.name)}`));
 
 
     // All good
-    res.sendStatus(200);
+    res.end(JSON.stringify({ status: "success" }));
 });
 
 // get all staff mambers for display

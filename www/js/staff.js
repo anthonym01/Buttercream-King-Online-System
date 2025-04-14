@@ -216,18 +216,18 @@ let ui_controller = {
             ui_controller.hide_add_product();
         });
 
-
         //Image preview processing
         const cake_img_preview = document.getElementById
             ('cake_img_preview');
         const cake_img_input = document.getElementById('cake_img_input');
         cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+
         cake_img_preview.addEventListener('click', function () {
             console.log('Image preview clicked');
             cake_img_input.click();//force click
         });
 
-        cake_img_input.addEventListener('change', function (event) {
+        cake_img_input.addEventListener('change',async function (event) {
             const file = event.target.files[0];
             console.log('Image input changed', file);
             if (file) {
@@ -236,7 +236,7 @@ let ui_controller = {
                     cake_img_preview.style.backgroundImage = `url('${e.target.result}')`;
                     cake_img_preview.style.display = 'block';
                 }
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(file);//read the file so it can be displayed onload
             } else {
                 //cake_img_preview.style.display = 'none';
                 //reset the image preview
@@ -322,6 +322,11 @@ let ui_controller = {
 let catalog_manager = {
     initalize: function () {//Initialize the catalog manager
         console.log('Catalog manager is being initialized');
+        document.getElementById('upload_product_button').addEventListener('click', async function () {//Upload product button
+            console.log('upload_product_button clicked');
+            catalog_manager.addProduct();
+        });
+
         this.build();
     },
     build: async function () {
@@ -385,6 +390,8 @@ let catalog_manager = {
 
                 Cake_pedistal.addEventListener('click', function () {
                     console.log('clicked pedistal for cake', catalog[cakeindex].uuid);
+                    ui_controller.show_add_product();
+                    catalog_manager.editProduct(catalog[cakeindex].uuid);
                 })
             }
 
@@ -392,6 +399,23 @@ let catalog_manager = {
     },
     addProduct: async function () {//Add a product to the catalog
         console.log('Adding product');
+        const title = document.getElementById('cake_name_input').value;
+        const description = document.getElementById('cake_description_input').value;
+        const price = document.getElementById('cake_price_input').value;
+        const image = document.getElementById('cake_img_input').files[0];
+
+        const formData = new FormData();
+        formData.append('image_file', image);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('price', price);
+        console.log('Form data: ', formData);
+
+        const response = await fetch('post/uploadcakedata', {
+            method: 'POST',
+            body: formData,
+        });
+        console.log('Response: ',await response.json());
 
     },
     editProduct: async function (uuid) {//Edit a product in the catalog
