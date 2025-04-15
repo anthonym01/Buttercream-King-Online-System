@@ -510,9 +510,9 @@ app.post('/post/uploadcakedata', (req, res) => {
         //Create a new cake object
         const cake = {
             Title: req.body.title,
-            Description: req.body.Description||'empty',
+            Description: req.body.description || 'empty',
             price: req.body.price,
-            image_uri:'',//fix no default image uri later
+            image_uri: '',//fix no default image uri later
         }
 
         database.insert_into_Cakes(cake).then((result) => {
