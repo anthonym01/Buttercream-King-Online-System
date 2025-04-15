@@ -46,7 +46,11 @@
             <div class="cake_img_preview" id="cake_img_preview"></div>
             <form action="uploadcakedata" target="dummyframe" method="POST" enctype="multipart/form-data"
                 id="add_new_product_form">
-                <input type="file" id="cake_img_input" name="image_file" />
+                <div class="form_action_button_container">
+                    <button type="button" title="remove selected image" class="form_action_button" id="remove_image_new_button" style="display: none;">remove</button>
+                    <button type="button" title="select an image to upload" class="form_action_button" id="select_image_new_button">upload</button>
+                </div>
+                <input type="file" id="cake_img_input" name="image_file" style="display: none;" />
                 <label for="cake_name" class="">Name</label>
                 <input type="text" name="cake_name" id="cake_name_input" class="" placeholder="Cake name" required>
                 <label for="cake_price" class="">Cake price</label>
@@ -54,7 +58,12 @@
                 <label for="cake_description" class="">Description</label>
                 <textarea type="text" name="cake_description" id="cake_description_input" class="" placeholder="Cake name"></textarea>
 
-                <button type="button" id="upload_product_button">Upload</button>
+            <!--Reuse sign up error class-->
+            <div class="sign_up_error_message_hidden" id="product_input_error_message">Invalid datums</div>
+                <div class="form_action_button_container">
+                    <button type="button" title="remove selected image" class="form_action_button" id="cancel_new_cake_button">Cancel</button>
+                    <button type="button" title="Upload cake" class="form_action_button" id="upload_product_button">Submit</button>
+                </div>
             </form>
 
         </div>

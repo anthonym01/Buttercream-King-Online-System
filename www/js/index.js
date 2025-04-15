@@ -109,12 +109,12 @@ let session_manager = {
         document.getElementById('sign_up_password_put').addEventListener('input', function () { session_manager.comparate_password() });
         document.getElementById('sign_up_password_put2').addEventListener('input', function () { session_manager.comparate_password() });
 
-        
+
     },
     attempt_login: function () {// USed to get credentials on load
         console.log('attempt login');
         try {
-            if (config.data.credentials.user != null && config.data.credentials.user!="") {//if never logged in
+            if (config.data.credentials.user != null && config.data.credentials.user != "") {//if never logged in
                 post(config.data.credentials, 'post/login').then((response) => {
                     console.log('login state: ', response.status);
                     if (response.status == "sucess") {
@@ -171,7 +171,7 @@ let session_manager = {
         session_manager.attempt_login();
         setTimeout(() => {
             if (properties.loggedin == true) {
-                        location.reload();
+                location.reload();
             }
         }, 1000);//wait for the login to finish before reloading the page
     },
@@ -184,15 +184,15 @@ let session_manager = {
             alert('You must log in to proceed with this action.');
         }
     },
-    comparate_password:function(username, password, password2) {
+    comparate_password: function (username, password, password2) {
         console.log('comparate password');
-        if(username == undefined){
+        if (username == undefined) {
             username = document.getElementById('sign_up_username_put').value || "";
         }
-        if(password == undefined){
+        if (password == undefined) {
             password = document.getElementById('sign_up_password_put').value || "";
         }
-        if(password2 == undefined){
+        if (password2 == undefined) {
             password2 = document.getElementById('sign_up_password_put2').value || "";
         }
         if (username.length < 3) {
@@ -223,7 +223,7 @@ let session_manager = {
             document.getElementById('sign_up_error_message').innerHTML = "Passwords do not match";
             return false;
         }
-        
+
         document.getElementById('sign_up_error_message').classList = "sign_up_error_message_hidden";
         document.getElementById('sign_up_error_message').innerHTML = "";
         return true;
@@ -235,10 +235,10 @@ let session_manager = {
         const password_put = document.getElementById('sign_up_password_put').value || "";
         const password_put2 = document.getElementById('sign_up_password_put2').value || "";
 
-        const validity = session_manager.comparate_password(username_put, password_put, password_put2)|| false;
+        const validity = session_manager.comparate_password(username_put, password_put, password_put2) || false;
         const payload = { user: username_put, pass: password_put };
 
-        if(validity == true){
+        if (validity == true) {
             post(payload, 'post/signup').then((response) => {
                 console.log('sign up response: ', response);
                 if (response.status == "success") {
@@ -456,7 +456,9 @@ let catalog_maintainer = {
 
                 let cake_img = document.createElement('div')
                 cake_img.classList = "cake_img";
-                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                if (catalog[cakeindex].image_uri != '') {
+                    cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                }
                 Cake_pedistal.appendChild(cake_img);
 
                 let cake_title = document.createElement('div');
@@ -491,7 +493,9 @@ let catalog_maintainer = {
         post(uuid, 'get/cakebyuuid').then((cakefromuuid) => {//cakefromuuid= {title, description, image_uri, uuid}
             console.log('Got cake ', cakefromuuid)
             document.getElementById('cake_display_title').innerHTML = `${cakefromuuid.Title}`
-            document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cakefromuuid.image_uri}')`;
+            if (cakefromuuid.image_uri != '') {
+                document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cakefromuuid.image_uri}')`;
+            }
             document.getElementById('cake_display_description').innerHTML = `${cakefromuuid.Description}`
             document.getElementById('cake_display_price').innerHTML = `Price: \$${cakefromuuid.price.toFixed(2)} JMD`;
         })
@@ -609,7 +613,10 @@ let cart_maintainer = {
 
             const cake_img = document.createElement('div');
             cake_img.classList = "cart_item_img";
-            cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+            if (cake_data.image_uri != '') {
+                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+            }
+
             cart_item.appendChild(cake_img);
 
             const cake_title = document.createElement('div');
@@ -935,7 +942,9 @@ let order_maintainer = {
 
                 const cake_img = document.createElement('div');
                 cake_img.classList = "order_item_img";
-                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+                if (cake_data.image_uri != '') {
+                    cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+                }
                 order_item.appendChild(cake_img);
 
                 const cake_title = document.createElement('div');
@@ -957,11 +966,11 @@ let order_maintainer = {
 }
 
 let search_handler = {
-    initalize:function(){
+    initalize: function () {
         console.log('Search startup');
         document.getElementById('search_button').addEventListener('input', function () {
             console.log('search button clicked');
-            
+
         });
     }
 }

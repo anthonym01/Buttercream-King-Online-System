@@ -216,34 +216,6 @@ let ui_controller = {
             ui_controller.hide_add_product();
         });
 
-        //Image preview processing
-        const cake_img_preview = document.getElementById
-            ('cake_img_preview');
-        const cake_img_input = document.getElementById('cake_img_input');
-        cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
-
-        cake_img_preview.addEventListener('click', function () {
-            console.log('Image preview clicked');
-            cake_img_input.click();//force click
-        });
-
-        cake_img_input.addEventListener('change', async function (event) {
-            const file = event.target.files[0];
-            console.log('Image input changed', file);
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    cake_img_preview.style.backgroundImage = `url('${e.target.result}')`;
-                    cake_img_preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);//read the file so it can be displayed onload
-            } else {
-                //cake_img_preview.style.display = 'none';
-                //reset the image preview
-                cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
-                cake_img_preview.style.display = 'block';
-            }
-        });
 
     },
     close_staff_dropdown_menu: function () {//Close the dropdown menu 
@@ -327,6 +299,57 @@ let catalog_manager = {
             catalog_manager.addProduct();
         });
 
+
+        //Image preview processing
+        const cake_img_preview = document.getElementById
+            ('cake_img_preview');
+        const cake_img_input = document.getElementById('cake_img_input');
+        cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+
+        document.getElementById('select_image_new_button').addEventListener('click', async function () {//Select image button
+            console.log('select_image_new_button clicked');
+            cake_img_input.click();
+        });
+
+        document.getElementById('remove_image_new_button').addEventListener('click', function (event) {//Close the add product panel
+            console.log('remove_image_new_button clicked');
+            cake_img_input.value = "";
+            cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+            document.getElementById('remove_image_new_button').style.display = 'none';
+        });
+
+        cake_img_preview.addEventListener('click', function () {
+            console.log('Image preview clicked');
+            cake_img_input.click();//force click
+        });
+
+        cake_img_input.addEventListener('change', async function (event) {
+            const file = event.target.files[0];
+            console.log('Image input changed', file);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    cake_img_preview.style.backgroundImage = `url('${e.target.result}')`;
+                    cake_img_preview.style.display = 'block';
+                    document.getElementById('remove_image_new_button').style.display = 'block';
+                    console.log('Image preview loaded');
+                }
+                reader.readAsDataURL(file);//read the file so it can be displayed onload
+            } else {
+                //cake_img_preview.style.display = 'none';
+                //reset the image preview
+                cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+                cake_img_preview.style.display = 'block';
+            }
+        });
+
+        document.getElementById('cancel_new_cake_button').addEventListener('click', function () {//Cancel button    
+            console.log('cancel_new_cake_button clicked');
+            ui_controller.hide_add_product();
+            //reset form
+            catalog_manager.reset_product_form();
+        })
+
         this.build();
     },
     build: async function () {
@@ -373,7 +396,9 @@ let catalog_manager = {
 
                 const cake_img = document.createElement('div')
                 cake_img.classList = "cake_img";
-                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                if (catalog[cakeindex].image_uri != '') {
+                    cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                }
                 Cake_pedistal.appendChild(cake_img);
 
                 const cake_title = document.createElement('div');
@@ -397,13 +422,61 @@ let catalog_manager = {
 
         })
     },
+    reset_product_form: function () {//Reset the product form
+        console.log('Resetting product form');
+        document.getElementById('cake_name_input').value = "";
+        document.getElementById('cake_description_input').value = "";
+        document.getElementById('cake_price_input').value = "";
+        document.getElementById('cake_img_input').value = "";
+        cake_img_preview.style.backgroundImage = `url('img/add-svgrepo-com.svg')`;
+        cake_img_preview.style.display = 'block';
+        document.getElementById('remove_image_new_button').style.display = 'none';
+    },
     addProduct: async function () {//Add a product to the catalog
         console.log('Adding product');
+        /*
+            Create dynamic loading animation here later
+        */
+
+        document.getElementById('upload_product_button').disabled = true;//Disable the button
+        //Get the values from the input fields
+
         const title = document.getElementById('cake_name_input').value;
         const description = document.getElementById('cake_description_input').value;
         const price = document.getElementById('cake_price_input').value;
         const image = document.getElementById('cake_img_input').files[0];
 
+        //Check if the values are empty
+        const product_input_error_message = document.getElementById('product_input_error_message');
+        if (title == '') {
+            product_input_error_message.classList = "sign_up_error_message";
+            product_input_error_message.innerHTML = "A name is required!";
+            document.getElementById('upload_product_button').disabled = false;//Enable the button
+
+            return false;
+
+        } else if (description == '') {
+            product_input_error_message.classList = "sign_up_error_message";
+            product_input_error_message.innerHTML = "Description is empty";
+            document.getElementById('upload_product_button').disabled = false;//Enable the button
+
+            return false;
+
+        } else if (price == '') {
+            product_input_error_message.classList = "sign_up_error_message";
+            document.getElementById('upload_product_button').disabled = false;//Enable the button
+            product_input_error_message.innerHTML = "No price selected";
+            return false;
+
+        } else if (image == undefined || image == null || image == '') {
+            product_input_error_message.classList = "sign_up_error_message";
+            document.getElementById('upload_product_button').disabled = false;//Enable the button
+            product_input_error_message.innerHTML = "No Image selected";
+            //return false;
+            //allow empty image for now
+        }
+
+        //build the form data
         const formData = new FormData();
         formData.append('image_file', image);
         formData.append('title', title);
@@ -416,16 +489,8 @@ let catalog_manager = {
             body: formData,
         });
 
-        //dissable button durring upload
-        document.getElementById('upload_product_button').disabled = true;
-
-        /*
-            Create dynamic loading animation here later
-        */
-
         const response_data = await response.json();
         console.log('Response data: ', response_data);
-
 
         if (response_data.status == 'success') {
             console.log('Product added');
@@ -442,7 +507,7 @@ let catalog_manager = {
     },
     editProduct: async function (uuid) {//Edit a product in the catalog
         console.log('Editing product', uuid);
-
+        //load up product to be edited
     }
 }
 

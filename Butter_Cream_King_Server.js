@@ -498,16 +498,7 @@ app.post('/post/uploadcakedata', (req, res) => {
     try {
         console.log('Upload cake data');
         console.log(req.body);// expects: { title,description, price }
-        console.log(req.files);//formData 
 
-        const { image_file } = req.files;
-
-        // Check if image is uploaded
-        //if (!image_file) return res.sendStatus(400);
-        // Check if image is too big
-        //if (image_file.size > 1000000) return res.sendStatus(400);
-
-        //Create a new cake object
         const cake = {
             Title: req.body.title,
             Description: req.body.description || 'empty',
@@ -515,26 +506,40 @@ app.post('/post/uploadcakedata', (req, res) => {
             image_uri: '',//fix no default image uri later
         }
 
-        database.insert_into_Cakes(cake).then((result) => {
-            logs.info('Cake created: ', result);
+        if (!req.files || req.files.length == 0 || req.files == null) {
+            //No files submitted, handle condition
+            console.log('No files submitted');
+            //create cake with no image
+            console.log('Creating new cake');
+            database.insert_into_Cakes(cake).then((result) => {
+                logs.info('Cake created: ', result);
 
-            const cakeid = result.insertId;
+                res.end(JSON.stringify({ status: "success" }));
+            });
+        } else {
+            //Check if files are submitted
+            console.log('Files submitted: ', req.files);
+            //Check if image is too big
+            //if (image_file.size > 1000000) return res.sendStatus(400);
+            //Create a new cake object
 
-            const imagename = `${String(cakeid)}${path.extname(image_file.name)}`;
-            console.log('Image name: ', imagename);
-            //Update the Cake with the image id
-            image_file.mv(path.join(__dirname, 'www/img_database_store/cakes', imagename));
-            database.updateCake(cakeid, { image_uri: imagename });
-            // Move the uploaded image to our upload folder
-        });
-        // If no image submitted, exit
-        //if (!image_file) return res.sendStatus(400);
-        // If doesn't have image mime type prevent from uploading
-        //if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
-        // Check if file exists
-        // Move the uploaded image to our upload folder
-        // All good
-        res.end(JSON.stringify({ status: "success" }));
+            const { image_file } = req.files;
+            console.log('Creating new cake with image: ', image_file.name);
+            database.insert_into_Cakes(cake).then((result) => {
+                logs.info('Cake created: ', result);
+
+                //move and rename the image file to the cakes id
+                const cakeid = result.insertId;
+                const imagename = `${String(cakeid)}${path.extname(image_file.name)}`;
+                console.log('Image name: ', imagename);
+                image_file.mv(path.join(__dirname, 'www/img_database_store/cakes', imagename));
+
+                database.updateCake(cakeid, { image_uri: imagename });//database needs to know the image name to display it later
+                logs.info('Updated cake image: ', imagename, ' for cake: ', cakeid);
+                res.end(JSON.stringify({ status: "success" }));
+            });
+        }
+
     } catch (error) {
         logs.error('Catastrophy on upload cake data: ', error);
         res.end(JSON.stringify({ status: "failiure critical error" }));
