@@ -284,6 +284,8 @@ let ui_controller = {
     show_add_product: function () {//Show the add product panel in the catalog
         document.getElementById('add_new_product_pannel').classList = "editor_pannel_active";
         document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
+        //reset form
+        catalog_manager.reset_product_form();
     },
     hide_add_product: function () {//Hide the add product panel in the catalog
         document.getElementById('add_new_product_pannel').classList = "editor_pannel";
@@ -294,11 +296,12 @@ let ui_controller = {
 let catalog_manager = {
     initalize: function () {//Initialize the catalog manager
         console.log('Catalog manager is being initialized');
-        document.getElementById('upload_product_button').addEventListener('click', async function () {//Upload product button
+
+        //Upload product button
+        document.getElementById('upload_product_button').addEventListener('click', async function () {
             console.log('upload_product_button clicked');
             catalog_manager.addProduct();
         });
-
 
         //Image preview processing
         const cake_img_preview = document.getElementById
@@ -329,6 +332,14 @@ let catalog_manager = {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
+                    //check file size
+                    if (file.size > 1000000) {//1MB
+                        console.log('selected file way too large');
+                        document.getElementById('product_input_error_message').classList = "sign_up_error_message";
+                        document.getElementById('product_input_error_message').innerHTML = "Image is too large, please select an image smaller than 1MB, current files size is " + (file.size / 1000000).toFixed(2) + "MB";
+                    }else{
+                        document.getElementById('product_input_error_message').classList = "sign_up_error_message_hidden";
+                    }
                     cake_img_preview.style.backgroundImage = `url('${e.target.result}')`;
                     cake_img_preview.style.display = 'block';
                     document.getElementById('remove_image_new_button').style.display = 'block';
@@ -437,8 +448,8 @@ let catalog_manager = {
         /*
             Create dynamic loading animation here later
         */
-
-        document.getElementById('upload_product_button').disabled = true;//Disable the button
+        const upload_product_button = document.getElementById('upload_product_button');
+        upload_product_button.disabled = true;//Disable the button
         //Get the values from the input fields
 
         const title = document.getElementById('cake_name_input').value;
@@ -451,29 +462,34 @@ let catalog_manager = {
         if (title == '') {
             product_input_error_message.classList = "sign_up_error_message";
             product_input_error_message.innerHTML = "A name is required!";
-            document.getElementById('upload_product_button').disabled = false;//Enable the button
+            upload_product_button.disabled = false;//Enable the button
 
             return false;
 
         } else if (description == '') {
             product_input_error_message.classList = "sign_up_error_message";
             product_input_error_message.innerHTML = "Description is empty";
-            document.getElementById('upload_product_button').disabled = false;//Enable the button
+            upload_product_button.disabled = false;//Enable the button
 
             return false;
 
         } else if (price == '') {
             product_input_error_message.classList = "sign_up_error_message";
-            document.getElementById('upload_product_button').disabled = false;//Enable the button
+            upload_product_button.disabled = false;//Enable the button
             product_input_error_message.innerHTML = "No price selected";
             return false;
 
         } else if (image == undefined || image == null || image == '') {
             product_input_error_message.classList = "sign_up_error_message";
-            document.getElementById('upload_product_button').disabled = false;//Enable the button
+            upload_product_button.disabled = false;//Enable the button
             product_input_error_message.innerHTML = "No Image selected";
             //return false;
             //allow empty image for now
+        }else if(image.size > 1000000){//3MB
+            product_input_error_message.classList = "sign_up_error_message";
+            upload_product_button.disabled = false;//Enable the button
+            product_input_error_message.innerHTML = "Image is too large, please select an image smaller than 1mb";
+            return false;
         }
 
         //build the form data

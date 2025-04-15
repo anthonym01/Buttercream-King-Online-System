@@ -388,7 +388,8 @@ body {
     overflow-y: auto;
 }
 
-.Cake_pedistal,.Cake_pedistal_short {
+.Cake_pedistal,
+.Cake_pedistal_short {
     position: relative;
     overflow: hidden;
     height: 17rem;
@@ -398,7 +399,7 @@ body {
     box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
     background-color: var(--background-color);
     cursor: pointer;
-    transition: box-shadow 300ms,scale 300ms;
+    transition: box-shadow 300ms, scale 300ms;
     scale: 1.0;
 }
 
@@ -407,15 +408,17 @@ body {
     transform: translateY(2rem);
 }
 
-.Cake_pedistal:hover,.Cake_pedistal_short:hover {
+.Cake_pedistal:hover,
+.Cake_pedistal_short:hover {
     box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
-    transition: box-shadow 100ms,scale 100ms;
+    transition: box-shadow 100ms, scale 100ms;
     scale: 1.03;
 }
 
-.Cake_pedistal:active,.Cake_pedistal_short:active {
+.Cake_pedistal:active,
+.Cake_pedistal_short:active {
     box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
-    transition: box-shadow 100ms,scale 0ms;
+    transition: box-shadow 100ms, scale 0ms;
     scale: 0.97;
 }
 
@@ -1456,7 +1459,8 @@ orders_page
 
 }
 
-.menu_target,.menu_target_hidden {
+.menu_target,
+.menu_target_hidden {
     position: absolute;
     top: 0;
     left: 0;
@@ -1470,6 +1474,7 @@ orders_page
     cursor: pointer;
     display: block;
 }
+
 .menu_target_hidden {
     display: none;
 }
@@ -1537,7 +1542,7 @@ orders_page
     display: none;
 }
 
-.staff_dropdown_menu .title{
+.staff_dropdown_menu .title {
     position: relative;
     height: 2rem;
     font-size: 1rem;
@@ -1546,6 +1551,7 @@ orders_page
     color: var(--text-color);
     line-height: 1.5rem;
 }
+
 .staff_dropdown_menu .close_button {
     position: absolute;
     top: 0.2rem;
@@ -1555,14 +1561,14 @@ orders_page
     cursor: pointer;
 }
 
-.staff_dropdown_menu_item{
+.staff_dropdown_menu_item {
     position: relative;
     height: 2.5rem;
     width: 100%;
     font-size: 1.2rem;
     line-height: 2.5rem;
     text-align: center;
-    box-sizing: border-box  ;
+    box-sizing: border-box;
     color: var(--text-color);
     cursor: pointer;
     background-color: var(--background-color);
@@ -1570,10 +1576,12 @@ orders_page
     transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
     user-select: none;
 }
-.staff_dropdown_menu_item:hover{
+
+.staff_dropdown_menu_item:hover {
     background-color: var(--off-background-color);
 }
-.staff_dropdown_menu_item:active{
+
+.staff_dropdown_menu_item:active {
     background-color: var(--accent-color);
     transform: scale(0.96);
     transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
@@ -1584,7 +1592,8 @@ orders_page
     For all Staff sections contains the catalogue of items, staff, customers, inventory, etc.
     uses .Cake_pedistal class for each item in the catalogue.
 */
-.staff_catalog,.staff_catalog_compressed {
+.staff_catalog,
+.staff_catalog_compressed {
     position: absolute;
     top: 0;
     left: 0;
@@ -1596,13 +1605,14 @@ orders_page
     overflow-y: auto;
 }
 
-.staff_catalog_compressed{
+.staff_catalog_compressed {
     display: flex;
     width: 60%;
 }
 
 /* Cake input/editor */
-.editor_pannel,.editor_pannel_active {
+.editor_pannel,
+.editor_pannel_active {
     position: absolute;
     top: 0;
     right: 0;
@@ -1619,7 +1629,8 @@ orders_page
     display: block;
 }
 
-.editor_pannel_active .title,.editor_pannel .title {
+.editor_pannel_active .title,
+.editor_pannel .title {
     position: relative;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -1631,7 +1642,7 @@ orders_page
     color: var(--text-color);
 }
 
-.cake_img_preview{
+.cake_img_preview {
     position: relative;
     height: 12rem;
     width: 100%;
@@ -1643,7 +1654,7 @@ orders_page
     margin-bottom: 0.5rem;
 }
 
-.form_action_button_container{
+.form_action_button_container {
     position: relative;
     height: 3rem;
     width: 100%;
@@ -1657,7 +1668,7 @@ orders_page
     box-sizing: border-box;
 }
 
-.form_action_button{
+.form_action_button {
     appearance: none;
     -webkit-appearance: none;
     position: relative;
@@ -1675,6 +1686,43 @@ orders_page
     margin-left: 0.7rem;
     margin-right: 0.7rem;
     padding: none;
+}
+
+.cake_input_container {
+    position: relative;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 0.5rem;
+    height: fit-content;
+    min-height: 2.2rem;
+    width: 90%;
+    background-color: var(--background-color);
+}
+
+.cake_input {
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 2.4rem;
+    width: 100%;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+    border: 0.15rem solid var(--text-color);
+    background-color: var(--off-background-color);
+    padding: 0.6rem;
+    border-radius: 0.2rem;
+}
+
+.cake_input:focus {
+    outline: none;
+    border: 0.15rem solid var(--accent-color);
+    background-color: var(--background-color);
+}
+
+#cake_description_input {
+    min-height: 6rem;
+    height: 6rem;
+    min-height: 100%;
 }
 
 /*    <--  Landscape layout (with min-width) -->     */
