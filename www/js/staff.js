@@ -216,6 +216,12 @@ let ui_controller = {
             ui_controller.hide_add_product();
         });
 
+        //close edit product panel
+        document.getElementById('close_edit_product_pannel_button').addEventListener('click', function () {
+            console.log('Close edit product panel button clicked');
+            ui_controller.hide_edit_product();
+        });
+
 
     },
     close_staff_dropdown_menu: function () {//Close the dropdown menu 
@@ -287,6 +293,16 @@ let ui_controller = {
         //reset form
         catalog_manager.reset_product_form();
     },
+    hide_edit_product: function () {//Hide the edit product panel in the catalog
+        document.getElementById('edit_product_pannel').classList = "editor_pannel";
+        document.getElementById('inventory_catalog').classList = "staff_catalog";
+    },
+    show_edit_product: function () {//Show the edit product panel in the catalog
+        document.getElementById('edit_product_pannel').classList = "editor_pannel_active";
+        document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
+        //reset form
+        //catalog_manager.reset_edit_product_form();
+    },
     hide_add_product: function () {//Hide the add product panel in the catalog
         document.getElementById('add_new_product_pannel').classList = "editor_pannel";
         document.getElementById('inventory_catalog').classList = "staff_catalog";
@@ -303,6 +319,9 @@ let catalog_manager = {
             catalog_manager.addProduct();
         });
 
+        /*
+            Add items to catalog handler
+        */
         //Image preview processing
         const cake_img_preview = document.getElementById
             ('cake_img_preview');
@@ -360,6 +379,68 @@ let catalog_manager = {
             //reset form
             catalog_manager.reset_product_form();
         })
+
+
+        /*
+            Edit product image preview processing
+        */
+        const cake_img_editor_preview = document.getElementById
+            ('cake_img_editor_preview');
+        const cake_img_edit_input = document.getElementById('cake_img_edit_input');
+        cake_img_preview.style.backgroundImage = ``;
+
+        document.getElementById('select_image_edit_button').addEventListener('click', async function () {//Select image button
+            console.log('select_image_edit_button clicked');
+            cake_img_edit_input.click();
+        });
+
+        document.getElementById('remove_image_edit_button').addEventListener('click', function (event) {//Close the add product panel
+            console.log('remove_image_edit_button clicked');
+            cake_img_edit_input.value = "";
+            cake_img_editor_preview.style.backgroundImage = ``;
+            document.getElementById('remove_image_edit_button').style.display = 'none';
+        });
+
+        cake_img_editor_preview.addEventListener('click', function () {
+            console.log('Image preview clicked');
+            cake_img_edit_input.click();//force click
+        });
+
+        cake_img_edit_input.addEventListener('change', async function (event) {
+            const file = event.target.files[0];
+            console.log('Image input changed', file);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    //check file size
+                    if (file.size > 1000000) {//1MB
+                        console.log('selected file way too large');
+                        document.getElementById('product_edit_error_message').classList = "sign_up_error_message";
+                        document.getElementById('product_edit_error_message').innerHTML = "Image is too large, please select an image smaller than 1MB, current files size is " + (file.size / 1000000).toFixed(2) + "MB";
+                    }else{
+                        document.getElementById('product_edit_error_message').classList = "sign_up_error_message_hidden";
+                    }
+                    cake_img_editor_preview.style.backgroundImage = `url('${e.target.result}')`;
+                    cake_img_editor_preview.style.display = 'block';
+                    document.getElementById('remove_image_edit_button').style.display = 'block';
+                    console.log('Image preview loaded');
+                }
+                reader.readAsDataURL(file);//read the file so it can be displayed onload
+            } else {
+                //cake_img_preview.style.display = 'none';
+                //reset the image preview
+                cake_img_editor_preview.style.backgroundImage = ``;
+                cake_img_editor_preview.style.display = 'block';
+            }
+        });
+
+        document.getElementById('cancel_new_cake_button').addEventListener('click', function () {//Cancel button    
+            console.log('cancel_new_cake_button clicked');
+            ui_controller.hide_add_product();
+            //reset form
+            catalog_manager.reset_product_form();
+        })
+
 
         this.build();
     },
@@ -426,7 +507,6 @@ let catalog_manager = {
 
                 Cake_pedistal.addEventListener('click', function () {
                     console.log('clicked pedistal for cake', catalog[cakeindex].uuid);
-                    ui_controller.show_add_product();
                     catalog_manager.editProduct(catalog[cakeindex].uuid);
                 })
             }
@@ -523,7 +603,20 @@ let catalog_manager = {
     },
     editProduct: async function (uuid) {//Edit a product in the catalog
         console.log('Editing product', uuid);
+        ui_controller.show_edit_product();
+        //show editing catalog form
+
         //load up product to be edited
+        const data = await post(uuid,'get/cakebyuuid');// expects { Title,  Description, image_uri, uuid }
+        console.log('Got product data: ', data);
+
+        if (data == false || data == undefined) {
+            console.log('Failed to load product data');
+            alert('Failed to load product data, check server');
+            return false;
+        }
+
+        //populate the feilds
     }
 }
 

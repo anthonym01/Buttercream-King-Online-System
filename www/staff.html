@@ -38,6 +38,7 @@
         <div class="staff_catalog" id="inventory_catalog">
 
         </div>
+        <!-- Add new product form -->
         <div class="editor_pannel" id="add_new_product_pannel">
             <div title="close" class="close_button" id="close_add_new_product_pannel_button"></div>
 
@@ -56,11 +57,13 @@
                 <input type="file" id="cake_img_input" name="image_file" style="display: none;" />
                 <div class="cake_input_container">
                     <label for="cake_name" class="">Name</label>
-                    <input type="text" name="cake_name" id="cake_name_input" class="cake_input" placeholder="Cake name" required>
+                    <input type="text" name="cake_name" id="cake_name_input" class="cake_input" placeholder="Cake name"
+                        required>
                 </div>
                 <div class="cake_input_container">
                     <label for="cake_price" class="">Cake price</label>
-                    <input type="number" name="cake_price" id="cake_price_input" class="cake_input" placeholder="$00.00" required>
+                    <input type="number" name="cake_price" id="cake_price_input" class="cake_input" placeholder="$00.00"
+                        required>
                 </div>
                 <div class="cake_input_container">
                     <label for="cake_description" class="">Description</label>
@@ -75,6 +78,52 @@
                         id="cancel_new_cake_button">Cancel</button>
                     <button type="button" title="Upload cake" class="form_action_button"
                         id="upload_product_button">Submit</button>
+                </div>
+            </form>
+
+        </div>
+        <!-- Edit product form -->
+        <div class="editor_pannel" id="edit_product_pannel">
+            <div title="close" class="close_button" id="close_edit_product_pannel_button"></div>
+
+            <div class="title">Edit Product #</div>
+
+            <div class="cake_img_preview" id="cake_img_editor_preview"></div>
+            <form action="updatecakedata" target="dummyframe" method="POST" enctype="multipart/form-data"
+                id="edit_product_form">
+                <div class="form_action_button_container">
+                    <button type="button" title="remove selected image" class="form_action_button"
+                        id="remove_image_edit_button">remove</button>
+                    <button type="button" title="select an image to upload" class="form_action_button"
+                        id="select_image_edit_button">change</button>
+                </div>
+
+                <input type="file" id="cake_img_edit_input" name="image_file" style="display: none;" />
+                <div class="cake_input_container">
+                    <label for="cake_edit_name" class="">Name</label>
+                    <input type="text" name="cake_edit_name" id="cake_name_edit_input" class="cake_input"
+                        placeholder="Cake name" required>
+                </div>
+                <div class="cake_input_container">
+                    <label for="cake_edit_price" class="">Cake price</label>
+                    <input type="number" name="cake_edit_price" id="cake_price_edit_input" class="cake_input"
+                        placeholder="$00.00" required>
+                </div>
+                <div class="cake_input_container">
+                    <label for="cake_edit_description" class="">Description</label>
+                    <textarea type="text" name="cake_edit_description" id="cake_description_edit_input"
+                        class="cake_input" placeholder="Cake description"></textarea>
+                </div>
+                <!--Reuse sign up error class-->
+                <div class="sign_up_error_message_hidden" id="product_edit_error_message">Invalid datums</div>
+
+                <div class="form_action_button_container">
+                    <button type="button" title="Cancel editing" class="form_action_button"
+                        id="cancel_edit_cake_button">Cancel</button>
+                    <button type="button" title="Upload cake" class="form_action_button"
+                        id="upload_edit_product_button">Submit</button>
+                    <button type="button" title="Delete cake" class="form_action_button"
+                        id="delete_product_button">Delete</button>
                 </div>
             </form>
 
