@@ -289,6 +289,8 @@ let ui_controller = {
         document.getElementById('manage_Customers_page').classList = "main_view_active";
     },
     show_add_product: function () {//Show the add product panel in the catalog
+        ui_controller.hide_edit_product();
+        console.log('Showing add product panel');
         document.getElementById('add_new_product_pannel').classList = "editor_pannel_active";
         document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
         //reset form
@@ -299,6 +301,7 @@ let ui_controller = {
         document.getElementById('inventory_catalog').classList = "staff_catalog";
     },
     show_edit_product: function () {//Show the edit product panel in the catalog
+        ui_controller.hide_add_product();
         document.getElementById('edit_product_pannel').classList = "editor_pannel_active";
         document.getElementById('inventory_catalog').classList = "staff_catalog_compressed";
         //reset form
@@ -448,6 +451,21 @@ let catalog_manager = {
             catalog_manager.reset_product_form();
         })
 
+        //delete product button
+        document.getElementById('delete_product_button').addEventListener('click', async function () {
+            console.log('delete_product_button clicked');
+            const uuid = properties.editingProduct;
+            if (uuid == false || uuid == undefined) {
+                console.log('No product selected');
+                alert('No product selected');
+                return false;
+            }
+            const confirm = window.confirm('Are you sure you want to delete this product?');
+            if (confirm) {
+                console.log('Set to delete product', uuid);
+                catalog_manager.deleteProduct(uuid);
+            }
+        })
 
         this.build();
     },
@@ -714,6 +732,20 @@ let catalog_manager = {
             console.log('Product not edited, server error');
             alert('Error, was not edited, image file may be too large to upload');
             document.getElementById('upload_edit_product_button').disabled = false;
+        }
+    },
+    deleteProduct: async function (uuid) {//Delete a product from the catalog
+        console.log('Deleting product', uuid);
+        const response = await post(uuid, 'post/deletecake');
+        console.log('Response data: ', response);
+        if (response.status == 'success') {
+            console.log('Product deleted');
+            alert('Product deleted');
+            ui_controller.hide_edit_product();
+            catalog_manager.build();
+        } else {
+            console.log('Product not deleted');
+            alert('Error, was not deleted, internal server error');
         }
     }
 }

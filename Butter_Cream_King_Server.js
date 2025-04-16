@@ -599,6 +599,29 @@ app.post('/post/editcake', (req, res) => {
     }
 });
 
+app.post('/post/deletecake', (req, res) => {
+    console.log('Delete cake data');
+    try {
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);// expects: { uuid }
+
+            const uuid = data;
+            if (typeof (uuid) == 'undefined') {
+                logs.error('No uuid provided in delete cake request: ', data);
+                res.end(JSON.stringify({ status: "error" }));
+                return;
+            }
+
+            database.deleteCake(uuid);
+            res.end(JSON.stringify({ status: "success" }));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on delete cake data: ', error);
+        res.end(JSON.stringify({ status: "failiure critical error" }));
+    }
+});
+
 // get all staff mambers for display
 app.get('/get/staff', (req, res) => {
     try {
