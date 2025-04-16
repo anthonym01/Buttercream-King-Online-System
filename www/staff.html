@@ -34,6 +34,7 @@
         </div>
     </div>
 
+    <!--Catalog management-->
     <div class="main_view" id="manage_catalog_page">
         <div class="staff_catalog" id="inventory_catalog">
 
@@ -130,8 +131,53 @@
         </div>
     </div>
 
+    <!--Staff management-->
     <div class="main_view" id="manage_staff_page">
         <div class="staff_catalog" id="staff_catalog">
+
+        </div>
+        <!-- Add/edit staff form -->
+        <div class="editor_pannel" id="staff_input_pannel">
+            <div title="close" class="close_button" id="close_staff_input_pannel_button"></div>
+
+            <div class="title">Staff input</div>
+
+            <form action="uploadstaffinfo" target="dummyframe" method="POST" enctype="multipart/form-data"
+                id="staff_input_form">
+
+                <div class="cake_input_container">
+                    <label for="staff_input_name" class="">Username</label>
+                    <input type="text" name="staff_input_name" id="staff_username_input" class="cake_input"
+                        placeholder="Username" required>
+                </div>
+                <div class="cake_input_container">
+                    <label for="staff_input_authority" class="">Privilege level</label>
+                    <input type="number" min="0" max="99" name="staff_input_authority" id="staff_authority_input" class="cake_input"
+                        placeholder="0 - 99 higher = more authority" required>
+                </div>
+                <div class="cake_input_container">
+                    <label for="staff_input_password" class="">password</label>
+                    <input type="password" name="staff_input_password" id="staff_password_input" class="cake_input"
+                        placeholder="password"  required>
+                </div>
+                <div class="cake_input_container">
+                    <label for="staff_input_password2" class="">repeat password</label>
+                    <input type="password" name="staff_input_password2" id="staff_password_input2" class="cake_input"
+                        placeholder="password"  required>
+                </div>
+
+                <!--Reuse sign up error class-->
+                <div class="sign_up_error_message_hidden" id="staff_input_error_message">Invalid datums</div>
+
+                <div class="form_action_button_container">
+                    <button type="button" title="Cancel editing" class="form_action_button"
+                        id="cancel_staff_input_button">Cancel</button>
+                    <button type="button" title="Upload cake" class="form_action_button"
+                        id="upload_staff_input_button">Submit</button>
+                    <button type="button" title="Delete cake" class="form_action_button"
+                        id="delete_staff_button">Delete</button>
+                </div>
+            </form>
 
         </div>
     </div>

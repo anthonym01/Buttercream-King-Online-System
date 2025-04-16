@@ -12,6 +12,7 @@ const app = express();
 app.use(fileUpload());//allow file uploads via formData
 const logs = require('./modules/logger');
 const database = require('./modules/database_wrapper');
+const { log } = require('console');
 
 app.listen(port, () => {
     try {
@@ -634,3 +635,44 @@ app.get('/get/staff', (req, res) => {
         res.end(JSON.stringify({ status: "error" }));
     }
 })
+
+app.post('/post/staffupdate', (req, res) => {
+    logs.info('staff update');
+
+    try {
+
+        req.on('data', function (data) {
+            const staff = JSON.parse(data);
+            logs.info('got payload: ', staff);// expects: {id,            username, password,privilage_level}
+            if (typeof (staff) == 'undefined') {
+                logs.error('No staff data provided in request: ', data);
+                res.end(JSON.stringify({ status: "error" }));
+                return;
+            }
+
+            const stripped_staff = {
+                username: staff.username,
+                password: staff.password,
+                privilage_level: staff.privilage_level
+            }
+
+            //check if id is provided
+            if (staff.id == 0 || staff.id == '0') {
+                //create new staff member
+                database.insert_into_Staff(stripped_staff);
+                logs.info('Staff created: ', stripped_staff);
+                res.end(JSON.stringify({ status: "success" }));
+            }
+            else {
+                //update staff member
+                database.updateStaff(staff.id, stripped_staff);
+                logs.info('Staff updated: ', result);
+                res.end(JSON.stringify({ status: "edited" }));
+            }
+
+        });
+    } catch (error) {
+        logs.error('Catastrophy on staff update: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});

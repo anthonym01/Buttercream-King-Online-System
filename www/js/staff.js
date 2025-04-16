@@ -55,6 +55,9 @@ let properties = {
     logedin: false,//User logged in
     privilage_level: 0,//User privilage_level level
     editingProduct: false,//User editing a product
+    editingStaff: false,//User editing a staff member
+    editingCustomer: false,//User editing a customer
+    editingOrder: false,//User editing an order
 }
 
 /*
@@ -671,7 +674,7 @@ let catalog_manager = {
         const price = document.getElementById('cake_price_edit_input').value;
         const image = document.getElementById('cake_img_edit_input').files[0];
         //Check if the values are empty
-        const product_edit_error_message = document.getElementById('product_edit_error_message');   
+        const product_edit_error_message = document.getElementById('product_edit_error_message');
         if (title == '') {
             product_edit_error_message.classList = "sign_up_error_message";
             product_edit_error_message.innerHTML = "A name is required!";
@@ -753,15 +756,185 @@ let catalog_manager = {
 let staff_manager = {
     initalize: function () {//Initialize the staff manager
         console.log('Staff manager is being initialized');
+
+        document.getElementById('close_staff_input_pannel_button').addEventListener('click', function () {//Close the add new product panel
+            console.log('Close staff input panel button clicked');
+            staff_manager.hide_staff_input();
+        });
+
+        document.getElementById('cancel_staff_input_button').addEventListener('click', function () {//Close the add new product panel
+            console.log('cancel_staff_input_button button clicked');
+            staff_manager.hide_staff_input();
+        });
+
+        document.getElementById('upload_staff_input_button').addEventListener('click', async function () {//Upload staff button
+            console.log('upload_staff_input_button clicked');
+            staff_manager.submitStaff();
+        });
+
+
         this.loadStaff();
+
+    },
+    show_staff_input: function () {//Show the staff input panel
+        console.log('Showing staff input panel');
+        document.getElementById('staff_input_pannel').classList = "editor_pannel_active";
+        document.getElementById('staff_catalog').classList = "staff_catalog_compressed";
+    },
+    hide_staff_input: function () {//Hide the staff input panel
+        console.log('Hiding staff input panel');
+        document.getElementById('staff_input_pannel').classList = "editor_pannel";
+        document.getElementById('staff_catalog').classList = "staff_catalog";
     },
     loadStaff: async function () {//Load the staff from the server
         console.log('Loading staff');
+        //Create new staff button
+
+        const staff_catalog = document.getElementById('staff_catalog');
+
+        staff_catalog.innerHTML = "";//Clear the catalog
+
+        const add_staff_button = document.createElement('div');
+        add_staff_button.classList = "Staff_pedistal";
+        add_staff_button.tagName = `Staff add new`;
+        add_staff_button.title = `Add New Staff member`;
+        const staff_name = document.createElement('div');
+        staff_name.classList = "staff_pedistal_name"
+        staff_name.innerHTML = `Add New Staff <br> +`;
+        add_staff_button.appendChild(staff_name);
+        staff_catalog.appendChild(add_staff_button);
+        add_staff_button.addEventListener('click', function () {
+            console.log('clicked pedistal for staff');
+            staff_manager.addStaff();
+        })
+
+
+        //Load the staff from the server
         let data = await request('get/staff/');
         if (data == false || data == undefined) {
             console.log('Failed to load staff');
             return false;
         }
-        console.log('gots Staff', data);
+        console.log('gots Staff', data);//expects {id, username, password, privilage_level}
+
+
+        for (let staffindex in data) {// construction zone
+            const Staff_pedistal = document.createElement('div');
+            Staff_pedistal.classList = "Staff_pedistal";
+            Staff_pedistal.tagName = `Staff ${staffindex}`;
+            Staff_pedistal.title = `${data[staffindex].username}`;
+
+            const staff_name = document.createElement('div');
+            staff_name.classList = "staff_pedistal_name"
+            staff_name.innerHTML = `${data[staffindex].username}`;
+            Staff_pedistal.appendChild(staff_name);
+
+            const staff_privilage_level = document.createElement('div');
+            staff_privilage_level.classList = "staff_pedistal_privilage_level"
+            staff_privilage_level.innerHTML = `Privilage: ${data[staffindex].privilage_level}`;
+            Staff_pedistal.appendChild(staff_privilage_level);
+
+            staff_catalog.appendChild(Staff_pedistal);
+
+            Staff_pedistal.addEventListener('click', function () {
+                console.log('clicked pedistal for staff', data[staffindex].id);
+                staff_manager.editStaff(data[staffindex].id);
+            })
+        }
+
+    },
+    editStaff: async function (id) {//Load a project to Edit a staff member
+        console.log('Editing staff', id);
+        properties.editingStaff = id;//Set the editing staff id
+        this.show_staff_input();
+        //show delete button
+        document.getElementById('delete_staff_button').style.display = 'block';
+        this.resetStaffForm();
+
+    },
+    addStaff: async function () {//Add a staff member
+        console.log('Adding staff');
+        properties.editingStaff = 0;//if staff is 0 server will assume new staff
+        this.show_staff_input();
+        //Hide delete button
+        document.getElementById('delete_staff_button').style.display = 'none';
+        this.resetStaffForm();
+
+
+    },
+    resetStaffForm: async function () {//Reset the staff form
+        //gather inputs
+        const staff_username_input = document.getElementById('staff_username_input');
+        const staff_password_input = document.getElementById('staff_password_input');
+        const staff_password_confirm_input = document.getElementById('staff_password_input2');
+        const staff_privilage_input = document.getElementById('staff_authority_input');
+
+        staff_username_input.value = "";
+        staff_password_input.value = "";
+        staff_password_confirm_input.value = "";
+        staff_privilage_input.value = "";
+    },
+    submitStaff:async function(){
+        console.log('Submitting staff', properties.editingStaff);
+        //Get the values from the input fields
+        const staff_username_input = document.getElementById('staff_username_input').value;
+        const staff_password_input = document.getElementById('staff_password_input').value;
+        const staff_password_confirm_input = document.getElementById('staff_password_input2').value;
+        const staff_privilage_input = document.getElementById('staff_authority_input').value;
+        //Check if the values are empty
+        const staff_input_error_message = document.getElementById('staff_input_error_message');
+        if (staff_username_input == '') {
+            staff_input_error_message.classList = "sign_up_error_message";
+            staff_input_error_message.innerHTML = "A username is required!";
+            return false;
+
+        } else if (staff_password_input == '') {
+            staff_input_error_message.classList = "sign_up_error_message";
+            staff_input_error_message.innerHTML = "Password is empty";
+            return false;
+
+        } else if (staff_password_confirm_input == '') {
+            staff_input_error_message.classList = "sign_up_error_message";
+            staff_input_error_message.innerHTML = "Password confirmation is empty";
+            return false;
+
+        } else if (staff_password_input != staff_password_confirm_input) {
+            staff_input_error_message.classList = "sign_up_error_message";
+            staff_input_error_message.innerHTML = "Passwords do not match";
+            return false;
+
+        } else if (staff_privilage_input == '') {
+            staff_input_error_message.classList = "sign_up_error_message";
+            staff_input_error_message.innerHTML = "No Privilage level selected";
+            return false;
+        }
+
+        //no need to build form, just post json data
+        const staff = {
+            id: properties.editingStaff,
+            username: staff_username_input,
+            password: staff_password_input,
+            privilage_level: staff_privilage_input
+        }
+
+        const response = await post(staff, 'post/staffupdate');
+        console.log('Response data: ', response);
+
+        if (response.status == 'success') {
+            console.log('Staff added');
+            alert('Staff added');
+            this.hide_staff_input();
+            staff_manager.loadStaff();
+        }
+        else if (response.status == 'edited') {
+            console.log('Staff edited');
+            alert('Staff edited');
+            this.hide_staff_input();
+            staff_manager.loadStaff();
+        } else {
+            console.log('Staff not added');
+            alert('Error, was not added, check server');
+        }
+
     },
 }

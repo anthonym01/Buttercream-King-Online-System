@@ -1726,6 +1726,38 @@ orders_page
 }
 
 
+/*
+    staff management page
+*/
+.Staff_pedistal{
+    position: relative;
+    height: 3.5rem;
+    width: 9rem;
+    box-sizing: border-box;
+    margin: 1rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+    border-radius: 0.2rem;
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.Staff_pedistal:hover {
+    box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+    background-color: var(--off-background-color);
+}
+.Staff_pedistal:active {
+    background-color: var(--accent-color);
+    transform: scale(0.96);
+    transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+}
+
+
 
 
 
