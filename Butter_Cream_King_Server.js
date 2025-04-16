@@ -12,7 +12,6 @@ const app = express();
 app.use(fileUpload());//allow file uploads via formData
 const logs = require('./modules/logger');
 const database = require('./modules/database_wrapper');
-const { log } = require('console');
 
 app.listen(port, () => {
     try {
@@ -665,8 +664,8 @@ app.post('/post/staffupdate', (req, res) => {
             }
             else {
                 //update staff member
-                database.updateStaff(staff.id, stripped_staff);
-                logs.info('Staff updated: ', result);
+                database.updateStaff(Number(staff.id), stripped_staff);
+                logs.info('Updated staff: ', staff);
                 res.end(JSON.stringify({ status: "edited" }));
             }
 
@@ -675,4 +674,23 @@ app.post('/post/staffupdate', (req, res) => {
         logs.error('Catastrophy on staff update: ', error);
         res.end(JSON.stringify({ status: "error" }));
     }
+});
+
+app.post('/get/staffbyid', (req, res) => {
+    try {
+        req.on('data', function (data) {
+            const staffid = Number(JSON.parse(data));//expects id
+            logs.info('got id to find : ', staffid);
+            database.getStaffViaUuid(staffid).then((result) => {
+                res.end(JSON.stringify(result));
+            })
+        }); 
+    } catch (error) {
+        logs.error('Catastrophy on get staff by id: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});
+
+app.post('/post/deletestaff', (req, res) => {
+tr
 });

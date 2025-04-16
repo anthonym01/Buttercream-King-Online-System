@@ -385,7 +385,7 @@ const connectionmanager = {
 
                 logs.info('connected as id ', connection.threadId, ' to mariadb server at: ', SQLcredentials.host);
 
-                connection.query('SELECT * FROM `Staff` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+                connection.query('SELECT * FROM `Staff` WHERE `id` = ?', uuid, function (error, results, fields) {
                     if (error) throw error;
                     console.log('From Staff got : ', results);
                     resolve(results[0]);
@@ -408,7 +408,7 @@ const connectionmanager = {
     deleteStaff: async function (uuid) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to delete staff with uuid: ', uuid)
-        let query = connection.query('DELETE FROM `Staff` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+        let query = connection.query('DELETE FROM `Staff` WHERE `id` = ?', uuid, function (error, results, fields) {
             if (error) logs.error(error);
         });
         logs.info(query.sql);
@@ -418,7 +418,7 @@ const connectionmanager = {
     updateStaff: async function (uuid, injection) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to update staff with uuid: ', uuid, ' with ', injection)
-        let query = connection.query('UPDATE `Staff` SET ? WHERE `uuid` = ?', [injection, uuid], function (error, results, fields) {
+        let query = connection.query('UPDATE `Staff` SET ? WHERE `id` = ?', [injection, uuid], function (error, results, fields) {
             if (error) logs.error(error);
         });
         logs.info(query.sql);

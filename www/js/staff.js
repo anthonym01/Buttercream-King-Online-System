@@ -772,6 +772,12 @@ let staff_manager = {
             staff_manager.submitStaff();
         });
 
+        //delete staff button
+        document.getElementById('delete_staff_button').addEventListener('click', async function () {
+            //call to delete currently editing staff
+            console.log('delete_staff_button clicked');
+            staff_manager.deleteStaff();
+        })
 
         this.loadStaff();
 
@@ -849,7 +855,29 @@ let staff_manager = {
         this.show_staff_input();
         //show delete button
         document.getElementById('delete_staff_button').style.display = 'block';
-        this.resetStaffForm();
+        this.resetStaffForm().then(() => {
+            //load up staff to be edited
+            post(id, 'get/staffbyid').then((data) => {
+                console.log('Got staff data: ', data);
+                if (data == false || data == undefined) {
+                    console.log('Failed to load staff data');
+                    alert('Failed to load staff data, check server');
+                    return false;
+                }
+
+                //populate the feilds
+                const staff_username_input = document.getElementById('staff_username_input');
+                const staff_password_input = document.getElementById('staff_password_input');
+                const staff_password_confirm_input = document.getElementById('staff_password_input2');
+                const staff_privilage_input = document.getElementById('staff_authority_input');
+
+                staff_username_input.value = data.username;
+                staff_password_input.value = data.password;
+                staff_password_confirm_input.value = data.password;
+                staff_privilage_input.value = data.privilage_level;
+
+            });
+        });
 
     },
     addStaff: async function () {//Add a staff member
@@ -874,7 +902,7 @@ let staff_manager = {
         staff_password_confirm_input.value = "";
         staff_privilage_input.value = "";
     },
-    submitStaff:async function(){
+    submitStaff: async function () {
         console.log('Submitting staff', properties.editingStaff);
         //Get the values from the input fields
         const staff_username_input = document.getElementById('staff_username_input').value;
@@ -937,4 +965,25 @@ let staff_manager = {
         }
 
     },
+    deleteStaff:async function(){
+        console.log('Deleting staff', properties.editingStaff);
+        //obtain confirmation
+        const confirm = window.confirm('Are you sure you want to delete this staff member?');
+        if (confirm == false) {
+            console.log('Delete staff cancelled');
+            return false;
+        }
+        //delete staff
+        const response = await post(properties.editingStaff, 'post/deletestaff');
+        console.log('Response data: ', response);
+        if (response.status == 'success') {
+            console.log('Staff deleted');
+            alert('Staff deleted');
+            this.hide_staff_input();
+            staff_manager.loadStaff();
+        } else {
+            console.log('Staff not deleted');
+            alert('Error, was not deleted, internal server error');
+        }
+    }
 }
