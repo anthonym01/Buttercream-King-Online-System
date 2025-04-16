@@ -692,5 +692,52 @@ app.post('/get/staffbyid', (req, res) => {
 });
 
 app.post('/post/deletestaff', (req, res) => {
-tr
+    console.log('Delete staff data');
+    try {
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);// expects:  uuid 
+
+            const uuid = data;
+            if (typeof (uuid) == 'undefined') {
+                logs.error('No uuid provided in delete staff request: ', data);
+                res.end(JSON.stringify({ status: "error" }));
+                return;
+            }
+
+            database.deleteStaff(uuid);
+            res.end(JSON.stringify({ status: "success" }));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on delete staff data: ', error);
+        res.end(JSON.stringify({ status: "failiure critical error" }));
+    }
+});
+
+//get/customers get all customers for display
+app.get('/get/customers', (req, res) => {
+    try {
+        logs.info('Get all customers');
+        database.getCustomers().then((result) => {
+            res.end(JSON.stringify(result));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on get customers: ', err);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+})
+
+app.post('/get/customerbyid', (req, res) => {
+    try {
+        req.on('data', function (data) {
+            const customerid = Number(JSON.parse(data));//expects id
+            logs.info('got id to find : ', customerid);
+            database.getCustomersViaUuid(customerid).then((result) => {
+                res.end(JSON.stringify(result));
+            })
+        });
+    } catch (error) {
+        logs.error('Catastrophy on get customer by id: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
 });

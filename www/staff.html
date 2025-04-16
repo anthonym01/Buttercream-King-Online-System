@@ -184,12 +184,47 @@
 
     <!-- Orders viewing page -->
     <div class="main_view" id="manage_orders_page">
-        orders pagediv
+        <div class="staff_catalog" id="orders_catalog">
+
+        </div>
+        <div class="Customer_popup_pannel" id="order_popup_pannel">
+            <div class="close_button" id="close_order_popup_pannel"></div>
+            <div class="title">Order information</div>
+            <table>
+                <tr>
+                    <td class="Customer_popup_pannel_label">Order ID</td>
+                    <td class="Customer_popup_pannel_value" id="order_id_puts"></td>
+                </tr>
+            </table>
+            <div class="customer_order_history" id="order_items"></div>
+        </div>
     </div>
 
     <!-- Customers viewing page -->
     <div class="main_view" id="manage_Customers_page">
-        customers page
+        <div class="staff_catalog" id="customer_catalog">
+
+        </div>
+
+        <div class="Customer_popup_pannel" id="Customer_popup_pannel">
+            <div class="close_button" id="close_Customer_popup_pannel"></div>
+            <div class="title">Customer information</div>
+            <table>
+                <tr>
+                    <td class="Customer_popup_pannel_label">Username</td>
+                    <td class="Customer_popup_pannel_value" id="customer_name_value"></td>
+                </tr>
+                <tr>
+                    <td class="Customer_popup_pannel_label">Loyalty Points</td>
+                    <td class="Customer_popup_pannel_value" id="customer_Loyalty_points"></td>
+                </tr>
+                <tr>
+                    <td class="Customer_popup_pannel_label">order count</td>
+                    <td class="Customer_popup_pannel_value" id="customer_orders_value"></td>
+                </tr>
+            </table>
+            <div class="customer_order_history" id="customer_order_history"></div>
+        </div>
     </div>
 
     <!--Staff page, doubles as a big menu -->

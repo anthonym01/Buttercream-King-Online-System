@@ -16,6 +16,8 @@ window.addEventListener('load', async function () {//Starting point
         staff_manager.initalize();
         catalog_manager.initalize();
         ui_controller.initalize();
+        customer_manager.initalize();
+        order_manager.initalize();
         //ui_controller.got_to_catalog();
     }
 });
@@ -246,6 +248,7 @@ let ui_controller = {
         document.getElementById('manage_staff_page').classList = "main_view";
         document.getElementById('manage_orders_page').classList = "main_view";
         document.getElementById('manage_Customers_page').classList = "main_view";
+
     },
     go_to_catalog: function () {
         //Go to the catalog page
@@ -257,6 +260,7 @@ let ui_controller = {
         document.getElementById('manage_staff_page').classList = "main_view";
         document.getElementById('manage_orders_page').classList = "main_view";
         document.getElementById('manage_Customers_page').classList = "main_view";
+        catalog_manager.build();//rebuild the catalog
     },
     go_to_staff: function () {
         //Go to the staff page
@@ -268,6 +272,7 @@ let ui_controller = {
         document.getElementById('manage_staff_page').classList = "main_view_active";
         document.getElementById('manage_orders_page').classList = "main_view";
         document.getElementById('manage_Customers_page').classList = "main_view";
+        staff_manager.loadStaff();//rebuild the staff
     },
     go_to_orders: function () {
         //Go to the orders page
@@ -279,6 +284,7 @@ let ui_controller = {
         document.getElementById('manage_staff_page').classList = "main_view";
         document.getElementById('manage_orders_page').classList = "main_view_active";
         document.getElementById('manage_Customers_page').classList = "main_view";
+        order_manager.loadOrders();//rebuild the orders
     },
     go_to_customers: function () {
         //Go to the customers page
@@ -290,6 +296,7 @@ let ui_controller = {
         document.getElementById('manage_staff_page').classList = "main_view";
         document.getElementById('manage_orders_page').classList = "main_view";
         document.getElementById('manage_Customers_page').classList = "main_view_active";
+        customer_manager.loadCustomers();//rebuild the customers
     },
     show_add_product: function () {//Show the add product panel in the catalog
         ui_controller.hide_edit_product();
@@ -780,6 +787,10 @@ let staff_manager = {
         })
 
         this.loadStaff();
+        setInterval(() => {
+            console.log('Reloading staff');
+            this.loadStaff();
+        }, 20000);
 
     },
     show_staff_input: function () {//Show the staff input panel
@@ -965,7 +976,7 @@ let staff_manager = {
         }
 
     },
-    deleteStaff:async function(){
+    deleteStaff: async function () {
         console.log('Deleting staff', properties.editingStaff);
         //obtain confirmation
         const confirm = window.confirm('Are you sure you want to delete this staff member?');
@@ -974,7 +985,9 @@ let staff_manager = {
             return false;
         }
         //delete staff
+
         const response = await post(properties.editingStaff, 'post/deletestaff');
+
         console.log('Response data: ', response);
         if (response.status == 'success') {
             console.log('Staff deleted');
@@ -986,4 +999,216 @@ let staff_manager = {
             alert('Error, was not deleted, internal server error');
         }
     }
+}
+
+let order_manager = {
+    initalize: async function () {
+        console.log('Order manager is being initialized');
+
+        setInterval(() => {
+            console.log('Reloading orders');
+            this.build_orders();
+        }, 15000);
+        this.build_orders();
+    },
+    build_orders: async function () {
+        console.log('Building orders');
+    },
+    show_order_details_for: async function (orderid) {
+        console.log('Showing order details for order', orderid);
+        this.show_popup_pannel();
+    },
+    show_popup_pannel: async function () {
+        console.log('Opening popup pannel');
+        document.getElementById('order_popup_pannel').classList = "Customer_popup_pannel_active";
+    },
+    close_popup_pannel: async function () {
+        console.log('Closing popup pannel');
+        document.getElementById('order_popup_pannel').classList = "Customer_popup_pannel"
+    },
+
+}
+
+let customer_manager = {
+    initalize: async function () {
+        document.getElementById('close_Customer_popup_pannel').addEventListener('click', function () {//Close the customer popup panel
+            console.log('Close customer popup panel button clicked');
+            customer_manager.close_popup_pannel();
+        });
+        setInterval(() => {
+            console.log('Reloading customers');
+            this.loadCustomers();
+        }, 16000);
+        this.loadCustomers();
+
+    },
+    loadCustomers: async function () {
+        console.log('Loading customers');
+        //Load the customers from the server
+        let data = await request('get/customers');
+        if (data == false || data == undefined) {
+            console.log('Failed to load customers');
+            alert('Failed to load customers');
+            return false;
+        }
+        console.log('gots Customers', data);//expects {`uuid`, `username`, `password`, `loyalty_points`, `payment_details`, `orders`, `Cart_items`, `Delivery_address`}
+        const customer_catalog = document.getElementById('customer_catalog');
+        customer_catalog.innerHTML = "";//Clear the catalog
+
+        // Customers are created when they sign up
+
+        //Load the customers from the server
+        for (let customerindex in data) {// construction zone
+            const Customer_pedistal = document.createElement('div');
+            Customer_pedistal.classList = "Customer_pedistal";
+            Customer_pedistal.tagName = `Customer ${customerindex}`;
+            Customer_pedistal.title = `${data[customerindex].username}`;
+
+            //username
+            const customer_name = document.createElement('div');
+            customer_name.classList = "customer_pedistal_name"
+            customer_name.innerHTML = `${data[customerindex].username}`;
+            Customer_pedistal.appendChild(customer_name);
+            //loyalty points
+            const customer_loyalty_points = document.createElement('div');
+            customer_loyalty_points.classList = "customer_pedistal_loyalty_points"
+            customer_loyalty_points.innerHTML = `Loyalty Points: ${data[customerindex].loyalty_points}`;
+            Customer_pedistal.appendChild(customer_loyalty_points);
+
+            //order count
+            const customer_order_count = document.createElement('div');
+            customer_order_count.classList = "customer_pedistal_order_count"
+            customer_order_count.innerHTML = `Orders: ${data[customerindex].orders.length}`;
+            Customer_pedistal.appendChild(customer_order_count);
+
+            //
+
+            customer_catalog.appendChild(Customer_pedistal);
+
+            Customer_pedistal.addEventListener('click', function () {
+                console.log('clicked pedistal for customer', data[customerindex].uuid);
+                customer_manager.getadvanced_details(data[customerindex].uuid);
+            });
+
+        }
+    },
+    getadvanced_details: async function (uuid) {
+        //open popup and get advanced detals from server
+        console.log('Getting advanced details for customer', uuid);
+        this.open_popup_pannel();
+
+        ///get/customerbyid
+        const data = await post(uuid, 'get/customerbyid');
+        console.log('Got customer data: ', data);
+        if (data == false || data == undefined) {
+            console.log('Failed to load customer data');
+            alert('Failed to load customer data, check server');
+            return false;
+        }
+        //populate the feilds
+        const customer_name_value = document.getElementById('customer_name_value');
+        const customer_loyalty_points_value = document.getElementById('customer_Loyalty_points');
+        const customer_orders_value = document.getElementById('customer_orders_value');
+
+        customer_name_value.innerHTML = data.username;
+        customer_loyalty_points_value.innerHTML = data.loyalty_points;
+        customer_orders_value.innerHTML = data.orders.length;
+        //clear the order history
+
+        const customer_order_history = document.getElementById('customer_order_history');
+        customer_order_history.innerHTML = "";//Clear the order history
+        //already Loaded the order history from the server
+        
+        const catalog = await request('get/catalog');//load the catalog to get cake data
+
+        post(data.username, 'get/orders').then((response) => {
+            console.log('Orders response: ', response);//expects [{ordernumber: 3, Items: '[{cakeid,quantity}]', Date, Status, total_price}]
+
+            if (response != "error") {
+                console.log('loaded orders');
+                //build orders display
+                customer_order_history.innerHTML = "";
+                for (let order in response) {
+                    build_order(response[order]);
+                }
+            } else {
+                console.error('failed to load orders');
+            }
+        });
+        async function build_order(order) {
+            console.log('Build order for: ', order);
+
+            const order_container = document.createElement('div');
+            order_container.classList = "order_container";
+            order_container.tagName = `Order #: ${order.ordernumber}`;
+            order_container.title = `Order #: ${order.ordernumber}`;
+
+            const sumation = document.createElement('div');
+            sumation.classList = "sumation"
+            const translate_date = new Date(order.Date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            sumation.innerHTML = `Order #: ${order.ordernumber} <br> Date: ${translate_date} <br> Status: ${order.Status} <br> Total Price: \$${order.total_price.toFixed(2)}`;
+            order_container.appendChild(sumation);
+
+            const order_items_constainer = document.createElement('div');
+            order_items_constainer.classList = "order_items_constainer"
+            order_container.appendChild(order_items_constainer);
+
+            const items = JSON.parse(order.Items);//parse the items from the order
+            console.log('Items: ', items);//[{cakeid,quantity}]
+
+            for (let item in items) {
+                build_order_item(items[item], order_items_constainer);//build the order item display
+            }
+
+            customer_order_history.appendChild(order_container);
+
+            async function build_order_item(cake, order_items_constainer_passed) {
+                console.log('Build item: ', cake, 'for order: ', order.ordernumber);
+
+                const cake_data = catalog.find(c => c.uuid == cake.cakeid);//find the cake data in the catalog
+                console.log('Cake data: ', cake_data);//{ Title,  Description, image_uri, uuid }
+
+                const order_item = document.createElement('div');
+                order_item.classList = "order_item";
+                order_item.tagName = `Cake ${cake_data.uuid}`;
+                order_item.title = `${cake_data.Title}`;
+
+                const cake_img = document.createElement('div');
+                cake_img.classList = "order_item_img";
+                if (cake_data.image_uri != '') {
+                    cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+                }
+                order_item.appendChild(cake_img);
+
+                const cake_title = document.createElement('div');
+                cake_title.classList = "order_item_title"
+                cake_title.innerHTML = `${cake_data.Title}`;
+                order_item.appendChild(cake_title);
+
+                const cake_quantity = document.createElement('div');
+                cake_quantity.classList = "order_item_quantity";
+                cake_quantity.innerHTML = `quantity: ${Number(cake.quantity)}`;
+                order_item.appendChild(cake_quantity);
+
+                order_items_constainer_passed.appendChild(order_item);
+
+            }
+
+            order_container.addEventListener('click', function () { 
+                console.log('clicked order', order.ordernumber);
+                //open order details
+                order_manager.show_order_details_for(order.ordernumber);
+            })
+        }
+
+
+    },
+    open_popup_pannel: async function () {
+        console.log('Opening popup pannel');
+        document.getElementById('Customer_popup_pannel').classList = "Customer_popup_pannel_active";
+    },
+    close_popup_pannel: async function () {
+        console.log('Closing popup pannel');
+        document.getElementById('Customer_popup_pannel').classList = "Customer_popup_pannel"
+    },
 }

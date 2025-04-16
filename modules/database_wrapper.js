@@ -113,7 +113,7 @@ const connectionmanager = {
     */
     //'SELECT * FROM `Customers`'
     getCustomers: async function () {
-        logs.info('Get all customers');
+        logs.info('SELECT * FROM `Customers`');
         return new Promise((resolve, reject) => {
             let connection = mysql.createConnection(SQLcredentials);
 
