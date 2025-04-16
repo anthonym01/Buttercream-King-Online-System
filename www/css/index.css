@@ -1719,7 +1719,7 @@ orders_page
     background-color: var(--background-color);
 }
 
-#cake_description_input {
+#cake_description_input,#cake_description_edit_input {
     min-height: 6rem;
     height: 6rem;
     min-height: 100%;

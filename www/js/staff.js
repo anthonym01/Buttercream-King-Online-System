@@ -54,6 +54,7 @@ async function post(what, where) {//'fetch' data to the server
 let properties = {
     logedin: false,//User logged in
     privilage_level: 0,//User privilage_level level
+    editingProduct: false,//User editing a product
 }
 
 /*
@@ -319,6 +320,12 @@ let catalog_manager = {
             catalog_manager.addProduct();
         });
 
+        //Edit product button
+        document.getElementById('upload_edit_product_button').addEventListener('click', async function () {
+            console.log('upload_edit_product_button clicked');
+            catalog_manager.submit_edits();
+        });
+
         /*
             Add items to catalog handler
         */
@@ -356,7 +363,7 @@ let catalog_manager = {
                         console.log('selected file way too large');
                         document.getElementById('product_input_error_message').classList = "sign_up_error_message";
                         document.getElementById('product_input_error_message').innerHTML = "Image is too large, please select an image smaller than 1MB, current files size is " + (file.size / 1000000).toFixed(2) + "MB";
-                    }else{
+                    } else {
                         document.getElementById('product_input_error_message').classList = "sign_up_error_message_hidden";
                     }
                     cake_img_preview.style.backgroundImage = `url('${e.target.result}')`;
@@ -417,7 +424,7 @@ let catalog_manager = {
                         console.log('selected file way too large');
                         document.getElementById('product_edit_error_message').classList = "sign_up_error_message";
                         document.getElementById('product_edit_error_message').innerHTML = "Image is too large, please select an image smaller than 1MB, current files size is " + (file.size / 1000000).toFixed(2) + "MB";
-                    }else{
+                    } else {
                         document.getElementById('product_edit_error_message').classList = "sign_up_error_message_hidden";
                     }
                     cake_img_editor_preview.style.backgroundImage = `url('${e.target.result}')`;
@@ -565,7 +572,7 @@ let catalog_manager = {
             product_input_error_message.innerHTML = "No Image selected";
             //return false;
             //allow empty image for now
-        }else if(image.size > 1000000){//3MB
+        } else if (image.size > 1000000) {//3MB
             product_input_error_message.classList = "sign_up_error_message";
             upload_product_button.disabled = false;//Enable the button
             product_input_error_message.innerHTML = "Image is too large, please select an image smaller than 1mb";
@@ -580,6 +587,7 @@ let catalog_manager = {
         formData.append('price', price);
         console.log('Form data: ', formData);
 
+        //upload the form data to the server
         const response = await fetch('post/uploadcakedata', {
             method: 'POST',
             body: formData,
@@ -601,13 +609,14 @@ let catalog_manager = {
         }
 
     },
-    editProduct: async function (uuid) {//Edit a product in the catalog
+    editProduct: async function (uuid) {//Load a project to Edit a product in the catalog
         console.log('Editing product', uuid);
+        properties.editingProduct = uuid;//Set the editing product id
         ui_controller.show_edit_product();
         //show editing catalog form
 
         //load up product to be edited
-        const data = await post(uuid,'get/cakebyuuid');// expects { Title,  Description, image_uri, uuid }
+        const data = await post(uuid, 'get/cakebyuuid');// expects { Title,  Description, image_uri, uuid }
         console.log('Got product data: ', data);
 
         if (data == false || data == undefined) {
@@ -617,6 +626,95 @@ let catalog_manager = {
         }
 
         //populate the feilds
+        const cake_name_edit_input = document.getElementById('cake_name_edit_input');
+        const cake_description_edit_input = document.getElementById('cake_description_edit_input');
+        const cake_price_edit_input = document.getElementById('cake_price_edit_input');
+        const cake_img_editor_preview = document.getElementById('cake_img_editor_preview');
+
+        cake_description_edit_input.value = data.Description;
+        cake_name_edit_input.value = data.Title;
+        cake_price_edit_input.value = data.price;
+        cake_img_editor_preview.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${data.image_uri}')`;
+        cake_img_editor_preview.style.display = 'block';
+        document.getElementById('remove_image_edit_button').style.display = 'block';
+
+        properties.editingProduct = uuid;//Set the editing product id
+    },
+    submit_edits: async function () {//Submit the edits to the product
+        console.log('Submitting edits on product', properties.editingProduct);
+        /*
+            Create dynamic loading animation here later
+        */
+        const upload_product_button = document.getElementById('upload_edit_product_button');
+        upload_product_button.disabled = true;//Disable the button
+        //Get the values from the input fields
+        const title = document.getElementById('cake_name_edit_input').value;
+        const description = document.getElementById('cake_description_edit_input').value;
+        const price = document.getElementById('cake_price_edit_input').value;
+        const image = document.getElementById('cake_img_edit_input').files[0];
+        //Check if the values are empty
+        const product_edit_error_message = document.getElementById('product_edit_error_message');   
+        if (title == '') {
+            product_edit_error_message.classList = "sign_up_error_message";
+            product_edit_error_message.innerHTML = "A name is required!";
+            upload_product_button.disabled = false;//Enable the button
+
+            return false;
+
+        } else if (description == '') {
+            product_edit_error_message.classList = "sign_up_error_message";
+            product_edit_error_message.innerHTML = "Description is empty";
+            upload_product_button.disabled = false;//Enable the button
+
+            return false;
+
+        } else if (price == '') {
+            product_edit_error_message.classList = "sign_up_error_message";
+            upload_product_button.disabled = false;//Enable the button
+            product_edit_error_message.innerHTML = "No price selected";
+            return false;
+
+        } else if (image == undefined || image == null || image == '') {
+            product_edit_error_message.classList = "sign_up_error_message";
+            upload_product_button.disabled = false;//Enable the button
+            product_edit_error_message.innerHTML = "No Image selected";
+            //return false;
+            //allow empty image for now
+        } else if (image.size > 1000000) {//1MB
+            product_edit_error_message.classList = "sign_up_error_message";
+            upload_product_button.disabled = false;//Enable the button
+            product_edit_error_message.innerHTML = "Image is too large, please select an image smaller than 1mb";
+            return false;
+        }
+
+        //build the form data
+        const formData = new FormData();
+        formData.append('image_file', image);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('uuid', properties.editingProduct);
+        //formData.append('uuid', properties.editingProduct);
+        console.log('Form data: ', formData);
+
+        const response = await fetch('post/editcake', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const response_data = await response.json();
+        console.log('Response data: ', response_data);
+        if (response_data.status == 'success') {
+            console.log('Product edited');
+            alert('Product edited');
+            ui_controller.hide_edit_product();
+            catalog_manager.build();
+            document.getElementById('upload_edit_product_button').disabled = false;
+        } else {
+            console.log('Product not edited, server error');
+            alert('Error, was not edited, image file may be too large to upload');
+            document.getElementById('upload_edit_product_button').disabled = false;
+        }
     }
 }
 

@@ -546,6 +546,59 @@ app.post('/post/uploadcakedata', (req, res) => {
     }
 });
 
+app.post('/post/editcake', (req, res) => {
+    logs.info('Edit cake data');
+    try {
+
+        console.log(req.body);// expects: { title, description, price, uuid }
+        console.log(req.files);// expects: { image_file }
+
+        const uuid = req.body.uuid;
+
+        if (typeof (uuid) == 'undefined') {
+            logs.error('No uuid provided in edit cake request: ', req.body);
+            res.end(JSON.stringify({ status: "error" }));
+            return;
+        }
+
+        const cake = {
+            Title: req.body.title,
+            Description: req.body.description || 'empty',
+            price: req.body.price,
+            image_uri: '',//fix no default image uri later
+        }
+
+        if (!req.files || req.files.length == 0 || req.files == null) {
+            //No files submitted, handle condition
+            console.log('No files submitted, assuming intent');
+            //create cake with no image
+            database.updateCake(uuid, cake);
+            res.end(JSON.stringify({ status: "success" }));
+        } else {
+            //Check if files are submitted
+            console.log('Files submitted: ', req.files);
+            //Check if image is too big
+            //if (image_file.size > 1000000) return res.sendStatus(400);
+            //Create a new cake object
+
+            const { image_file } = req.files;
+            console.log('Update cake with image: ', image_file.name);
+
+            const imagename = `${String(uuid)}${path.extname(image_file.name)}`;
+            console.log('Image name: ', imagename);
+            image_file.mv(path.join(__dirname, 'www/img_database_store/cakes', imagename));
+            cake.image_uri = imagename;//update the image name in the cake object
+            database.updateCake(uuid, cake);//update the cake in the database
+            logs.info('Updated cake image: ', imagename, ' for cake: ', uuid);
+            res.end(JSON.stringify({ status: "success" }));
+        }
+
+    } catch (error) {
+        logs.error('Catastrophy on edit cake data: ', error);
+        res.end(JSON.stringify({ status: "failiure critical error" }));
+    }
+});
+
 // get all staff mambers for display
 app.get('/get/staff', (req, res) => {
     try {
