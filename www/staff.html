@@ -185,16 +185,38 @@
     <!-- Orders viewing page -->
     <div class="main_view" id="manage_orders_page">
         <div class="staff_catalog" id="orders_catalog">
-
+            
         </div>
         <div class="Customer_popup_pannel" id="order_popup_pannel">
             <div class="close_button" id="close_order_popup_pannel"></div>
             <div class="title">Order information</div>
             <table>
                 <tr>
-                    <td class="Customer_popup_pannel_label">Order ID</td>
+                    <td class="Customer_popup_pannel_label">Order ID: </td>
                     <td class="Customer_popup_pannel_value" id="order_id_puts"></td>
                 </tr>
+                <tr>
+                    <td class="Customer_popup_pannel_label">Date: </td>
+                    <td class="Customer_popup_pannel_value" id="order_date_value"></td>
+                </tr>
+                
+                <tr>
+                    <td class="Customer_popup_pannel_label">Price :</td>
+                    <td class="Customer_popup_pannel_value" id="order_total_value"></td>
+                </tr>                
+                <tr>
+                    <td class="Customer_popup_pannel_label">Status: </td>
+                    <td class="Customer_popup_pannel_value">
+                        <select name="order_status" id="order_status_select">
+                            <option value="pending">Pending</option>
+                            <option value="baking">Baking</option>
+                            <option value="delivering">out for delivery</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="canceled">canceled</option>
+                        </select>
+                    </td>
+                </tr>
+
             </table>
             <div class="customer_order_history" id="order_items"></div>
         </div>
@@ -219,7 +241,7 @@
                     <td class="Customer_popup_pannel_value" id="customer_Loyalty_points"></td>
                 </tr>
                 <tr>
-                    <td class="Customer_popup_pannel_label">order count</td>
+                    <td class="Customer_popup_pannel_label">orders</td>
                     <td class="Customer_popup_pannel_value" id="customer_orders_value"></td>
                 </tr>
             </table>

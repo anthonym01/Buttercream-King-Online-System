@@ -60,6 +60,7 @@ let properties = {
     editingStaff: false,//User editing a staff member
     editingCustomer: false,//User editing a customer
     editingOrder: false,//User editing an order
+    viewing_order: false,//User viewing an order
 }
 
 /*
@@ -284,7 +285,7 @@ let ui_controller = {
         document.getElementById('manage_staff_page').classList = "main_view";
         document.getElementById('manage_orders_page').classList = "main_view_active";
         document.getElementById('manage_Customers_page').classList = "main_view";
-        order_manager.loadOrders();//rebuild the orders
+        order_manager.build_orders();//rebuild the orders
     },
     go_to_customers: function () {
         //Go to the customers page
@@ -1005,6 +1006,29 @@ let order_manager = {
     initalize: async function () {
         console.log('Order manager is being initialized');
 
+        document.getElementById('close_order_popup_pannel').addEventListener('click', function () {//Close the order popup panel
+            console.log('Close order popup panel button clicked');
+            order_manager.close_popup_pannel();
+        });
+
+        document.getElementById('order_status_select').addEventListener('change', function () {//Change order status
+            console.log('Order status changed');
+            const orderid = properties.viewing_order;
+            const status = document.getElementById('order_status_select').value;
+            console.log('Changing order status to', status);
+            post({ orderid: orderid, status: status }, 'post/updateorderstatus').then((response) => {
+                console.log('Order status response: ', response);
+                if (response == "error") {
+                    console.error('failed to update order status');
+                } else {
+                    console.log('Order status updated');
+                    alert('Order status updated');
+                    order_manager.build_orders();
+                }
+            });
+        });
+
+        
         setInterval(() => {
             console.log('Reloading orders');
             this.build_orders();
@@ -1013,18 +1037,192 @@ let order_manager = {
     },
     build_orders: async function () {
         console.log('Building orders');
+        const catalog = await request('get/catalog');//load the catalog from the server
+
+        if (catalog == false || catalog == undefined) {
+            console.log('Failed to load orders');
+            alert('Failed to load orders');
+            return false;
+        }
+
+        const orders = await request('get/ordersall');//load the orders from the server
+
+        if (orders == false || orders == undefined) {
+            console.log('Failed to load orders');
+            alert('Failed to load orders');
+            return false;
+        }
+
+        console.log('gots Orders', orders);//expects [{ordernumber: 3, Items: '[{cakeid,quantity}]', Date, Status, total_price}]
+
+        const orders_catalog = document.getElementById('orders_catalog');
+
+        orders_catalog.innerHTML = "";//Clear the catalog
+
+        for (let orderindex in orders) {// construction zone
+            build_order(orders[orderindex]);
+        }
+
+        async function build_order(order) {
+            console.log('Build order for: ', order);
+
+            
+            const order_container = document.createElement('div');
+            order_container.classList = "order_container";
+            order_container.tagName = `Order #: ${order.ordernumber}`;
+            order_container.title = `Order #: ${order.ordernumber}`;
+
+            const sumation = document.createElement('div');
+            sumation.classList = "sumation"
+            const translate_date = new Date(order.Date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            sumation.innerHTML = `Order #: ${order.ordernumber} <br> Date: ${translate_date} <br> Status: ${order.Status} <br> Total Price: \$${order.total_price.toFixed(2)}`;
+            order_container.appendChild(sumation);
+
+            const order_items_constainer = document.createElement('div');
+            order_items_constainer.classList = "order_items_constainer"
+            order_container.appendChild(order_items_constainer);
+
+            const items = JSON.parse(order.Items);//parse the items from the order
+            console.log('Items: ', items);//[{cakeid,quantity}]
+
+            for (let item in items) {
+                build_order_item(items[item], order_items_constainer);//build the order item display
+            }
+
+            orders_catalog.appendChild(order_container);
+
+            async function build_order_item(cake, order_items_constainer_passed) {
+                console.log('Build item: ', cake, 'for order: ', order.ordernumber);
+
+                const cake_data = catalog.find(c => c.uuid == cake.cakeid);//find the cake data in the catalog
+                console.log('Cake data: ', cake_data);//{ Title,  Description, image_uri, uuid }
+
+                const order_item = document.createElement('div');
+                order_item.classList = "order_item";
+                order_item.tagName = `Cake ${cake_data.uuid}`;
+                order_item.title = `${cake_data.Title}`;
+
+                const cake_img = document.createElement('div');
+                cake_img.classList = "order_item_img";
+                if (cake_data.image_uri != '') {
+                    cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+                }
+                order_item.appendChild(cake_img);
+
+                const cake_title = document.createElement('div');
+                cake_title.classList = "order_item_title"
+                cake_title.innerHTML = `${cake_data.Title}`;
+                order_item.appendChild(cake_title);
+
+                const cake_quantity = document.createElement('div');
+                cake_quantity.classList = "order_item_quantity";
+                cake_quantity.innerHTML = `quantity: ${Number(cake.quantity)}`;
+                order_item.appendChild(cake_quantity);
+
+                order_items_constainer_passed.appendChild(order_item);
+
+            }
+
+            //go to order panel on click
+            order_container.addEventListener('click', function () {
+                console.log('clicked order', order.ordernumber);
+                //open order details
+                order_manager.show_order_details_for(order.ordernumber);
+            })
+        }
+
     },
     show_order_details_for: async function (orderid) {
         console.log('Showing order details for order', orderid);
         this.show_popup_pannel();
+
+        properties.viewing_order = orderid;//Set the viewing order id
+
+        const order_data = await post(orderid, 'get/orderbyid');
+        console.log('Got order data: ', order_data);
+        if (order_data == false || order_data == undefined) {
+            console.log('Failed to load order data');
+            alert('Failed to load order data, check server');
+            return false;
+        }
+        //populate the feilds
+        const order_number_value = document.getElementById('order_id_puts');
+        order_number_value.innerHTML = order_data.ordernumber;
+        const order_date_value = document.getElementById('order_date_value');
+        const translate_date = new Date(order_data.Date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        order_date_value.innerHTML = translate_date;
+        const order_status_value = document.getElementById('order_status_select');
+        order_status_value.value = order_data.Status;
+        const order_total_value = document.getElementById('order_total_value');
+        order_total_value.innerHTML = `$${order_data.total_price.toFixed(2)}`;
+
+        //load up order items
+        const order_items_constainer = document.getElementById('order_items');
+        order_items_constainer.innerHTML = "";//Clear the order items
+        const items = JSON.parse(order_data.Items);//parse the items from the order
+
+        const catalog = await request('get/catalog');//load the catalog to get cake data
+
+        for (let item in items) {
+            build_order_item(items[item]);//build the order item display
+        }
+
+        async function build_order_item(item){
+            //build the order item display
+            const cake_data = catalog.find(c => c.uuid == item.cakeid);//find the cake data in the catalog
+            console.log('Cake data: ', cake_data);//{ Title,  Description, image_uri, uuid }
+
+            const cart_item = document.createElement('div');
+            cart_item.classList = "cart_item_constricted";
+            cart_item.tagName = `Cake ${cake_data.uuid}`;
+            cart_item.title = `${cake_data.Title}`;
+
+            const cake_price = document.createElement('div');
+            cake_price.classList = "cart_item_price"
+            cake_price.innerHTML = `\$${cake_data.price.toFixed(2)}`;
+            cart_item.appendChild(cake_price);
+
+            const cake_img = document.createElement('div');
+            cake_img.classList = "cart_item_img";
+            if (cake_data.image_uri != '') {
+                cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+            }
+
+            cart_item.appendChild(cake_img);
+
+            const cake_title = document.createElement('div');
+            cake_title.classList = "cart_item_title"
+            cake_title.innerHTML = `${cake_data.Title}`;
+            cart_item.appendChild(cake_title);
+
+            const cake_description = document.createElement('div');
+            cake_description.classList = "cart_item_description";
+            cake_description.innerHTML = `${cake_data.Description}`;
+            cart_item.appendChild(cake_description);
+
+            const cake_quantity = document.createElement('input');
+            cake_quantity.type = "number";
+            cake_quantity.disabled = true;//disable the input
+            cake_quantity.classList = "cart_item_quantity";
+            cake_quantity.value = Number(item.quantity);
+            cart_item.appendChild(cake_quantity);
+
+            order_items_constainer.appendChild(cart_item);
+
+            cake_quantity.addEventListener('click', function (event) {
+                event.stopPropagation();//stop the click from triggering the cart item click event
+            })
+        }
+
     },
     show_popup_pannel: async function () {
         console.log('Opening popup pannel');
         document.getElementById('order_popup_pannel').classList = "Customer_popup_pannel_active";
+        ui_controller.go_to_orders();//go to orders tab
     },
     close_popup_pannel: async function () {
         console.log('Closing popup pannel');
-        document.getElementById('order_popup_pannel').classList = "Customer_popup_pannel"
+        document.getElementById('order_popup_pannel').classList = "Customer_popup_pannel";
     },
 
 }
@@ -1078,7 +1276,7 @@ let customer_manager = {
             //order count
             const customer_order_count = document.createElement('div');
             customer_order_count.classList = "customer_pedistal_order_count"
-            customer_order_count.innerHTML = `Orders: ${data[customerindex].orders.length}`;
+            customer_order_count.innerHTML = `Orders: ${Number(JSON.parse(data[customerindex].orders).length)}`;
             Customer_pedistal.appendChild(customer_order_count);
 
             //
@@ -1112,13 +1310,13 @@ let customer_manager = {
 
         customer_name_value.innerHTML = data.username;
         customer_loyalty_points_value.innerHTML = data.loyalty_points;
-        customer_orders_value.innerHTML = data.orders.length;
+        customer_orders_value.innerHTML = JSON.parse(data.orders).length;
         //clear the order history
 
         const customer_order_history = document.getElementById('customer_order_history');
         customer_order_history.innerHTML = "";//Clear the order history
         //already Loaded the order history from the server
-        
+
         const catalog = await request('get/catalog');//load the catalog to get cake data
 
         post(data.username, 'get/orders').then((response) => {
@@ -1194,13 +1392,13 @@ let customer_manager = {
 
             }
 
-            order_container.addEventListener('click', function () { 
+            //go to order panel on click
+            order_container.addEventListener('click', function () {
                 console.log('clicked order', order.ordernumber);
                 //open order details
                 order_manager.show_order_details_for(order.ordernumber);
             })
         }
-
 
     },
     open_popup_pannel: async function () {

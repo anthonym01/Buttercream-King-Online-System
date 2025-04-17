@@ -632,6 +632,8 @@ let cart_maintainer = {
             const cake_quantity = document.createElement('input');
             cake_quantity.type = "number";
             cake_quantity.classList = "cart_item_quantity";
+            cake_quantity.min = 1;
+            cake_quantity.max = 20;
             cake_quantity.value = Number(cake.quantity);
             cart_item.appendChild(cake_quantity);
 
@@ -639,6 +641,11 @@ let cart_maintainer = {
 
             cake_quantity.addEventListener('click', function (event) {
                 event.stopPropagation();//stop the click from triggering the cart item click event
+            })
+
+            cake_quantity.addEventListener('change', function (event) {
+                console.log('quantity changed: ', cake_quantity.value);
+                const payload = { cakeid: cake_data.uuid, quantity: cake_quantity.value, username: config.data.credentials.user };
             })
 
             cart_item.addEventListener('click', function () {

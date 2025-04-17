@@ -12,6 +12,7 @@ const app = express();
 app.use(fileUpload());//allow file uploads via formData
 const logs = require('./modules/logger');
 const database = require('./modules/database_wrapper');
+const { log } = require('console');
 
 app.listen(port, () => {
     try {
@@ -411,6 +412,34 @@ app.post('/get/orders', (req, res) => {
     }
 });
 
+app.get('/get/ordersall', (req, res) => {
+    try {
+        logs.info('Get all orders');
+        database.getOrders().then((result) => {
+            res.end(JSON.stringify(result));
+        });
+
+    } catch (error) {
+        logs.error('Catastrophy on get all orders: ', err);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});
+
+app.post('/get/orderbyid', (req, res) => {
+    try {
+        req.on('data', function (data) {
+            const orderid = Number(JSON.parse(data));//expects id
+            logs.info('got id to find : ', orderid);
+            database.getOrdersViaUuid(orderid).then((result) => {
+                res.end(JSON.stringify(result));
+            });
+        });
+    } catch (error) {
+        logs.error('Catastrophy on get order by id: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});
+
 // find a cake by its uuid
 app.post('/get/cakebyuuid', (req, res) => {
     try {
@@ -684,7 +713,7 @@ app.post('/get/staffbyid', (req, res) => {
             database.getStaffViaUuid(staffid).then((result) => {
                 res.end(JSON.stringify(result));
             })
-        }); 
+        });
     } catch (error) {
         logs.error('Catastrophy on get staff by id: ', error);
         res.end(JSON.stringify({ status: "error" }));
@@ -740,4 +769,39 @@ app.post('/get/customerbyid', (req, res) => {
         logs.error('Catastrophy on get customer by id: ', error);
         res.end(JSON.stringify({ status: "error" }));
     }
+});
+
+app.post('/post/updateorderstatus', (req, res) => {
+    logs.info('Update order status');
+    try {
+        req.on('data', function (data) {
+
+            const order_data = JSON.parse(data);
+            logs.info('got payload: ', order_data);// expects: { orderid, status }
+            if (typeof (order_data) == 'undefined') {
+                logs.error('No order data provided in request: ', data);
+                res.end(JSON.stringify({ status: "error" }));
+                return;
+            }
+            //update by id
+            const stripped_order = {
+                Status: order_data.status,
+            }
+            //check if id is provided
+            if (order_data.orderid == 0 || order_data.orderid == '0') {
+                logs.error('No order id provided in request: ', data);
+                res.end(JSON.stringify({ status: "error" }));
+                return;
+            }
+            //update order status
+            database.updateOrder(Number(order_data.orderid), stripped_order);
+            logs.info('Updated order: ', order_data.orderid, ' to status: ', order_data.status);
+            res.end(JSON.stringify({ status: "success" }));
+
+        });
+    } catch (error) {
+        logs.error('Catastrophy on update order status: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+
 });

@@ -757,7 +757,7 @@ body {
     overflow-x: hidden;
 }
 
-.cart_item {
+.cart_item,.cart_item_constricted {
     position: relative;
     overflow: hidden;
     height: 5rem;
@@ -772,6 +772,9 @@ body {
     cursor: pointer;
 }
 
+.cart_item_constricted{
+    width: 40%;
+}
 .cart_item_price {
     position: absolute;
     top: 0;
@@ -838,10 +841,10 @@ body {
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
-    width: calc(40% - 5rem);
+    width: calc(50% - 5rem);
     height: 2.5rem;
     box-sizing: border-box;
-    padding: 0.5rem;
+    padding: 0.2rem;
     font-size: 1.5rem;
     box-sizing: border-box;
     border-radius: 0.3rem;
@@ -1812,6 +1815,10 @@ orders_page
     overflow-y: auto;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+#order_items{
+    height: calc(100% - 9rem);
 }
 
 /*    <--  Landscape layout (with min-width) -->     */
