@@ -646,6 +646,19 @@ let cart_maintainer = {
             cake_quantity.addEventListener('change', function (event) {
                 console.log('quantity changed: ', cake_quantity.value);
                 const payload = { cakeid: cake_data.uuid, quantity: cake_quantity.value, username: config.data.credentials.user };
+                post(payload, 'post/updatecartitems').then((response) => {
+                    console.log('update cart response: ', response);
+                    if (response.status == "success") {
+                        console.log('updated cart');
+                        ui_controller.go_to_cart();
+                        //reload the cart to show the new quantity
+                        setTimeout(() => {
+                            cart_maintainer.load_cart();//reload the cart data to show the new quantity
+                        }, 100);
+                    } else {
+                        console.error('failed to update cart');
+                    }
+                });
             })
 
             cart_item.addEventListener('click', function () {

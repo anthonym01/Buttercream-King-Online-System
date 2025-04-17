@@ -144,6 +144,55 @@ app.post('/post/addtocart', (req, res) => {
     }
 });
 
+//Remove from cart handler
+
+
+//force update cart items handler
+//This will remove a cake from the cart, or update the quantity if it already exists for a specific user
+app.post('/post/updatecartitems', (req, res) => {
+    logs.info('Update cart items, change quantity manual override');
+    try {
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('got payload: ', data);//expects { cakeid, quantity, username };
+
+            //get old cart data
+            database.getCustomersViaUsername(data.username).then((result) => {
+                let oldcart = JSON.parse(result.Cart_items) || [];//get old cart data
+                logs.info('Old cart data: ', oldcart, ' for user: ', data.username);
+                console.log('Datatype: ', typeof (oldcart));
+                // Check if cake is already in cart
+                let existingItemindex = false;
+                for (let i = 0; i < oldcart.length; i++) {
+                    if (oldcart[i].cakeid === data.cakeid) {
+                        existingItemindex = i;
+                        logs.info('Found existing item in cart: ', oldcart[i]);
+                        break;
+                    }
+                }
+                if (existingItemindex !== false) {
+                    // Update quantity if cake is already in cart
+                    oldcart[existingItemindex].quantity = Number(data.quantity);
+                    logs.info('Updated existing item: ', oldcart[existingItemindex]);
+                } else {
+                    // Add new item to cart
+                    logs.info('Adding new item to cart: ', data);
+                    oldcart.push({ cakeid: data.cakeid, quantity: data.quantity });
+                    logs.info('New cart data: ', oldcart);
+                }
+                // Update the cart in the database
+                database.updateCustomer(data.username, { Cart_items: JSON.stringify(oldcart) });
+                logs.info('Updated cart: ', result);
+                res.end(JSON.stringify({ status: "success" }));
+            });
+        });
+    } catch (error) {
+        logs.error('Catastrophy on update cart items: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});
+
+
 //get/checkoutdata handler
 //This will get the users checkout data, and return it as a json object, specifically the address and payment method
 app.post('/get/checkoutdata', (req, res) => {
