@@ -146,7 +146,6 @@ app.post('/post/addtocart', (req, res) => {
 
 //Remove from cart handler
 
-
 //force update cart items handler
 //This will remove a cake from the cart, or update the quantity if it already exists for a specific user
 app.post('/post/updatecartitems', (req, res) => {
@@ -191,7 +190,6 @@ app.post('/post/updatecartitems', (req, res) => {
         res.end(JSON.stringify({ status: "error" }));
     }
 });
-
 
 //get/checkoutdata handler
 //This will get the users checkout data, and return it as a json object, specifically the address and payment method
@@ -639,18 +637,20 @@ app.post('/post/editcake', (req, res) => {
             return;
         }
 
-        const cake = {
-            Title: req.body.title,
-            Description: req.body.description || 'empty',
-            price: req.body.price,
-            image_uri: '',//fix no default image uri later
-        }
 
         if (!req.files || req.files.length == 0 || req.files == null) {
             //No files submitted, handle condition
             console.log('No files submitted, assuming intent');
             //create cake with no image
+
+            const cake = {
+                Title: req.body.title,
+                Description: req.body.description || 'empty',
+                price: req.body.price,
+                //image_uri: '',//fix no default image uri later
+            }
             database.updateCake(uuid, cake);
+            logs.info('Updated cake: ', cake, ' for cake: ', uuid);
             res.end(JSON.stringify({ status: "success" }));
         } else {
             //Check if files are submitted
@@ -658,6 +658,13 @@ app.post('/post/editcake', (req, res) => {
             //Check if image is too big
             //if (image_file.size > 1000000) return res.sendStatus(400);
             //Create a new cake object
+
+            const cake = {
+                Title: req.body.title,
+                Description: req.body.description || 'empty',
+                price: req.body.price,
+                image_uri: '',//fix no default image uri later
+            }
 
             const { image_file } = req.files;
             console.log('Update cake with image: ', image_file.name);
