@@ -854,3 +854,27 @@ app.post('/post/updateorderstatus', (req, res) => {
     }
 
 });
+
+app.post('/post/cancelorder', (req, res) => {
+    try {
+        req.on('data', function (data) {
+            data = JSON.parse(data);
+            logs.info('Cancel order request: ', data);// expects: { ordernumber, username }
+            if (typeof (data) == 'undefined') {
+                logs.error('No order data provided in request: ', data);
+                res.end(JSON.stringify({ status: "error" }));
+                return;
+            }
+            //update by id
+            const stripped_order = {
+                Status: 'Cancelled',
+            }
+            database.updateOrder(Number(data.ordernumber), stripped_order);
+            logs.info('Updated order: ', data.ordernumber, ' to status: Cancelled for user', data.username);
+            res.end(JSON.stringify({ status: "success" }));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on cancel order: ', error);
+        res.end(JSON.stringify({ status: "error" }));
+    }
+});

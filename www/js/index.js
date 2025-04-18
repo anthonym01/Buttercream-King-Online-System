@@ -935,6 +935,36 @@ let order_maintainer = {
             sumation.innerHTML = `Order #: ${order.ordernumber} <br> Date: ${translate_date} <br> Status: ${order.Status} <br> Total Price: \$${order.total_price.toFixed(2)}`;
             order_container.appendChild(sumation);
 
+            //cancel button on top of sumation
+            if( order.Status == "pending") {
+                const order_cancel_button = document.createElement('button');
+                order_cancel_button.classList = "order_cancel_button";
+                order_cancel_button.innerHTML = "Cancel Order";
+                order_cancel_button.title = `Cancel Order #: ${order.ordernumber}`;
+                order_container.appendChild(order_cancel_button);
+                order_cancel_button.addEventListener('click', function () {
+                    console.log('Cancel order button clicked: ', order.ordernumber);
+                    order_cancel_button.innerHTML = "Cancelling...";
+                    order_cancel_button.disabled = true;//disable the button to prevent multiple clicks
+                    const payload = { ordernumber: order.ordernumber, username: config.data.credentials.user };
+                    post(payload, 'post/cancelorder').then((response) => {
+                        console.log('Cancel order response: ', response);
+                        if (response.status == "success") {
+                            console.log('cancelled order');
+                            //reload the orders page to show the new order
+                            setTimeout(() => {
+                                ui_controller.go_to_orders();
+                                order_maintainer.load_orders();//reload the orders page to show the new order
+                            }, 500);
+                        } else {
+                            console.error('failed to cancel order');
+                        }
+                    });
+                });
+            }else {
+                // order cannot be canceled via the website, so hide the cancel button
+            }
+     
             const order_items_constainer = document.createElement('div');
             order_items_constainer.classList = "order_items_constainer"
             order_container.appendChild(order_items_constainer);
