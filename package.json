@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node Butter_Cream_King_Server.js",
     "test-database": "node tests/database_test.js",
-    "test-template": "node tests/template_test.js"
+    "FG01-2": "node tests/FG01-2.js"
   },
   "keywords": [
     "express",
