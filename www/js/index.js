@@ -458,6 +458,8 @@ let catalog_maintainer = {
                 cake_img.classList = "cake_img";
                 if (catalog[cakeindex].image_uri != '') {
                     cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${catalog[cakeindex].image_uri}')`;
+                }else {
+                    cake_img.style.backgroundImage = `url('${running_subpath}img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg')`;
                 }
                 Cake_pedistal.appendChild(cake_img);
 
@@ -495,6 +497,8 @@ let catalog_maintainer = {
             document.getElementById('cake_display_title').innerHTML = `${cakefromuuid.Title}`
             if (cakefromuuid.image_uri != '') {
                 document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cakefromuuid.image_uri}')`;
+            }else{
+                document.getElementById('cake_display_banner').style.backgroundImage = `url('${running_subpath}img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg')`;
             }
             document.getElementById('cake_display_description').innerHTML = `${cakefromuuid.Description}`
             document.getElementById('cake_display_price').innerHTML = `Price: \$${cakefromuuid.price.toFixed(2)} JMD`;
@@ -615,6 +619,8 @@ let cart_maintainer = {
             cake_img.classList = "cart_item_img";
             if (cake_data.image_uri != '') {
                 cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+            }else{
+                cake_img.style.backgroundImage = `url('${running_subpath}img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg')`;
             }
 
             cart_item.appendChild(cake_img);
@@ -994,6 +1000,9 @@ let order_maintainer = {
                 cake_img.classList = "order_item_img";
                 if (cake_data.image_uri != '') {
                     cake_img.style.backgroundImage = `url('${running_subpath}img_database_store/cakes/${cake_data.image_uri}')`;
+                }else{
+                cake_img.style.backgroundImage = `url('${running_subpath}img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg')`;
+
                 }
                 order_item.appendChild(cake_img);
 
