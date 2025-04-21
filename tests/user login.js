@@ -1,7 +1,12 @@
+// user login simulation test
+
+// This test simulates a user login by checking the username and password against a database.
+// It uses the readline module to read input from the console and the database_wrapper module to interact with the database.
+
+
 const database = require('../modules/database_wrapper');
 const logs = require('../modules/logger');
 const readline = require('node:readline');
-//const read = readline.createInterface({ input: process.stdin, output: process.stdout }); //emulate node console
 const { exec } = require('child_process');
 
 try {
@@ -22,7 +27,7 @@ try {
             database.getCustomersViaUsername(name).then((result) => {
                 //logs.info('Lookup result: ', result);
                 if (typeof (result) != 'undefined' && result.length != 0 && result.password == pass) {
-                    logs.info("username and password match database user");
+                    logs.info("username and password match database");
                     logs.info("\n\n--------------------------------------------------");
                     logs.info("test PASSED :)");
                 }
@@ -38,6 +43,6 @@ try {
     logs.info("\n\n--------------------------------------------------");
     logs.error(error);
     logs.info("--------------------------------------------------");
-    logs.info("test FG01 FAILED!! :( due to runtime error");
+    logs.info("test user login test FAILED!! :( due to runtime error");
 
 }

@@ -249,7 +249,7 @@ let session_manager = {
                 } if (response.status == "exists") {
                     console.error('sign up failed, user exists');
                     document.getElementById('sign_up_error_message').classList = "sign_up_error_message";
-                    document.getElementById('sign_up_error_message').innerHTML = "Passwords do not match";
+                    document.getElementById('sign_up_error_message').innerHTML = "username already exists, please choose another one";
                 } else {
                     console.error('failed to sign up');
                 }
