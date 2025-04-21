@@ -41,7 +41,7 @@ const connectionmanager = {
                 // Execute SQL Query
                 connection.query('SELECT * FROM `cakes`', function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From cakes got : ', results);
+                    //console.log('From cakes got : ', results);
                     resolve(results);// 'resolve' results to be accecible to Promise
                     connection.end();//destroy connection, so another query can take place
                 });

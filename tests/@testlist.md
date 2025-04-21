@@ -3,7 +3,7 @@
 ## '/get/cart' in file /tests/get_cart.js
 - get a customers cart
 
-## '/post/addtocart'
+## '/post/addtocart' in file tests/add_to_cart.js
 - add an item to a customers cart
 
 ## '/post/updatecartitems'
