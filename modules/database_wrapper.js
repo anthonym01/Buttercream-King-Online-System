@@ -64,7 +64,7 @@ const connectionmanager = {
                 connection.query('SELECT * FROM `cakes` WHERE `uuid` = ?', uuid, function (error, results, fields) {
 
                     if (error) throw error;
-                    logs.info('From cakes got : ', results);
+                    //logs.info('From cakes got : ', results);
                     resolve(results[0]);// 0, because only one cake is expected
                     connection.end();
                 });
@@ -151,7 +151,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Customers` WHERE `uuid` = ?', uuid, function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From customers got : ', results);
+                    //console.log('From customers got : ', results);
                     resolve(results[0]);
                     connection.end();
                 });
@@ -175,7 +175,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Customers` WHERE `username` = ?', username, function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From customers got : ', results);
+                    //console.log('From customers got : ', results);
                     resolve(results[0]);
                     connection.end();
                 });
@@ -230,7 +230,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Orders`', function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From Orders got : ', results);
+                    //console.log('From Orders got : ', results);
                     resolve(results);
                     connection.end();
                 });
@@ -254,7 +254,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Orders` WHERE `ordernumber` = ?', uuid, function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From Orders got : ', results);
+                    //console.log('From Orders got : ', results);
                     resolve(results[0]);
                     connection.end();
                 });
@@ -277,7 +277,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Orders` WHERE `status` = ?', status, function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From Orders got : ', results);
+                    //console.log('From Orders got : ', results);
                     resolve(results);
                     connection.end();
                 });
@@ -294,7 +294,7 @@ const connectionmanager = {
                     logs.error(error);
                     reject(error);
                 }
-                console.log("results data: ", results);
+                logs.info("results data: ", results);
                 resolve(results);
             });
             logs.info(query.sql);
@@ -339,7 +339,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Staff`', function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From Staff got : ', results);
+                    //console.log('From Staff got : ', results);
                     resolve(results);
                     connection.end();
                 });
@@ -363,7 +363,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Staff` WHERE `username` = ?', username, function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From Staff got : ', results);
+                    //console.log('From Staff got : ', results);
                     resolve(results[0]);
                     connection.end();
                 });
@@ -387,7 +387,7 @@ const connectionmanager = {
 
                 connection.query('SELECT * FROM `Staff` WHERE `id` = ?', uuid, function (error, results, fields) {
                     if (error) throw error;
-                    console.log('From Staff got : ', results);
+                    //console.log('From Staff got : ', results);
                     resolve(results[0]);
                     connection.end();
                 });

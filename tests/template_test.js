@@ -1,6 +1,5 @@
 const database = require('../modules/database_wrapper');
 const logs = require('../modules/logger');
-//const readline = require('node:readline');
 const Table = require('easy-table');
 const input = require('input');
 const { text, checkboxes } = input;
@@ -10,7 +9,7 @@ async function test (){
 
         logs.info("Starting template test");
 
-        const name = await text('What is your name?', { default: 'Fred' });
+        const username = await text('What is your name?', { default: 'samuel' });
 
         const colors = await checkboxes(`OK ${name}, choose some colors`, [
             'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'rebeccapurple'

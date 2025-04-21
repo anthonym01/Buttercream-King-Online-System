@@ -1,7 +1,6 @@
 //'/post/addtocart' test
 const database = require('../modules/database_wrapper');
 const logs = require('../modules/logger');
-//const readline = require('node:readline');
 const input = require('input');
 const Table = require('easy-table');
 
