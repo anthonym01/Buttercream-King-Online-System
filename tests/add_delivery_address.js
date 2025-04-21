@@ -9,7 +9,7 @@ const { text, checkboxes } = input;
 async function test (){
     try {
 
-        logs.info("Starting template test");
+        logs.info("Starting adddeliveryaddress test");
 
         const username = await text('Username: ', { default: 'samuel' });
         const Delivery_address = await text('Address?', { default: 'Locataion in place on street in city' });
