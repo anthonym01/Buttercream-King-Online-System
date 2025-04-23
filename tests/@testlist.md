@@ -11,3 +11,25 @@
 |'/post/login'|tests/user_login.js|user login|
 |'/post/signup'|tests/user_signup.js|customer sign up|
 |'/get/catalog'||get all cakes for the catalog|
+|LoginStaff|LoginStaff.js|---|
+|ViewAllOrders|ViewAllOrders.js||
+
+Staff:
++ LoginStaff ()
++ UpdateProduct ()
++ ViewAllOrders()
+------------------------------------
+Customer:
++ LoginCustomer(username, password)
++ UpdateAccount(customer_id, new_info)
+------------------------------------
+Order:
++ CreateOrder(customer_id, items, total_price)
++ UpdateOrderStatus(order_id, status)
+-------------------------------------
+ Cakes:
++ GetAllCakes()
++ AddCake(cakeDetails)
++ DeleteCake(cakeId)
++ UpdateCake(cakeId, updatedDetails)
++ GetCakeByUUID(cakeId)

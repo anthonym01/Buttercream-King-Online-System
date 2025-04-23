@@ -548,7 +548,7 @@ app.post('/get/stafflogin', (req, res) => {
         logs.info('User login started');
         req.on('data', function (data) {
             data = JSON.parse(data);
-            logs.info('got payload: ', data);
+            logs.info('got payload: ', data);//expects { user, pass };
             try {
                 database.getStaffViaUsername(data.user).then((result) => {
                     logs.info('Lookup result: ', result);
