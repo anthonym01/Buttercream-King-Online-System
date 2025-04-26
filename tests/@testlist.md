@@ -11,8 +11,10 @@
 |'/post/login'|tests/user_login.js|user login|
 |'/post/signup'|tests/user_signup.js|customer sign up|
 |'/get/catalog'||get all cakes for the catalog|
+
 |LoginStaff|LoginStaff.js|---|
 |ViewAllOrders|ViewAllOrders.js||
+|UpdateProduct|||
 
 Staff:
 + LoginStaff ()
