@@ -305,7 +305,7 @@ const connectionmanager = {
     deleteOrder: async function (uuid) {
         let connection = mysql.createConnection(SQLcredentials);
         logs.info('Attempt to delete order with uuid: ', uuid)
-        let query = connection.query('DELETE FROM `Orders` WHERE `uuid` = ?', uuid, function (error, results, fields) {
+        let query = connection.query('DELETE FROM `Orders` WHERE `ordernumber` = ?', uuid, function (error, results, fields) {
             if (error) logs.error(error);
         });
         logs.info(query.sql);
