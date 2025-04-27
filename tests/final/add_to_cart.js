@@ -1,6 +1,9 @@
 //'/post/addtocart' test
-const database = require('../modules/database_wrapper');
-const logs = require('../modules/logger');
+//Add to Cart()
+
+
+const database = require('../../modules/database_wrapper');
+const logs = require('../../modules/logger');
 const input = require('input');
 const Table = require('easy-table');
 

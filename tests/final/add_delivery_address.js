@@ -1,7 +1,8 @@
 // '/post/adddeliveryaddress' test
+// Function: Add Address()zz
 
-const database = require('../modules/database_wrapper');
-const logs = require('../modules/logger');
+const database = require('../../modules/database_wrapper');
+const logs = require('../../modules/logger');
 const Table = require('easy-table');
 const input = require('input');
 const { text, checkboxes } = input;
