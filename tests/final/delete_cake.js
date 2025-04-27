@@ -1,13 +1,15 @@
-// /get/catalog test
+// delete cake test
+// Delete Cake()
 
-const database = require('../modules/database_wrapper');
+const database = require('../../modules/database_wrapper');
 const Table = require('easy-table');
-const logs = require('../modules/logger');
+const logs = require('../../modules/logger');
+const input = require('input');
 
 async function test() {
     try {
 
-        logs.info("Starting /get/catalog test");
+        logs.info("Starting delete cake test");
         database.getCakes().then(async (results) => {
             console.log('Database retuned inventory:');
             //filter uuids into an array
@@ -27,7 +29,25 @@ async function test() {
             });
 
             logs.info(table.toString()); ("--------------------------------------------------");
-            logs.info("--TEST PASSED-- :)");
+            logs.info("Select a product to delete by entering the product id");
+            logs.info("--------------------------------------------------");
+            //prompt user for input
+            const prompt = await input.text('Select a uuid: ', { default: String(uuids[uuids.length - 1]) });
+            
+            //check if uuid is valid
+            if (uuids.includes(Number(prompt))) {
+                //valid uuid
+                logs.info("valid uuid");
+                
+    
+            }else{
+                //invalid uuid
+                logs.info("--------------------------------------------------");
+                logs.info("test failed, invalid uuid");
+                return;
+            }
+            //delete cake
+
         });
 
     } catch (error) {
