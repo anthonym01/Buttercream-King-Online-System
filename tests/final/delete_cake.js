@@ -32,15 +32,25 @@ async function test() {
             logs.info("Select a product to delete by entering the product id");
             logs.info("--------------------------------------------------");
             //prompt user for input
-            const prompt = await input.text('Select a uuid: ', { default: String(uuids[uuids.length - 1]) });
-            
+            const prompt = await Number(input.text('Select a uuid: ', { default: String(uuids[uuids.length - 1]) }));
+
             //check if uuid is valid
-            if (uuids.includes(Number(prompt))) {
+            if (uuids.includes(prompt)) {
                 //valid uuid
                 logs.info("valid uuid");
-                
-    
-            }else{
+                database.deleteCake(prompt).then((result) => {
+                    if (result) {
+                        logs.info("--------------------------------------------------");
+                        logs.info("test passed, cake deleted");
+                        logs.info("--------------------------------------------------");
+                    } else {
+                        logs.info("--------------------------------------------------");
+                        logs.info("test failed, cake not deleted");
+                        return;
+                    }
+                });
+
+            } else {
                 //invalid uuid
                 logs.info("--------------------------------------------------");
                 logs.info("test failed, invalid uuid");

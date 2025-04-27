@@ -7,3 +7,6 @@
 |Get Cart()|`tests/final/get_cart.jsc`|
 |Get Cakes()|`tests/final/get_cart.js`|
 |Delete Cake()|`tests/final/delete_cake.js`|
+|Update Cake()|`tests/final/UpdateProduct.js`|
+|insert into Order()|`tests/final/insert_into_Orders.js`|
+|||
