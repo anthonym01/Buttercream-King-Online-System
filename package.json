@@ -22,5 +22,8 @@
     "input": "^1.0.1",
     "mysql": "^2.18.1",
     "table": "^6.9.0"
+  },
+  "devDependencies": {
+    "cypress": "^14.3.2"
   }
 }

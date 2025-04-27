@@ -474,7 +474,7 @@ body {
     background-color: var(--off-background-color);
     color: var(--text-color);
     border-radius: 0.4rem 0 0 0;
-    z-index: 5;
+    z-index: 55;
 }
 
 /* 
