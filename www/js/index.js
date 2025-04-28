@@ -722,7 +722,62 @@ let checkout_maintainer = {
 
         document.getElementById('card_save_button').addEventListener('click', function () {
             console.log('Save card button clicked');
-
+            //validate card info
+            properties.paymentinfo.name = document.getElementById('creditcard_name_put').value;
+            properties.paymentinfo.number = document.getElementById('creditcard_number_put').value;
+            properties.paymentinfo.expire = document.getElementById('expiry_date_put').value;
+            properties.paymentinfo.cvc = document.getElementById('cvc_put').value;
+            //improve prototpe validation later
+            if (properties.paymentinfo.name.length < 5) {
+                console.warn('name too short');
+                alert('Name is too short, please enter a valid name.');
+                return false;
+            } else if (properties.paymentinfo.name.length > 100) {
+                console.warn('name too long');
+                alert('Name is too long, please enter a valid name.');
+                return false;
+            }
+            else if (properties.paymentinfo.number.length < 16) {
+                console.warn('cc number too short');
+                alert('Credit card number is too short, please enter a valid number.');
+                return false;
+            } else if (properties.paymentinfo.number.length > 16) {
+                console.warn('cc number too long');
+                alert('Credit card number is too long, please enter a valid number.');
+                return false;
+            } else if (properties.paymentinfo.expire.length < 7) {
+                console.warn('cc expiry too short');
+                alert('Credit card expiry date is too short, please enter a valid date.');
+                return false;
+            } else if (properties.paymentinfo.expire.length > 7) {
+                console.warn('cc expiry too long');
+                alert('Credit card expiry date is too long, please enter a valid date.');
+                return false;
+            } else if (properties.paymentinfo.cvc.length < 3) {
+                console.warn('cc cvc too short');
+                alert('Credit card cvc is too short, please enter a valid cvc.');
+                return false;
+            } else if (properties.paymentinfo.cvc.length > 4) {
+                console.warn('cc cvc too long');
+                alert('Credit card cvc is too long, please enter a valid cvc.');
+                return false;
+            }
+            else if (properties.paymentinfo.name == "") {
+                console.warn('name empty');
+                alert('Name is empty, please enter a valid name.');
+                return false;
+            }
+            else if (properties.paymentinfo.number == "") {
+                console.warn('cc number empty');
+                alert('Credit card number is empty, please enter a valid number.');
+                return false;
+            }
+            else if (properties.paymentinfo.expire == "") {
+                console.warn('cc expiry empty');
+                alert('Credit card expiry date is empty, please enter a valid date.');
+                return false;
+            }
+            
             const payload = { card: properties.paymentinfo, username: config.data.credentials.user };
             post(payload, 'post/addpaymentmethod').then((response) => {
                 console.log('add payment method response: ', response);
@@ -743,6 +798,24 @@ let checkout_maintainer = {
         document.getElementById('address_save_button').addEventListener('click', function () {
             console.log('Save address button clicked');
             properties.deliveryinfo = document.getElementById('address_name_put').value;
+            //validate address
+
+            //improve prototpe validation later
+            if (properties.deliveryinfo.length < 5) {
+                console.warn('address too short');
+                alert('Address is too short, please enter a valid address.');
+                return false;
+            } else if (properties.deliveryinfo.length > 100) {
+                console.warn('address too long');
+                alert('Address is too long, please enter a valid address.');
+                return false;
+            } else if (properties.deliveryinfo == "") {
+                console.warn('address empty');
+                alert('Address is empty, please enter a valid address.');
+                return false;
+            }
+            console.log('address: ', properties.deliveryinfo);
+
             const payload = { Delivery_address: properties.deliveryinfo, username: config.data.credentials.user };
             post(payload, 'post/adddeliveryaddress').then((response) => {
                 console.log('add delivery address response: ', response);
