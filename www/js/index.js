@@ -4,6 +4,7 @@ const running_subpath = '';// Used to redirect requests if a subpath is used wit
 
 window.addEventListener('load', async function () {//Starting point
     try {
+        
         await config.load();//Load config from local storage
     } catch (err) {
         console.warn('Something bad happened: ', err);
