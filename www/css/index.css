@@ -52,7 +52,7 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --text-color: rgb(255, 255, 255);
-        --accent-color: hsl(204, 100%, 50%);
+        --accent-color: #0099ff;
         --background-color: rgb(30, 30, 30);
         --off-background-color: rgb(48, 48, 48);
         --logo: url('../img/logo.png');
@@ -72,12 +72,66 @@
     background-color: var(--background-color);
     z-index: 100;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    /*filter: blur(0.1rem);*/
     background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     /*filter: blur(0.2rem);*/
     background-blend-mode: darken;
+        overflow: visible;
+}
+
+.spash_block{
+    position: relative;
+    height: 20rem;
+    width: 20rem;
+    background-color: white;
+    /*filter: blur(0.2rem);*/
+    opacity: 1;
+    margin: auto;
+    border-radius: 50%;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.spash_block .logo{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/favicon.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    box-sizing: border-box;
+    
+}
+
+.splash_spinner{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border-top: 1rem solid var(--accent-color);
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: spin 1s cubic-bezier(0.86, 0, 0.07, 1) infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 body {

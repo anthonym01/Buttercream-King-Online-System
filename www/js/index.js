@@ -4,7 +4,10 @@ const running_subpath = '';// Used to redirect requests if a subpath is used wit
 
 window.addEventListener('load', async function () {//Starting point
     try {
-        
+        //close splash screen implicitly after 2 seconds reguardless of loading state
+        setTimeout(() => {
+            document.getElementById('splashscreen').classList = "splashscreen_hidden";
+        }, 2000);
         await config.load();//Load config from local storage
     } catch (err) {
         console.warn('Something bad happened: ', err);
