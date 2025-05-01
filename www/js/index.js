@@ -115,11 +115,11 @@ let session_manager = {
 
 
     },
-    attempt_login: function () {// USed to get credentials on load
+    attempt_login:async function () {// USed to get credentials on load
         console.log('attempt login');
         try {
             if (config.data.credentials.user != null && config.data.credentials.user != "") {//if never logged in
-                post(config.data.credentials, 'post/login').then((response) => {
+                await post(config.data.credentials, 'post/login').then(async(response) => {
                     console.log('login state: ', response.status);
                     if (response.status == "sucess") {
                         properties.loggedin = true;
@@ -131,15 +131,19 @@ let session_manager = {
                         document.getElementById('quick_account_username').innerText = `${config.data.credentials.user}`;
                         ui_controller.hide_account_callout();
                         ui_controller.hide_login_dialog();
-
+                        return true;
                     }
                     else {
                         //session_manager.logout();//logout if not logged in to clear keys, jingle jingle
                         console.log('login failed/not logged in');
+                        document.getElementById('Login_error_message').classList = "Login_error_message";
+                        document.getElementById('Login_error_message').innerHTML = "Incorrect username or password, please try again.";
                         //alert('Login failed, please try again.');
                         //document.getElementById('Login_error_message').classList = "Login_error_message";
+                        return false;
                     }
                 });
+                return 'end';
             }
         } catch (error) {
             console.error('Error during login attempt: ', error);
@@ -159,7 +163,7 @@ let session_manager = {
         location.reload();//reload the page to clear the session
     },
     // Login Triggered by the users action
-    login: function () {
+    login:async function () {
         console.log('login');
         const username_put = document.getElementById('Login_usernmae_put').value || "";
         const password_put = document.getElementById('Login_password_put').value || "";
@@ -172,12 +176,12 @@ let session_manager = {
 
         config.data.credentials = { user: username_put, pass: password_put };
         config.save();
-        session_manager.attempt_login();
+        await session_manager.attempt_login();
         setTimeout(() => {
             if (properties.loggedin == true) {
                 location.reload();
             }
-        }, 1000);//wait for the login to finish before reloading the page
+        }, 100);//wait for the login to finish before reloading the page
     },
     Demand_login: function () {
         console.log('action demands login/sign up');
