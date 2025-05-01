@@ -62,7 +62,7 @@
     }
 }
 
-.splashscreen{
+.splashscreen {
     position: fixed;
     top: 0;
     left: 0;
@@ -81,10 +81,10 @@
     background-position: center;
     /*filter: blur(0.2rem);*/
     background-blend-mode: darken;
-        overflow: visible;
+    overflow: visible;
 }
 
-.spash_block{
+.spash_block {
     position: relative;
     height: 20rem;
     width: 20rem;
@@ -97,7 +97,7 @@
     box-sizing: border-box;
 }
 
-.spash_block .logo{
+.spash_block .logo {
     position: absolute;
     top: 0;
     left: 0;
@@ -109,10 +109,10 @@
     background-position: center;
     border-radius: 50%;
     box-sizing: border-box;
-    
+
 }
 
-.splash_spinner{
+.splash_spinner {
     position: absolute;
     top: 0;
     left: 0;
@@ -129,6 +129,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -446,10 +447,6 @@ body {
     transition: width 500ms;
 }
 
-.Cake_cattalog_container_shoved {
-    width: 60%;
-}
-
 .Cake_cattalog {
     position: relative;
     height: 100%;
@@ -557,8 +554,9 @@ body {
     position: absolute;
     right: 0;
     top: 0;
+    /*height: calc(100% - 2.5rem);*/
     height: 100%;
-    width: 40%;
+    width: 100%;
     background-color: var(--background-color);
     display: block;
     overflow-y: auto;
@@ -584,20 +582,21 @@ body {
 }
 
 .cake_display .title {
-    position: absolute;
-    top: 1rem;
+    position: relative;
     width: 100%;
-    height: 1.7rem;
-    line-height: 1.7rem;
+    height: 2rem;
+    line-height: 2rem;
     font-size: 1.7rem;
-    height: 1.7rem;
+    height: 2rem;
+    margin-top: 0.7rem;
+    margin-bottom: 1rem;
     text-align: center;
     color: var(--text-color);
 }
 
 .cake_display .banner_cake {
-    position: absolute;
-    top: 3rem;
+    position: relative;
+    margin-bottom: 0.5rem;
     width: 100%;
     height: 20rem;
     background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
@@ -607,9 +606,9 @@ body {
 }
 
 .cake_display_price {
-    position: absolute;
-    top: 23rem;
+    position: relative;
     width: 100%;
+    margin-bottom: 0.3rem;
     height: auto;
     line-height: auto;
     font-size: 1.1rem;
@@ -620,8 +619,7 @@ body {
 }
 
 .cake_display .description {
-    position: absolute;
-    top: 24.5rem;
+    position: relative;
     width: 100%;
     height: auto;
     font-size: 1rem;
@@ -674,8 +672,8 @@ body {
     top: 2.5rem;
     right: 0;
     min-height: 14rem;
-    height: auto;
-    width: 25rem;
+    height: 100%;
+    width: 100%;
     background-color: var(--background-color);
     box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
     border-radius: 0.3rem;
@@ -821,8 +819,8 @@ body {
     position: absolute;
     left: 0;
     top: 2.5rem;
-    height: calc(100% - 2.5rem);
-    width: 50%;
+    height: calc(50% - 2.5rem);
+    width: 100%;
     display: block;
     justify-content: center;
     flex-wrap: wrap;
@@ -830,7 +828,8 @@ body {
     overflow-x: hidden;
 }
 
-.cart_item,.cart_item_constricted {
+.cart_item,
+.cart_item_constricted {
     position: relative;
     overflow: hidden;
     height: 5rem;
@@ -845,9 +844,10 @@ body {
     cursor: pointer;
 }
 
-.cart_item_constricted{
+.cart_item_constricted {
     width: 40%;
 }
+
 .cart_item_price {
     position: absolute;
     top: 0;
@@ -926,10 +926,10 @@ body {
 
 .cart_summary {
     position: absolute;
-    top: 2.5rem;
+    top: calc(50% - 2.5rem);
     right: 0;
-    height: calc(100% - 2.5rem);
-    width: 50%;
+    height: calc(50% - 2.5rem);
+    width: 100%;
     background-color: var(--background-color);
     display: block;
     overflow-y: auto;
@@ -968,10 +968,12 @@ body {
     checkout page
 */
 .checkout_actors {
-    position: relative;
-    width: 60%;
+    position: absolute;
+    top: calc(25% + 2.5rem);
+    width: 100%;
     height: auto;
     left: 0;
+    overflow: auto;
 }
 
 .Payment_method_container {
@@ -1284,8 +1286,8 @@ body {
     position: absolute;
     top: 2.5rem;
     right: 0;
-    height: calc(100% - 2.5rem);
-    width: 40%;
+    height: 25%;
+    width: 100%;
     background-color: var(--background-color);
     display: block;
     overflow-y: auto;
@@ -1347,11 +1349,11 @@ orders_page
     color: var(--text-color);
 }
 
-.order_cancel_button{
+.order_cancel_button {
     position: absolute;
-    bottom:0.3rem;
+    bottom: 0.3rem;
     right: 0.3rem;
-    height: 2.5rem; 
+    height: 2.5rem;
     white-space: wrap;
     color: var(--text-color);
     background-color: var(--background-color);
@@ -1369,7 +1371,7 @@ orders_page
     -webkit-appearance: none;
     color: var(--text-color);
     display: block;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .order_items_constainer {
@@ -1505,10 +1507,10 @@ orders_page
 
 .sign_up_container {
     position: relative;
-    margin-left: 30%;
+    margin-left: 10%;
     margin-top: 4rem;
     height: auto;
-    width: 40%;
+    width: 80%;
     box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
     border-radius: 0.3rem;
     background-color: var(--background-color);
@@ -1718,7 +1720,7 @@ orders_page
     top: 0;
     right: 0;
     height: 100%;
-    width: 40%;
+    width: 100%;
     background-color: var(--background-color);
     color: var(--text-color);
     overflow-y: auto;
@@ -1819,7 +1821,8 @@ orders_page
     background-color: var(--background-color);
 }
 
-#cake_description_input,#cake_description_edit_input {
+#cake_description_input,
+#cake_description_edit_input {
     min-height: 6rem;
     height: 6rem;
     min-height: 100%;
@@ -1829,7 +1832,7 @@ orders_page
 /*
     staff management page
 */
-.Staff_pedistal{
+.Staff_pedistal {
     position: relative;
     height: 3.5rem;
     width: 9rem;
@@ -1851,6 +1854,7 @@ orders_page
     box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
     background-color: var(--off-background-color);
 }
+
 .Staff_pedistal:active {
     transform: scale(0.96);
     transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
@@ -1858,7 +1862,7 @@ orders_page
 
 
 /* Customer viewer */
-.Customer_pedistal{
+.Customer_pedistal {
     position: relative;
     min-height: 3.5rem;
     height: fit-content;
@@ -1887,21 +1891,22 @@ orders_page
     transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
 }
 
-.Customer_popup_pannel,.Customer_popup_pannel_active{
-    position: fixed;
-    bottom:0;
-    left: 2.5rem;
-    height: calc(100% - 2.5rem);
-    width: calc(100% - 5rem);
+.Customer_popup_pannel,
+.Customer_popup_pannel_active {
+    position: absolute;
+    bottom: 0;
+    left: 0rem;
+    height: 100%;
+    width: 100%;
     background-color: var(--background-color);
     display: none;
 }
 
-.Customer_popup_pannel_active{
+.Customer_popup_pannel_active {
     display: block;
 }
 
-.customer_order_history{
+.customer_order_history {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1915,10 +1920,1938 @@ orders_page
     flex-wrap: wrap;
 }
 
-#order_items{
+#order_items {
     height: calc(100% - 9rem);
 }
 
 /*    <--  Landscape layout (with min-width) -->     */
 
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {}
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    * {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+    }
+
+    @font-face {
+        src: url(../fonts/handwriting-black-draft_DEMO.otf);
+        font-family: handwriting;
+    }
+
+    /* Handwriting font */
+    @font-face {
+        src: url(../fonts/Minecrafter.Reg.ttf);
+        font-family: minecraft;
+    }
+
+    /* Minecraft clean font */
+    @font-face {
+        src: url(../fonts/Minecrafter.Alt.ttf);
+        font-family: minecraft_cracked;
+    }
+
+    /* Minecraft cracked font */
+    @font-face {
+        src: url(../fonts/LexendDeca-Regular.ttf);
+        font-family: Lexend_Deca;
+    }
+
+    :root,
+    .light {
+        /*root used primarily for theming*/
+        --accent-color: hsl(204, 100%, 50%);
+        --text-color: rgb(0, 0, 0);
+        --background-color: rgb(255, 255, 255);
+        --off-background-color: rgb(230, 230, 230);
+        --grey: rgb(212, 212, 212);
+        --logo: url('../img/logo.png');
+        --inversion_factor: invert(0);
+    }
+
+    .dark {
+        --text-color: rgb(255, 255, 255);
+        --accent-color: hsl(204, 100%, 50%);
+        --background-color: rgb(30, 30, 30);
+        --off-background-color: rgb(48, 48, 48);
+        --logo: url('../img/logo.png');
+        --grey: rgb(61, 61, 61);
+        --inversion_factor: invert(1);
+        /*Invert black and white images*/
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --text-color: rgb(255, 255, 255);
+            --accent-color: #0099ff;
+            --background-color: rgb(30, 30, 30);
+            --off-background-color: rgb(48, 48, 48);
+            --logo: url('../img/logo.png');
+            --grey: rgb(61, 61, 61);
+            --inversion_factor: invert(1);
+            /*Invert black and white images*/
+        }
+    }
+
+    .splashscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        background-color: var(--background-color);
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /*filter: blur(0.1rem);*/
+        background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        /*filter: blur(0.2rem);*/
+        background-blend-mode: darken;
+        overflow: visible;
+    }
+
+    .spash_block {
+        position: relative;
+        height: 20rem;
+        width: 20rem;
+        background-color: white;
+        /*filter: blur(0.2rem);*/
+        opacity: 1;
+        margin: auto;
+        border-radius: 50%;
+        overflow: visible;
+        box-sizing: border-box;
+    }
+
+    .spash_block .logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-image: url('../img/favicon.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 50%;
+        box-sizing: border-box;
+
+    }
+
+    .splash_spinner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: transparent;
+        border-top: 1rem solid var(--accent-color);
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: spin 1s cubic-bezier(0.86, 0, 0.07, 1) infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    body {
+        font-family: Lexend_Deca, system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+        margin: 0px;
+        padding: 0px;
+        padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-right, 0px);
+        height: 100%;
+        width: 100%;
+        color: var(--text-color);
+        background-color: var(--background-color);
+    }
+
+    .loading_spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 10rem;
+        width: 10rem;
+        background-image: url('../img/disconnected-svgrepo-com-red.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+    }
+
+    .main_view_active,
+    .main_view {
+        position: fixed;
+        display: none;
+        top: 2.5rem;
+        right: 0;
+        width: 100vw;
+        height: calc(100vh - 2.5rem);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .main_view_active {
+        display: block;
+    }
+
+    /* Navigation Bar */
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        width: 100vw;
+        background-color: var(--off-background-color);
+    }
+
+
+    /* Logo and branding in the top bar */
+    .branding_block {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 13.5rem;
+        height: 2.5rem;
+        cursor: pointer;
+        background-color: var(--off-background-color);
+        transform: scale(1);
+        border-radius: 0rem 0rem 0.2rem 0rem;
+        transition: scale 300ms, transform 300ms;
+    }
+
+    .branding_block:hover {
+        background-color: var(--background-color);
+    }
+
+    .branding_block:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 300ms, transform 100ms;
+    }
+
+    .logocontainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        width: 2.5rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: var(--logo);
+    }
+
+    .logotext {
+        position: relative;
+        top: 0;
+        left: 2.5rem;
+        height: 2.5rem;
+        width: 11rem;
+        text-align: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        line-height: 2.5rem;
+        user-select: none;
+    }
+
+    .actionbar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2.5rem;
+        width: auto;
+    }
+
+    .account_callout_button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2.5rem;
+        width: 2.5rem;
+        overflow: hidden;
+        box-sizing: border-box;
+        border: 0.1rem solid var(--grey);
+        cursor: pointer;
+        background-color: var(--off-background-color);
+        border-radius: 50%;
+        transform: scale(1);
+        transition: scale 300ms, transform 300ms, border-radius 300ms;
+    }
+
+    .account_callout_button:hover {
+        background-color: var(--grey);
+        border-radius: 40%;
+    }
+
+    .account_callout_button:active {
+        transform: scale(0.96);
+        transition: scale 300ms, transform 100ms;
+    }
+
+    .account_callout_button img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+
+    .cart_button {
+        position: absolute;
+        top: 0;
+        right: 2.5rem;
+        height: 2.5rem;
+        width: 3rem;
+        overflow: hidden;
+        box-sizing: border-box;
+        cursor: pointer;
+        background-image: url('../img/cart-shopping-svgrepo-com.svg');
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: var(--off-background-color);
+        transform: scale(1);
+        border-radius: 0rem 0rem 0.2rem 0rem;
+        transition: scale 300ms, transform 300ms;
+    }
+
+    .cart_button:hover {
+        background-color: var(--grey);
+    }
+
+    .cart_button:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 300ms, transform 100ms;
+    }
+
+    .search_button {
+        position: absolute;
+        top: 0;
+        right: 5.5rem;
+        height: 2.5rem;
+        width: 3rem;
+        overflow: hidden;
+        box-sizing: border-box;
+        cursor: pointer;
+        background-image: url('../img/search-alt-2-svgrepo-com.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        transform: scale(1);
+        border-radius: 0rem 0rem 0.2rem 0rem;
+        transition: scale 300ms, transform 300ms;
+    }
+
+    .search_button:hover {
+        background-color: var(--grey);
+    }
+
+    .search_button:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 300ms, transform 100ms;
+    }
+
+    /* 
+        Account callout menu
+    */
+    .account_dropdown,
+    .account_dropdown_hidden {
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        height: auto;
+        min-height: 4rem;
+        width: 12rem;
+        background-color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.3rem;
+        overflow: hidden;
+        user-select: none;
+    }
+
+    .account_dropdown_hidden {
+        display: none;
+    }
+
+    .account_dropdown_item,
+    .account_dropdown_item_hidden {
+        position: relative;
+        height: 2.5rem;
+        width: 100%;
+        /*line-height: 2.5rem;*/
+        cursor: pointer;
+        background-color: transparent;
+        border-radius: 0.2rem;
+        transition: background-color 300ms, transform 300ms;
+    }
+
+    .account_dropdown_item_hidden {
+        display: none;
+    }
+
+    .account_dropdown_item:hover {
+        background-color: var(--grey);
+        transform: scale(1.01);
+        transition: background-color 300ms, transform 300ms;
+    }
+
+    .account_dropdown_item:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: background-color 0ms, transform 0ms;
+    }
+
+    .account_dropdown_image {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        width: 2.5rem;
+        background-image: url('../img/cupcake-svgrepo-com.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .Login_img {
+        background-image: url('../img/login-svgrepo-com.svg');
+    }
+
+    .Account_img {
+        background-image: url('../img/account-svgrepo-com.svg');
+        background-size: 80%;
+    }
+
+    .Orders_img {
+        background-image: url('../img/orders-svgrepo-com.svg');
+    }
+
+    .logout_img {
+        background-image: url('../img/logout-svgrepo-com.svg');
+        background-size: 80%;
+    }
+
+    .account_dropdown_item_label {
+        position: absolute;
+        top: 0;
+        left: 2.5rem;
+        height: 2.5rem;
+        width: calc(100% - 2.5rem);
+        line-height: 2.5rem;
+        font-size: 1.2rem;
+        text-align: left;
+        user-select: none;
+        box-sizing: border-box;
+        padding-left: 0.5rem;
+    }
+
+    /* 
+        Cake Gallery/catalog/'inventory'
+    */
+    .Cake_cattalog_container,
+    .Cake_cattalog_container_shoved {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        transition: width 500ms;
+    }
+
+    .Cake_cattalog_container_shoved {
+        width: 60%;
+    }
+
+    .Cake_cattalog {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-y: auto;
+    }
+
+    .Cake_pedistal,
+    .Cake_pedistal_short {
+        position: relative;
+        overflow: hidden;
+        height: 17rem;
+        width: 10rem;
+        margin: 2rem;
+        border-radius: 0.2rem;
+        box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
+        background-color: var(--background-color);
+        cursor: pointer;
+        transition: box-shadow 300ms, scale 300ms;
+        scale: 1.0;
+    }
+
+    .Cake_pedistal_short {
+        height: 12rem;
+        transform: translateY(2rem);
+    }
+
+    .Cake_pedistal:hover,
+    .Cake_pedistal_short:hover {
+        box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
+        transition: box-shadow 100ms, scale 100ms;
+        scale: 1.03;
+    }
+
+    .Cake_pedistal:active,
+    .Cake_pedistal_short:active {
+        box-shadow: 0.07rem 0.07rem 0.3rem 0.2rem var(--accent-color);
+        transition: box-shadow 100ms, scale 0ms;
+        scale: 0.97;
+    }
+
+    .cake_img {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+        min-height: 10rem;
+        min-width: 10rem;
+        height: 10rem;
+        width: 10rem;
+        /*background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');*/
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .cake_pedistal_description {
+        position: relative;
+        /*top: 12rem;*/
+        height: auto;
+        width: 10rem;
+        font-size: 0.9rem;
+        padding: 0.1rem;
+        white-space: wrap;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .cake_pedistal_title {
+        position: relative;
+        /*top: 10rem;*/
+        height: auto;
+        font-size: 1.3rem;
+        white-space: wrap;
+        text-align: center;
+        width: 10rem;
+        line-height: 1.3rem;
+    }
+
+    .cake_pedistal_price {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: auto;
+        white-space: wrap;
+        width: auto;
+        font-size: 1rem;
+        text-align: right;
+        box-sizing: border-box;
+        padding: 0.3rem;
+        background-color: var(--off-background-color);
+        color: var(--text-color);
+        border-radius: 0.4rem 0 0 0;
+        z-index: 55;
+    }
+
+    /* 
+        Cake Display panel
+    */
+    .cake_display,
+    .cake_display_hidden {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 40%;
+        background-color: var(--background-color);
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .cake_display_hidden {
+        display: none;
+    }
+
+    .close_button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        height: 3rem;
+        width: 3rem;
+        background-image: url('../img/close-md-svgrepo-com.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        cursor: pointer;
+        z-index: 999;
+    }
+
+    .cake_display .title {
+        position: absolute;
+        top: 1rem;
+        width: 100%;
+        height: 1.7rem;
+        line-height: 1.7rem;
+        font-size: 1.7rem;
+        height: 1.7rem;
+        text-align: center;
+        color: var(--text-color);
+    }
+
+    .cake_display .banner_cake {
+        position: absolute;
+        top: 4rem;
+        width: 100%;
+        height: 20rem;
+        background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .cake_display_price {
+        position: absolute;
+        top: 23rem;
+        width: 100%;
+        height: auto;
+        line-height: auto;
+        font-size: 1.1rem;
+        text-align: right;
+        box-sizing: border-box;
+        padding: 0.3rem;
+        color: var(--text-color);
+    }
+
+    .cake_display .description {
+        position: absolute;
+        top: 24.5rem;
+        width: 100%;
+        height: auto;
+        font-size: 1rem;
+        text-align: center;
+        padding: 0.5rem;
+        box-sizing: border-box;
+        color: var(--text-color);
+    }
+
+    .cake_quantity_selector {
+        position: absolute;
+        bottom: 0.5rem;
+        width: 80%;
+        left: 0.5rem;
+        width: calc(50% - 1rem);
+        height: 3rem;
+        box-sizing: border-box;
+        padding: 0.5rem;
+        font-size: 2rem;
+        color: var(--text-color);
+    }
+
+    .add_to_cart_button,
+    .add_to_cart_button_hidden {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        height: 3rem;
+        width: calc(50% - 1rem);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 3rem;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .add_to_cart_button_hidden {
+        display: none;
+    }
+
+    /* 
+        Login dialog
+    */
+    .Login_dialog,
+    .Login_dialog_hidden {
+        position: fixed;
+        top: 2.5rem;
+        right: 0;
+        min-height: 14rem;
+        height: auto;
+        width: 25rem;
+        background-color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.3rem;
+        box-sizing: border-box;
+        padding: 0.3rem;
+        display: block;
+        overflow: hidden;
+    }
+
+    .Login_dialog_hidden {
+        display: none;
+    }
+
+    .logintitle {
+        position: relative;
+        height: 2rem;
+        font-size: 1.7rem;
+        text-align: center;
+        width: 100%;
+        color: var(--text-color);
+        line-height: 1.7rem;
+    }
+
+    .Login_dialog .close_button {
+        top: 0.2rem;
+        right: 0.2rem;
+        height: 2rem;
+        width: 2rem;
+    }
+
+    .Login_input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        width: 100%;
+        background-color: var(--background-color);
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+        text-align: left;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        border-radius: 0.2rem;
+        box-sizing: border-box;
+        color: var(--text-color);
+    }
+
+    .Login_input_label {
+        position: absolute;
+        top: -1rem;
+        left: 1rem;
+        height: 1.4rem;
+        width: auto;
+        font-size: 1rem;
+        line-height: 1.4rem;
+        text-align: left;
+        border-radius: 1rem;
+        box-sizing: border-box;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        z-index: 10;
+    }
+
+    .Login_input_container {
+        position: relative;
+        margin-top: 1.2rem;
+        margin-left: 0.5rem;
+        height: 2.5rem;
+        width: calc(100% - 1rem);
+        background-color: var(--background-color);
+        /*box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);*/
+        border: 0.2rem solid var(--background-color);
+        border-radius: 0.2rem;
+    }
+
+    .Login_button {
+        position: relative;
+        margin-left: 30%;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        height: 3rem;
+        width: 40%;
+        background-color: var(--text-color);
+        color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--background-color);
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 3rem;
+        border-radius: 0.2rem;
+        overflow: hidden;
+        cursor: pointer;
+        transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+        user-select: none;
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+    }
+
+    .Login_button:hover {
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+    }
+
+    .Login_button:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+    .Login_error_message,
+    .Login_error_message_hidden {
+        position: relative;
+        height: auto;
+        width: 100%;
+        font-size: 1rem;
+        text-align: center;
+        color: var(--text-color);
+        line-height: 1rem;
+        box-sizing: border-box;
+        padding: 0.2rem;
+        text-shadow: 0rem 0rem 0.1rem rgba(255, 0, 0, 0.552);
+        display: block;
+    }
+
+    .Login_error_message_hidden {
+        display: none;
+    }
+
+
+    #cart_page {}
+
+    #cart_page .title,
+    #checkout_page .title {
+        position: relative;
+        font-size: 1.5rem;
+        width: 100%;
+        height: auto;
+        text-align: center;
+    }
+
+    .cart_container {
+        position: absolute;
+        left: 0;
+        top: 2.5rem;
+        height: calc(100% - 2.5rem);
+        width: 50%;
+        display: block;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .cart_item,
+    .cart_item_constricted {
+        position: relative;
+        overflow: hidden;
+        height: 5rem;
+        min-width: 15rem;
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 2rem;
+        border-radius: 0.2rem;
+        box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
+        color: var(--text-color);
+        background-color: var(--background-color);
+        cursor: pointer;
+    }
+
+    .cart_item_constricted {
+        width: 40%;
+    }
+
+    .cart_item_price {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: auto;
+        white-space: wrap;
+        width: auto;
+        font-size: 0.8rem;
+        text-align: right;
+        box-sizing: border-box;
+        padding: 0.2rem;
+        color: var(--text-color);
+    }
+
+    .cart_item_img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        min-height: 5rem;
+        min-width: 5rem;
+        height: 5rem;
+        width: 5rem;
+        background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .cart_item_title {
+        position: absolute;
+        top: 0;
+        left: 5rem;
+        height: 1.2rem;
+        font-size: 1.2rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: left;
+        box-sizing: border-box;
+        width: calc(80% - 5rem);
+        line-height: 1.2rem;
+        padding-left: 0.6rem;
+    }
+
+    .cart_item_description {
+        position: absolute;
+        top: 1.3rem;
+        left: 5rem;
+        height: 3.7rem;
+        font-size: 0.9rem;
+        white-space: wrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: left;
+        box-sizing: border-box;
+        width: calc(80% - 5rem);
+        line-height: 1.2rem;
+        padding-left: 0.6rem;
+        padding-right: 0.6rem;
+    }
+
+    .cart_item_quantity {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        width: calc(50% - 5rem);
+        height: 2.5rem;
+        box-sizing: border-box;
+        padding: 0.2rem;
+        font-size: 1.5rem;
+        box-sizing: border-box;
+        border-radius: 0.3rem;
+        color: var(--text-color);
+    }
+
+    .cart_summary {
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        height: calc(100% - 2.5rem);
+        width: 50%;
+        background-color: var(--background-color);
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .checkout_button {
+        position: fixed;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        height: 3rem;
+        width: calc(50% - 1rem);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 3rem;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    /*.checkout_button:hover {
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+    }*/
+    .checkout_button:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+    /* 
+        checkout page
+    */
+    .checkout_actors {
+        position: relative;
+        width: 60%;
+        height: auto;
+        left: 0;
+    }
+
+    .Payment_method_container {
+        position: relative;
+        width: 90%;
+        height: 16rem;
+        margin-left: 5%;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+        border-radius: 0.2rem;
+        box-shadow: 0.07rem 0.07rem 0.2rem 0.13rem var(--text-color);
+        color: var(--text-color);
+        background-color: var(--background-color);
+        cursor: default;
+    }
+
+    .title_Payment_method {
+        position: relative;
+        height: 2rem;
+        width: 100%;
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 2rem;
+        color: var(--text-color);
+    }
+
+    .Payment_method_first_time_add_new_button,
+    .Payment_method_first_time_add_new_button_hidden {
+        position: relative;
+        margin-top: 0.7rem;
+        margin-left: 25%;
+        height: 2rem;
+        width: 50%;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--background-color);
+        font-size: 1.1rem;
+        text-align: center;
+        line-height: 2rem;
+        border-radius: 0.2rem;
+        overflow: hidden;
+        cursor: pointer;
+        transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+        user-select: none;
+    }
+
+    .Payment_method_first_time_add_new_button_hidden {
+        display: none;
+    }
+
+    /*.Payment_method_first_time_add_new_button:hover {
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+        background-color: var(--off-background-color);
+    }*/
+    .Payment_method_first_time_add_new_button:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+    .hard_page_shader,
+    .hard_page_shader_hidden {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: var(--background-color);
+        /*filter: blur(0.1rem);*/
+        backdrop-filter: blur(2rem) brightness(0.75);
+        opacity: 0.7;
+        display: block;
+        z-index: 50;
+    }
+
+    .hard_page_shader_hidden {
+        display: none;
+    }
+
+    .Payment_method_add_edit_pannel,
+    .Payment_method_add_edit_pannel_hidden {
+        position: absolute;
+        top: 2.5rem;
+        left: 25%;
+        height: calc(100% - 5rem);
+        width: 50%;
+        background-color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.3rem;
+        display: block;
+        opacity: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 100;
+    }
+
+    .Payment_method_add_edit_pannel_hidden {
+        display: none;
+    }
+
+    .Payment_method_add_edit_pannel .close_button {
+        top: 0rem;
+        right: 0rem;
+        height: 2.5rem;
+        width: 2.5rem;
+        cursor: pointer;
+    }
+
+    .creditcard_name_put,
+    .creditcard_name_put_error {
+        position: relative;
+        margin-left: 10%;
+        margin-top: 2rem;
+        height: 2.5rem;
+        width: 80%;
+    }
+
+    .creditcard_name_put_error {
+        border: 0.2rem solid red;
+    }
+
+    .date_expiry_cvc_container {
+        position: relative;
+        margin-left: 10%;
+        margin-top: 2rem;
+        height: 2.5rem;
+        width: 80%;
+    }
+
+    .cvc_put {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2.5rem;
+        width: 47%;
+    }
+
+    .date_expiry_put {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        width: 47%;
+    }
+
+    .cvc_put_input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2.5rem;
+        width: 100%;
+        background-color: var(--background-color);
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+        text-align: left;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        border-radius: 0.2rem;
+        box-sizing: border-box;
+        color: var(--text-color);
+    }
+
+    /* credit card representation */
+    .card_type_representation_container {
+        position: relative;
+        margin-top: 1rem;
+        min-height: 10rem;
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card_type_representation_container .card_type_representation {
+        position: relative;
+        height: 10rem;
+        width: 18rem;
+        margin-left: 5%;
+        margin-right: 5%;
+        /*background-color: var(--accent-color);*/
+        box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.2rem;
+        cursor: default;
+        user-select: none;
+        overflow: hidden;
+        background-image: url('../img/jamaica-svgrepo-com.svg');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .card_type_representation_container_shader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 0.2rem;
+        background-color: var(--background-color);
+        filter: blur(0.2rem);
+        opacity: 0.8;
+    }
+
+    .card_type_representation .chip {
+        position: absolute;
+        top: 3rem;
+        left: 1rem;
+        height: 3rem;
+        width: 3rem;
+        background-image: url('../img/sim-card-chip-svgrepo-com.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .card_type_representation .card_type {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        height: 2rem;
+        width: 4rem;
+        text-align: center;
+        background-image: url('../img/visa-svgrepo-com.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .card_name {
+        position: absolute;
+        top: 8.5rem;
+        left: 0.5rem;
+        height: 1rem;
+        width: auto;
+        font-size: 1rem;
+        text-align: left;
+        line-height: 1rem;
+        box-sizing: border-box;
+        color: var(--text-color);
+    }
+
+    .card_number {
+        position: absolute;
+        top: 5.5rem;
+        left: 1rem;
+        height: 1.2rem;
+        width: calc(100% - 2rem);
+        font-size: 1.2rem;
+        text-align: center;
+        line-height: 1.2rem;
+        color: var(--text-color);
+    }
+
+    .card_expiry_date {
+        position: absolute;
+        bottom: 1.7rem;
+        right: 6rem;
+        height: 1rem;
+        width: 4rem;
+        font-size: 1rem;
+        text-align: right;
+        line-height: 1rem;
+        color: var(--text-color);
+    }
+
+    .card_save_button {
+        position: relative;
+        margin-left: 10%;
+        margin-top: 1.5rem;
+        height: 3rem;
+        width: 80%;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 3rem;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .address_put_container {
+        position: relative;
+        margin-left: 10%;
+        margin-top: 2rem;
+        min-height: 10rem;
+        height: auto;
+        width: 80%;
+    }
+
+    .address_put {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        min-height: 10rem;
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: var(--background-color);
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+        text-align: left;
+    }
+
+    #address_represent {
+        padding: 0.5rem;
+    }
+
+    .checkout_summary {
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        height: calc(100% - 2.5rem);
+        width: 40%;
+        background-color: var(--background-color);
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        padding-left: 0.5rem;
+    }
+
+    /*
+    orders_page
+    */
+    #orders_page .title {
+        position: relative;
+        font-size: 1.5rem;
+        width: 100%;
+        height: 1.5rem;
+        text-align: center;
+    }
+
+    .orders_container_handle {
+        position: relative;
+        width: 100%;
+        display: flex;
+        height: fit-content;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: row;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .order_container {
+        position: relative;
+        overflow: hidden;
+        height: 15rem;
+        width: 25rem;
+        margin: 2rem;
+        border-radius: 0.2rem;
+        box-shadow: 0.07rem 0.07rem 0.2rem 0.1rem var(--text-color);
+        color: var(--text-color);
+        font-size: 0.9rem;
+        background-color: var(--background-color);
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .order_container .sumation {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 15rem;
+        white-space: wrap;
+        width: 30%;
+        font-size: 0.8rem;
+        text-align: left;
+        box-sizing: border-box;
+        padding: 0.2rem;
+        line-height: 1rem;
+        color: var(--text-color);
+    }
+
+    .order_cancel_button {
+        position: absolute;
+        bottom: 0.3rem;
+        right: 0.3rem;
+        height: 2.5rem;
+        white-space: wrap;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        width: calc(30% - 0.5rem);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        font-size: 1rem;
+        text-align: center;
+        box-sizing: border-box;
+        padding: 0.2rem;
+        line-height: 1rem;
+        border-radius: 0.3rem;
+        overflow: hidden;
+        border: none;
+        appearance: none;
+        -webkit-appearance: none;
+        color: var(--text-color);
+        display: block;
+        cursor: pointer;
+    }
+
+    .order_items_constainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        align-items: center;
+        height: 15rem;
+        width: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .order_item {
+        /* Mini previous cart representation */
+        position: relative;
+        overflow: hidden;
+        height: 4rem;
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 0.7rem;
+        border-radius: 0.2rem;
+        box-shadow: 0rem 0rem 0.15rem 0.06rem var(--text-color);
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    .order_item_img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 4rem;
+        height: 4rem;
+        bsckground-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .order_item_title {
+        position: absolute;
+        top: 0rem;
+        left: 4rem;
+        height: 1.2rem;
+        font-size: 1rem;
+        padding: 0.2rem;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: visible;
+        text-align: center;
+        box-sizing: border-box;
+        width: calc(100% - 4rem);
+        line-height: 1.2rem;
+    }
+
+    .order_item_quantity {
+        position: absolute;
+        top: 2rem;
+        left: 4rem;
+        width: calc(100% - 4rem);
+        height: 2rem;
+        box-sizing: border-box;
+        text-align: center;
+        padding: 0.3rem;
+        font-size: 0.9rem;
+        line-height: auto;
+        box-sizing: border-box;
+        color: var(--text-color);
+    }
+
+    .quick_account_info,
+    .quick_account_info_hidden {
+        position: fixed;
+        top: 2.5rem;
+        right: 0;
+        height: fit-content;
+        width: 12rem;
+        background-color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.3rem;
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 50;
+        font-size: 0.9rem;
+    }
+
+    .quick_account_info_hidden {
+        display: none;
+    }
+
+    .quick_account_info th {
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .quick_account_info table {
+        width: 100%;
+    }
+
+    .quick_account_info_logout_button {
+        position: relative;
+        margin-left: 10%;
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+        height: 2rem;
+        font-size: 1rem;
+        line-height: 2rem;
+        width: 80%;
+        background-color: var(--text-color);
+        color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--background-color);
+        cursor: pointer;
+        border-radius: 0.3rem;
+        overflow: hidden;
+    }
+
+    .quick_account_info .close_button {
+        position: absolute;
+        top: 0.2rem;
+        right: 0.2rem;
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+    }
+
+    .sign_up_carrot {
+        text-align: center;
+    }
+
+    .sign_up_container {
+        position: relative;
+        margin-left: 30%;
+        margin-top: 4rem;
+        height: auto;
+        width: 40%;
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.3rem;
+        background-color: var(--background-color);
+        display: block;
+        overflow: hidden;
+        z-index: 100;
+        padding: 0.5rem;
+    }
+
+    .sign_up_container .title {
+        position: relative;
+        height: 2rem;
+        font-size: 1.5rem;
+        text-align: center;
+        width: 100%;
+        color: var(--text-color);
+        line-height: 1.5rem;
+    }
+
+    .sign_up_error_message,
+    .sign_up_error_message_hidden {
+        text-align: center;
+        width: 100%;
+        font-size: 0.9rem;
+        display: block;
+        color: red;
+    }
+
+    .sign_up_error_message_hidden {
+        display: none;
+    }
+
+
+    /* Staff actions */
+
+    .staffidentifier {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.1rem;
+        text-align: center;
+        color: var(--text-color);
+        background-color: var(--off-background-color);
+        width: 100%;
+        height: 100%;
+        line-height: 2.5rem;
+        box-sizing: border-box;
+        padding: 0.3rem;
+
+    }
+
+    .menu_target,
+    .menu_target_hidden {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        width: 2.5rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('../img/menu-svgrepo-com.svg');
+        z-index: 100;
+        cursor: pointer;
+        display: block;
+    }
+
+    .menu_target_hidden {
+        display: none;
+    }
+
+    /*
+        fullview_menu
+    */
+    .fullview_menu_container {
+        position: absolute;
+        top: 2.5rem;
+        left: 0;
+        height: calc(100% - 2.5rem);
+        width: 100%;
+        background-color: var(--background-color);
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .fullview_menu_item {
+        position: relative;
+        height: 5rem;
+        width: 11rem;
+        font-size: 1.6rem;
+        line-height: 5rem;
+        cursor: pointer;
+        background-color: var(--off-background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.2rem;
+        color: var(--text-color);
+        text-align: center;
+        margin: 1rem;
+        transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+        user-select: none;
+    }
+
+    .fullview_menu_item:hover {
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+        background-color: var(--off-background-color);
+    }
+
+    .fullview_menu_item:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+    .staff_dropdown_menu,
+    .staff_dropdown_menu_hidden {
+        position: fixed;
+        top: 2.5rem;
+        left: 0;
+        height: auto;
+        width: 13rem;
+        display: block;
+        background-color: var(--background-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.3rem;
+        box-sizing: border-box;
+        overflow: hidden;
+        z-index: 100;
+    }
+
+    .staff_dropdown_menu_hidden {
+        display: none;
+    }
+
+    .staff_dropdown_menu .title {
+        position: relative;
+        height: 2rem;
+        font-size: 1rem;
+        text-align: center;
+        width: 100%;
+        color: var(--text-color);
+        line-height: 1.5rem;
+    }
+
+    .staff_dropdown_menu .close_button {
+        position: absolute;
+        top: 0.2rem;
+        right: 0.2rem;
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+    }
+
+    .staff_dropdown_menu_item {
+        position: relative;
+        height: 2.5rem;
+        width: 100%;
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+        text-align: center;
+        box-sizing: border-box;
+        color: var(--text-color);
+        cursor: pointer;
+        background-color: var(--background-color);
+        border-radius: 0.2rem;
+        transition: scale 300ms, box-shadow 300ms, transform 300ms, background-color 500ms;
+        user-select: none;
+    }
+
+    .staff_dropdown_menu_item:hover {
+        background-color: var(--off-background-color);
+    }
+
+    .staff_dropdown_menu_item:active {
+        background-color: var(--accent-color);
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+    /* Staff catalogue */
+    /* 
+        For all Staff sections contains the catalogue of items, staff, customers, inventory, etc.
+        uses .Cake_pedistal class for each item in the catalogue.
+    */
+    .staff_catalog,
+    .staff_catalog_compressed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-y: auto;
+    }
+
+    .staff_catalog_compressed {
+        display: flex;
+        width: 60%;
+    }
+
+    /* Cake input/editor */
+    .editor_pannel,
+    .editor_pannel_active {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 40%;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: none;
+    }
+
+    .editor_pannel_active {
+        display: block;
+    }
+
+    .title {
+        position: relative;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        height: 1.7rem;
+        line-height: 1.7rem;
+        font-size: 1.7rem;
+        text-align: center;
+        color: var(--text-color);
+    }
+
+    .cake_img_preview {
+        position: relative;
+        height: 12rem;
+        width: 100%;
+        /*background-image: url('../img/bakery-display-racks-donracks-rack-manuafacturer-india.jpg');*/
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form_action_button_container {
+        position: relative;
+        height: 3rem;
+        width: 100%;
+        margin-top: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .form_action_button {
+        appearance: none;
+        -webkit-appearance: none;
+        position: relative;
+        height: 2.5rem;
+        width: 6rem;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0rem var(--text-color);
+        font-size: 1.2rem;
+        border: 0.1rem solid var(--text-color);
+        border-radius: 0.4rem;
+        text-align: center;
+        cursor: pointer;
+        overflow: hidden;
+        margin-left: 0.7rem;
+        margin-right: 0.7rem;
+        padding: none;
+    }
+
+    .cake_input_container {
+        position: relative;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 0.5rem;
+        height: fit-content;
+        min-height: 2.2rem;
+        width: 90%;
+        background-color: var(--background-color);
+    }
+
+    .cake_input {
+        position: relative;
+        appearance: none;
+        -webkit-appearance: none;
+        height: 2.4rem;
+        width: 100%;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+        border: 0.15rem solid var(--text-color);
+        background-color: var(--off-background-color);
+        padding: 0.6rem;
+        border-radius: 0.2rem;
+    }
+
+    .cake_input:focus {
+        outline: none;
+        border: 0.15rem solid var(--accent-color);
+        background-color: var(--background-color);
+    }
+
+    #cake_description_input,
+    #cake_description_edit_input {
+        min-height: 6rem;
+        height: 6rem;
+        min-height: 100%;
+    }
+
+
+    /*
+        staff management page
+    */
+    .Staff_pedistal {
+        position: relative;
+        height: 3.5rem;
+        width: 9rem;
+        box-sizing: border-box;
+        margin: 1rem;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.2rem;
+        cursor: pointer;
+        user-select: none;
+        overflow: hidden;
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .Staff_pedistal:hover {
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+        background-color: var(--off-background-color);
+    }
+
+    .Staff_pedistal:active {
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+
+    /* Customer viewer */
+    .Customer_pedistal {
+        position: relative;
+        min-height: 3.5rem;
+        height: fit-content;
+        width: 9rem;
+        box-sizing: border-box;
+        margin: 1rem;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--text-color);
+        border-radius: 0.2rem;
+        cursor: pointer;
+        user-select: text;
+        overflow: auto;
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .Customer_pedistal:hover {
+        box-shadow: 0rem 0rem 0.2rem 0.1rem var(--accent-color);
+        background-color: var(--off-background-color);
+    }
+
+    .Customer_pedistal:active {
+        transform: scale(0.96);
+        transition: scale 0ms, box-shadow 0ms, transform 0ms, background-color 0ms;
+    }
+
+    .Customer_popup_pannel,
+    .Customer_popup_pannel_active {
+        position: fixed;
+        bottom: 0;
+        left: 2.5rem;
+        height: calc(100% - 2.5rem);
+        width: calc(100% - 5rem);
+        background-color: var(--background-color);
+        display: none;
+    }
+
+    .Customer_popup_pannel_active {
+        display: block;
+    }
+
+    .customer_order_history {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: calc(100% - 7rem);
+        min-height: 6rem;
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        overflow-y: auto;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #order_items {
+        height: calc(100% - 9rem);
+    }
+
+}
