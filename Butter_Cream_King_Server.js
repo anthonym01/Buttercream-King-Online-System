@@ -4,10 +4,10 @@
 //Server configuration
 const port = 8083;
 const path = require('path');
-//const fs = require('fs');
+
 const express = require('express');
 const fileUpload = require('express-fileupload');
-//const bodyParser = require('body-parser');
+
 const app = express();
 app.use(fileUpload());//allow file uploads via formData
 const logs = require('./modules/logger');
