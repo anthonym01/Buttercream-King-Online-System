@@ -1,4 +1,4 @@
-const SQLcredentials = require('./SQL_credentials');
+const SQLcredentials = require('./SQL_credentials.json');
 const logs = require('./logger');
 const mysql = require('mysql');
 
